@@ -15,7 +15,7 @@ public interface JedisClient {
 	Long ttl(String key);
 
 	Long incr(String key);
-
+	@SystemlogAnnotation("功能配置")
 	Long hset(String key, String field, String value);
 
 	String hget(String key, String field);

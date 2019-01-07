@@ -26,5 +26,6 @@ public class LockWarehouse implements Serializable{
     private Double finalProfit; //每日收益
     private Integer profitTokenType; //收益类型
 
-    private UserBasic userBasic; //用户信息
+    private String nickName; //用户名
+    private String phoneNumber; //手机号
 }

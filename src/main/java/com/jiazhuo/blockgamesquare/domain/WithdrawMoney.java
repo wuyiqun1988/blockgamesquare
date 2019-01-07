@@ -27,5 +27,6 @@ public class WithdrawMoney implements Serializable{
     private Date auditTime; //审核时间
     private String remark; //审核备注
 
-    private UserBasic userBasic; //用户基本信息
+    private String nickName; //用户名
+    private String phoneNumber; //手机号
 }

@@ -30,12 +30,12 @@ public interface IUserBasicService {
     List<UserBasic> exportUserData(String nickName, String phoneNumber);
 
     /**
-     * 查看邀请好友(代理人)下级列表
+     * 邀请好友下级列表
      * @param qo
      * @param uid
      * @return
      */
-    PageResult lowersPage(UserQueryObject qo, String BUID);
+    PageResult lowersPage(UserQueryObject qo, String inviterID);
 
     /**
      * 代理人每日活跃下线列表
@@ -73,9 +73,19 @@ public interface IUserBasicService {
     PageResult agentPage(QueryObject qo);
 
     /**
+     * 代理人下级列表
+     * @param qo
+     * @param agentUID
+     * @return
+     */
+    PageResult agentLowersPage(UserQueryObject qo, String agentUID);
+
+    /**
      * exce导出代理人列表
      * @return
      */
     @SystemlogAnnotation("exce导出代理人列表")
     List<AgentVo> exportAgentData();
+
+
 }

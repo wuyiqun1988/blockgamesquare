@@ -4,6 +4,7 @@ import com.jiazhuo.blockgamesquare.exception.DisplayableException;
 import com.jiazhuo.blockgamesquare.qo.PageResult;
 import com.jiazhuo.blockgamesquare.qo.UserQueryObject;
 import com.jiazhuo.blockgamesquare.service.IFeedbackService;
+import com.jiazhuo.blockgamesquare.util.SuperResult;
 import com.jiazhuo.blockgamesquare.vo.JSONResultVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -41,15 +42,13 @@ public class FeedbackController {
      */
     @RequestMapping(value = "/appsite/userFeedback", method = RequestMethod.POST)
     @ResponseBody
-    public JSONResultVo userFeedback(String UID, String content, String contact){
-        JSONResultVo vo = new JSONResultVo();
+    public SuperResult userFeedback(String UID, String content, String contact){
         try {
             feedbackService.userFeedback(UID, content, contact);
-            vo.setResult("反馈成功");
-        } catch (DisplayableException e){
+            return new SuperResult(0, 0, "反馈成功", null);
+        } catch (Exception e){
             e.printStackTrace();
-            vo.setErrorMsg(e.getMessage());
+            return new SuperResult(0, 1, "系统异常,反馈失败", null);
         }
-        return vo;
     }
 }

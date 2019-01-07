@@ -8,13 +8,8 @@
   </resultMap>
   <resultMap id="InviterResultMap" type="com.jiazhuo.blockgamesquare.domain.Inviter">
     <id column="inviterID" property="inviterID" />
-    <id column="beinvitedID" property="beinvitedID" />
-    <result column="invitingTime" property="invitingTime" />
-    <association columnPrefix="u_" javaType="userBasic" property="userBasic">
-      <id column="UID" property="UID" />
-      <result column="nickName" property="nickName" />
-      <result column="phoneNumber" property="phoneNumber" />
-    </association>
+    <result column="nickName" property="nickName" />
+    <result column="phoneNumber" property="phoneNumber"/>
   </resultMap>
   <delete id="deleteByPrimaryKey" parameterType="map">
     delete from inviter
@@ -45,13 +40,13 @@
     select count(DISTINCT inviterID) from inviter inv join userbasic u on inv.inviterID = u.UID
   </select>
   <select id="queryList" resultMap="InviterResultMap">
-    select DISTINCT u.UID u_UID, u.nickName u_nickName, u.phoneNumber u_phoneNumber
+    select DISTINCT inviterID, nickName, phoneNumber
     from inviter inv join userbasic u on inv.inviterID = u.UID
     <include refid="baseWhere" />
     limit #{start}, #{pageSize}
   </select>
   <select id="exportInviterData" resultType="userBasic">
-    select DISTINCT UID, nickName, phoneNumber
+    select DISTINCT UID, nickName, phoneNumber, registerTime
     from inviter inv join userbasic u on inv.inviterID = u.UID
   </select>
   <select id="queryLowerAmount" resultType="int">

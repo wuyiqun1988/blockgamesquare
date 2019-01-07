@@ -5,9 +5,8 @@
     <id column="UID" property="UID" />
     <id column="type" property="type" />
     <result column="EOSAccountName" property="EOSAccountName" />
-    <result column="lockedAmount" property="lockedAmount" />
-    <result column="availableAmount" property="availableAmount" />
     <result column="amount" property="amount" />
+    <result column="canLock" property="canLock" />
   </resultMap>
   <delete id="deleteByPrimaryKey" parameterType="map" >
     delete from eostoken
@@ -15,28 +14,25 @@
       and type = #{type}
   </delete>
   <insert id="insert" parameterType="com.jiazhuo.blockgamesquare.domain.EOSTOKEN" >
-    insert into eostoken (UID, type, EOSAccountName, lockedAmount, availableAmount, 
-      amount)
-    values (#{UID}, #{type}, #{EOSAccountName}, #{lockedAmount}, #{availableAmount}, 
-      #{amount})
+    insert into eostoken (UID, type, EOSAccountName, amount, canLock)
+    values (#{UID}, #{type}, #{EOSAccountName}, #{amount}, #{canLock})
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.jiazhuo.blockgamesquare.domain.EOSTOKEN" >
     update eostoken
     set EOSAccountName = #{EOSAccountName},
-      lockedAmount = #{lockedAmount},
-      availableAmount = #{availableAmount},
-      amount = #{amount}
+      amount = #{amount},
+      canLock = #{canLock}
     where UID = #{UID}
       and type = #{type}
   </update>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="map" >
-    select UID, type, EOSAccountName, lockedAmount, availableAmount, amount
+    select UID, type, EOSAccountName, amount, canLock
     from eostoken
     where UID = #{UID}
       and type = #{type}
   </select>
   <select id="selectAll" resultMap="BaseResultMap" >
-    select UID, type, EOSAccountName, lockedAmount, availableAmount, amount
+    select UID, type, EOSAccountName, amount, canLock
     from eostoken
   </select>
 </mapper>

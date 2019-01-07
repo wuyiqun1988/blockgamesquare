@@ -5,33 +5,29 @@
     <id column="UID" property="UID" />
     <id column="type" property="type" />
     <result column="ETHAddress" property="ETHAddress" />
-    <result column="lockedAmount" property="lockedAmount" />
-    <result column="availableAmount" property="availableAmount" />
     <result column="amount" property="amount" />
+    <result column="canLock" property="canLock" />
   </resultMap>
   <insert id="insert" parameterType="com.jiazhuo.blockgamesquare.domain.ETHTOKEN" >
-    insert into ethtoken (UID, type, ETHAddress, lockedAmount, availableAmount, amount
-      )
-    values (#{UID}, #{type}, #{ETHAddress}, #{lockedAmount}, #{availableAmount}, #{amount}
-      )
+    insert into ethtoken (UID, type, ETHAddress, amount, canLock)
+    values (#{UID}, #{type}, #{ETHAddress}, #{amount}, #{canLock})
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.jiazhuo.blockgamesquare.domain.ETHTOKEN" >
     update ethtoken
     set ETHAddress = #{ETHAddress},
-      lockedAmount = #{lockedAmount},
-      availableAmount = #{availableAmount},
-      amount = #{amount}
+      amount = #{amount},
+      canLock = #{canLock}
     where UID = #{UID}
       and type = #{type}
   </update>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="map" >
-    select UID, type, ETHAddress, lockedAmount, availableAmount, amount
+    select UID, type, ETHAddress, amount, canLock
     from ethtoken
     where UID = #{UID}
       and type = #{type}
   </select>
   <select id="selectAll" resultMap="BaseResultMap" >
-    select UID, type, ETHAddress, lockedAmount, availableAmount, amount
+    select UID, type, ETHAddress, amount, canLock
     from ethtoken
   </select>
 </mapper>

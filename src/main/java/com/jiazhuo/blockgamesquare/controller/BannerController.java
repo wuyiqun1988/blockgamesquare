@@ -8,13 +8,13 @@ import com.jiazhuo.blockgamesquare.qo.QueryObject;
 import com.jiazhuo.blockgamesquare.service.IBannerService;
 import com.jiazhuo.blockgamesquare.service.IGameListService;
 import com.jiazhuo.blockgamesquare.util.RequiredPermission;
+import com.jiazhuo.blockgamesquare.util.UploadUtil;
 import com.jiazhuo.blockgamesquare.vo.JSONResultVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.ServletContext;
 
@@ -23,6 +23,8 @@ public class BannerController {
 
     @Autowired
     private IBannerService bannerService;
+    @Autowired
+    private ServletContext ctx;
 
     /**
      * 首页轮播列表
@@ -49,9 +51,21 @@ public class BannerController {
     @RequestMapping(value = "/mgrsite/banner/saveOrUpdate", method = RequestMethod.POST)
     @ResponseBody
     @RequiredPermission("首页轮播 增加或修改")
-    public JSONResultVo saveOrUpdate(Banner banner){
+    public JSONResultVo saveOrUpdate(Banner banner, @RequestParam("pic") MultipartFile pic){
         JSONResultVo vo = new JSONResultVo();
         try {
+            //处理图片
+            if (pic != null && pic.getContentType().startsWith("image") && pic.getSize() > 0){
+
+                //是否需要删除旧的图片
+                if (StringUtils.hasLength(banner.getPhoto())){
+                    UploadUtil.deleteFile(ctx, banner.getPhoto());
+                }
+
+                //符合上传要求的图片
+                String path = UploadUtil.upload(pic, ctx.getRealPath("/upload"));
+                banner.setPhoto(path);
+            }
             bannerService.saveOrUpdate(banner);
             vo.setResult("更新或保存轮播广告成功");
         } catch (DisplayableException e){

@@ -20,10 +20,7 @@
     <result column="nickName" property="nickName" />
     <result column="phoneNumber" property="phoneNumber" />
     <result column="registerTime" property="registerTime"/>
-    <association property="in" javaType="inviter" columnPrefix="i_">
-      <id column="inviterID" property="inviterID" />
-      <result column="invitingTime" property="invitingTime" />
-    </association>
+    <result column="invitingTime" property="invitingTime" />
   </resultMap>
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
@@ -53,13 +50,23 @@
   <select id="queryLowerCount" resultType="int">
     select count(1)
     from userbasic
-    where inviter = #{BUID}
+    where inviter = #{inviterID}
   </select>
   <select id="queryLowerList" resultMap="LowerResultMap">
-    select b.UID, nickName, phoneNumber, registerTime,
-    i.inviterID i_inviterID, i.invitingTime i_invitingTime
+    select UID, nickName, phoneNumber, registerTime, invitingTime
     from userbasic b join inviter i on b.UID = i.beinvitedID
-    where b.inviter = #{BUID}
+    where b.inviter = #{inviterID}
+    limit #{qo.start}, #{qo.pageSize}
+  </select>
+  <select id="queryAgentLowerCount" resultType="int">
+    select count(1)
+    from userbasic
+    where inviter = #{agentUID}
+  </select>
+  <select id="queryAgentLowerList" resultMap="LowerResultMap">
+    select UID, nickName, phoneNumber, registerTime, invitingTime
+    from userbasic b join inviter i on b.UID = i.beinvitedID
+    where b.inviter = #{agentUID}
     limit #{qo.start}, #{qo.pageSize}
   </select>
   <select id="querylowersActiveCount" resultType="int">
@@ -68,8 +75,7 @@
     where inviter = #{BUID}
   </select>
   <select id="queryLowerActiveList" resultMap="LowerResultMap">
-    select b.UID, nickName, phoneNumber,
-    i.inviterID i_inviterID, i.invitingTime i_invitingTime
+    select UID, nickName, phoneNumber, invitingTime
     from userbasic b join inviter i on b.UID = i.beinvitedID
     where b.inviter = #{BUID}
     limit #{qo.start}, #{qo.pageSize}

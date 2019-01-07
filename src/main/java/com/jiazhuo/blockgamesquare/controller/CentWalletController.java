@@ -140,8 +140,8 @@ public class CentWalletController {
             Transfer transfer = transferList.get(i);
             HSSFRow currentRow = sheet.createRow(i + 1);
             //创建单元格信息
-            currentRow.createCell(0).setCellValue(transfer.getUserBasic().getNickName());
-            currentRow.createCell(1).setCellValue(transfer.getUserBasic().getPhoneNumber());
+            currentRow.createCell(0).setCellValue(transfer.getNickName());
+            currentRow.createCell(1).setCellValue(transfer.getPhoneNumber());
             String createdTime = DateUtil.dateToStrLong(transfer.getCreatedTime()); //转化成string
             currentRow.createCell(2).setCellValue(createdTime);
             switch (transfer.getTransferType()){

@@ -19,5 +19,8 @@ public class Inviter implements Serializable{
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone="GMT+8")
     private Date invitingTime; //邀请时间
 
-    private UserBasic userBasic; //用户信息
+    private String nickName; //用户名
+    private String phoneNumber; //手机号
+
+    private int lowerAmount; //下级人数
 }

@@ -40,5 +40,6 @@ public class Transfer implements Serializable{
     private Date createdTime; //交易时间
     private Byte status; //状态
 
-    private UserBasic userBasic;
+    private String nickName; //用户名
+    private String phoneNumber; //手机号
 }

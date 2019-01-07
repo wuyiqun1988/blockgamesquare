@@ -165,10 +165,10 @@ public class UserbasicController {
      */
     @RequestMapping(value = "/mgrsite/users/lowers", method = RequestMethod.GET)
     @ResponseBody
-    public JSONResultVo lowersPage(@ModelAttribute("qo") UserQueryObject qo, String BUID){
+    public JSONResultVo lowersPage(@ModelAttribute("qo") UserQueryObject qo, String inviterID){
         JSONResultVo vo = new JSONResultVo();
         try {
-            PageResult result = userbasicService.lowersPage(qo, BUID);
+            PageResult result = userbasicService.lowersPage(qo, inviterID);
             vo.setResult(result);
         } catch (DisplayableException e){
             e.printStackTrace();
@@ -197,6 +197,7 @@ public class UserbasicController {
         hander.createCell(0).setCellValue("用户名");
         hander.createCell(1).setCellValue("手机号");
         hander.createCell(2).setCellValue("下级人数");
+        hander.createCell(3).setCellValue("注册时间");
         for (int i = 0; i < userBasicList.size(); i++){
             UserBasic userBasic = userBasicList.get(i);
             HSSFRow currentRow = sheet.createRow(i + 1);
@@ -205,6 +206,8 @@ public class UserbasicController {
             currentRow.createCell(1).setCellValue(userBasic.getPhoneNumber());
             int lowerAmount = userbasicService.queryLowerAmount(userBasic.getUID());
             currentRow.createCell(2).setCellValue(lowerAmount);
+            String registerTime = DateUtil.dateToStrLong(userBasic.getRegisterTime());
+            currentRow.createCell(3).setCellValue(registerTime);
         }
         workbook.write(response.getOutputStream());
         //关闭流操作

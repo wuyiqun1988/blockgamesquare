@@ -18,5 +18,5 @@ public class EOSTOKEN implements Serializable{
     private Integer type = EOS_TOKEN_TYPE_EOS; //类型
     private String EOSAccountName; //EOS地址
     private Double amount; //数量
-    private Byte canLock;
+    private Byte canLock; //是否可以锁仓 0:不可以 1:可以
 }

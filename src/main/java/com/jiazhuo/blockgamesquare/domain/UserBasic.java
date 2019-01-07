@@ -39,7 +39,8 @@ public class UserBasic implements Serializable{
     private Date registerTime; //注册时间
 
     private Byte state; //用户状态
-
-    private Inviter in; //邀请人表
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone="GMT+8")
+    private Date invitingTime; //被邀请时间
 
 }

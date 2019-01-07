@@ -21,5 +21,6 @@ public class Feedback implements Serializable{
     private String content; //反馈内容
     private String contact; //联系方式
 
-    private UserBasic userBasic; //用户信息
+    private String nickName; //用户名
+    private String phoneNumber; //手机号
 }

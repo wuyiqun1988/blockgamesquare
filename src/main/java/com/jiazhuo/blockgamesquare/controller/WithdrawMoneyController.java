@@ -112,8 +112,8 @@ public class WithdrawMoneyController {
             //创建单元格信息
             String createdTime = DateUtil.dateToStrLong(withdrawMoney.getCreatedTime()); //转化成string
             currentRow.createCell(0).setCellValue(createdTime);
-            currentRow.createCell(1).setCellValue(withdrawMoney.getUserBasic().getNickName());
-            currentRow.createCell(2).setCellValue(withdrawMoney.getUserBasic().getPhoneNumber());
+            currentRow.createCell(1).setCellValue(withdrawMoney.getNickName());
+            currentRow.createCell(2).setCellValue(withdrawMoney.getPhoneNumber());
             currentRow.createCell(3).setCellValue(withdrawMoney.getAmount());
             switch (withdrawMoney.getTokenType()){
                 case 1:
@@ -167,8 +167,8 @@ public class WithdrawMoneyController {
             //创建单元格信息
             String createdTime = DateUtil.dateToStrLong(withdrawMoney.getCreatedTime()); //转化成string
             currentRow.createCell(0).setCellValue(createdTime);
-            currentRow.createCell(1).setCellValue(withdrawMoney.getUserBasic().getNickName());
-            currentRow.createCell(2).setCellValue(withdrawMoney.getUserBasic().getPhoneNumber());
+            currentRow.createCell(1).setCellValue(withdrawMoney.getNickName());
+            currentRow.createCell(2).setCellValue(withdrawMoney.getPhoneNumber());
             currentRow.createCell(3).setCellValue(withdrawMoney.getAmount());
             switch (withdrawMoney.getTokenType()){
                 case 1:

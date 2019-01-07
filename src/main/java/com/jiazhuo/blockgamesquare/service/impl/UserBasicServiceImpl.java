@@ -1,5 +1,6 @@
 package com.jiazhuo.blockgamesquare.service.impl;
 
+import com.jiazhuo.blockgamesquare.domain.Inviter;
 import com.jiazhuo.blockgamesquare.domain.UserBasic;
 import com.jiazhuo.blockgamesquare.mapper.InviterMapper;
 import com.jiazhuo.blockgamesquare.mapper.UserBasicMapper;
@@ -44,12 +45,22 @@ public class UserBasicServiceImpl implements IUserBasicService {
     }
 
     @Override
-    public PageResult lowersPage(UserQueryObject qo, String BUID) {
-        int totalCount = userBasicMapper.queryLowerCount(qo, BUID);
+    public PageResult lowersPage(UserQueryObject qo, String inviterID) {
+        int totalCount = userBasicMapper.queryLowerCount(qo, inviterID);
         if (totalCount == 0){
             return PageResult.empty();
         }
-        List data = userBasicMapper.queryLowerList(qo, BUID);
+        List data = userBasicMapper.queryLowerList(qo, inviterID);
+        return new PageResult(data, totalCount, qo.getCurrentPage(), qo.getPageSize());
+    }
+
+    @Override
+    public PageResult agentLowersPage(UserQueryObject qo, String agentUID) {
+        int totalCount = userBasicMapper.queryAgentLowerCount(qo, agentUID);
+        if (totalCount == 0){
+            return PageResult.empty();
+        }
+        List data = userBasicMapper.queryAgentLowerList(qo, agentUID);
         return new PageResult(data, totalCount, qo.getCurrentPage(), qo.getPageSize());
     }
 
@@ -69,7 +80,12 @@ public class UserBasicServiceImpl implements IUserBasicService {
         if (totalCount == 0){
             return PageResult.empty();
         }
-        List data = inviterMapper.queryList(qo);
+        List<Inviter> data = inviterMapper.queryList(qo);
+        for (Inviter in : data) {
+            //设置下级人数
+            int lowerAmount = inviterMapper.queryLowerAmount(in.getInviterID());
+            in.setLowerAmount(lowerAmount);
+        }
         return new PageResult(data, totalCount, qo.getCurrentPage(), qo.getPageSize());
     }
 

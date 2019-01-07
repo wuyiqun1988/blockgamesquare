@@ -7,30 +7,32 @@
     <result column="IDCardNumber" property="IDCardNumber" />
     <result column="IDCardFront" property="IDCardFront" />
     <result column="IDCardBack" property="IDCardBack" />
+    <result column="face" property="face"/>
   </resultMap>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from userprivate
     where UID = #{UID}
   </delete>
   <insert id="insert" parameterType="com.jiazhuo.blockgamesquare.domain.UserPrivate" >
-    insert into userprivate (UID, realName, IDCardNumber, IDCardFront, IDCardBack)
-    values (#{UID}, #{realName}, #{IDCardNumber}, #{IDCardFront}, #{IDCardBack})
+    insert into userprivate (UID, realName, IDCardNumber, IDCardFront, IDCardBack, face)
+    values (#{UID}, #{realName}, #{IDCardNumber}, #{IDCardFront}, #{IDCardBack}, #{face})
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.jiazhuo.blockgamesquare.domain.UserPrivate" >
     update userprivate
     set realName = #{realName},
       IDCardNumber = #{IDCardNumber},
       IDCardFront = #{IDCardFront},
-      IDCardBack = #{IDCardBack}
+      IDCardBack = #{IDCardBack},
+      face = #{face}
     where UID = #{UID}
   </update>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
-    select UID, realName, IDCardNumber, IDCardFront, IDCardBack
+    select UID, realName, IDCardNumber, IDCardFront, IDCardBack, face
     from userprivate
     where UID = #{UID}
   </select>
   <select id="selectAll" resultMap="BaseResultMap" >
-    select UID, realName, IDCardNumber, IDCardFront, IDCardBack
+    select UID, realName, IDCardNumber, IDCardFront, IDCardBack, face
     from userprivate
   </select>
 </mapper>

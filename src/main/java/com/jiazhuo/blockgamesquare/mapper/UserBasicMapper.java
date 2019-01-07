@@ -25,10 +25,13 @@ public interface UserBasicMapper {
      */
     List<UserBasic> exportUserData(@Param("nickName") String nickName, @Param("phoneNumber") String phoneNumber);
 
-    int queryLowerCount(@Param("qo") UserQueryObject qo, @Param("BUID") String BUID);
+    int queryLowerCount(@Param("qo") UserQueryObject qo, @Param("inviterID") String inviterID);
 
-    List<UserBasic> queryLowerList(@Param("qo") UserQueryObject qo, @Param("BUID") String BUID);
+    List<UserBasic> queryLowerList(@Param("qo") UserQueryObject qo, @Param("inviterID") String inviterID);
 
+    int queryAgentLowerCount(@Param("qo") UserQueryObject qo, @Param("agentUID") String agentUID);
+
+    List<UserBasic> queryAgentLowerList(@Param("qo") UserQueryObject qo, @Param("agentUID") String agentUID);
 
     int querylowersActiveCount(@Param("qo") UserQueryObject qo, @Param("BUID") String BUID);
 
@@ -52,4 +55,6 @@ public interface UserBasicMapper {
      * @return
      */
     List<UserBasic> exportAgentData();
+
+
 }

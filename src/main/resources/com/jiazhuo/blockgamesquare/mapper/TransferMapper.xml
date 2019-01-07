@@ -20,11 +20,8 @@
     <result column="tokenType" property="tokenType" />
     <result column="createdTime" property="createdTime" />
     <result column="status" property="status" />
-    <association property="userBasic" javaType="userBasic" columnPrefix="u_">
-      <id column="UID" property="UID" />
-      <result column="nickName" property="nickName" />
-      <result column="phoneNumber" property="phoneNumber" />
-    </association>
+    <result column="nickName" property="nickName"/>
+    <result column="phoneNumber" property="phoneNumber"/>
   </resultMap>
   <delete id="deleteByPrimaryKey" parameterType="map" >
     delete from transfer
@@ -63,14 +60,14 @@
   </select>
   <select id="queryChainList" resultMap="walletResultMap">
     select t.transferId, t.UID, t.source, t.destination, t.amount, t.transferType, t.tokenType, t.createdTime, t.status,
-    u.UID u_UID, u.nickName u_nickName, u.phoneNumber u_phoneNumber
+    nickName, phoneNumber
     from transfer t join userbasic u on t.UID = u.UID
     <include refid="chainWalletWhere"/>
     limit #{start}, #{pageSize}
   </select>
   <select id="queryChainWalletItem" resultMap="walletResultMap">
     select t.transferId, t.UID, t.source, t.destination, t.amount, t.transferType, t.tokenType, t.createdTime, t.status,
-    u.UID u_UID, u.nickName u_nickName, u.phoneNumber u_phoneNumber
+    nickName, phoneNumber
     from transfer t join userbasic u on t.UID = u.UID
     where transferType &gt;= 1 and transferType &lt;= 7
   </select>
@@ -81,14 +78,14 @@
   </select>
   <select id="queryCentList" resultMap="walletResultMap">
     select t.transferId, t.UID, t.source, t.destination, t.amount, t.transferType, t.tokenType, t.createdTime, t.status,
-    u.UID u_UID, u.nickName u_nickName, u.phoneNumber u_phoneNumber
+    nickName, phoneNumber
     from transfer t join userbasic u on t.UID = u.UID
     <include refid="centWalletWhere"/>
     limit #{start}, #{pageSize}
   </select>
   <select id="queryCentWalletItem" resultMap="walletResultMap">
     select t.transferId, t.UID, t.source, t.destination, t.amount, t.transferType, t.tokenType, t.createdTime, t.status,
-    u.UID u_UID, u.nickName u_nickName, u.phoneNumber u_phoneNumber
+    nickName, phoneNumber
     from transfer t join userbasic u on t.UID = u.UID
     where transferType &gt;= 8
   </select>
@@ -96,8 +93,8 @@
     <where>
       <if test="keyword != null ">
         and (
-        u.phoneNumber like concat('%', #{keyword}, '%')
-        or u.nickName like concat('%', #{keyword}, '%')
+        phoneNumber like concat('%', #{keyword}, '%')
+        or nickName like concat('%', #{keyword}, '%')
         )
       </if>
       <if test="beginDate != null">

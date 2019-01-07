@@ -34,6 +34,9 @@ public class SystemLogUtil {
                 Systemlog log = new Systemlog();
                 //开始进行日志记录相关操作
                 //获取操作人的id,用户名
+                if (UserContext.getCurrent() == null){
+                    return;
+                }
                 Long bid = UserContext.getCurrent().getBid();
                 String opusername = UserContext.getCurrent().getUsername();
                 //获取IP地址

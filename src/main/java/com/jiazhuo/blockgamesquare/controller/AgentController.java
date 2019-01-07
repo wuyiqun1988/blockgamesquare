@@ -49,6 +49,24 @@ public class AgentController {
     }
 
     /**
+     * 代理人下级列表
+     * @return
+     */
+    @RequestMapping(value = "/mgrsite/users/agentlowers", method = RequestMethod.GET)
+    @ResponseBody
+    public JSONResultVo agentLowersPage(@ModelAttribute("qo") UserQueryObject qo, String agentUID){
+        JSONResultVo vo = new JSONResultVo();
+        try {
+            PageResult result = userBasicService.agentLowersPage(qo, agentUID);
+            vo.setResult(result);
+        } catch (DisplayableException e){
+            e.printStackTrace();
+            vo.setErrorMsg(e.getMessage());
+        }
+        return vo;
+    }
+
+    /**
      * excel导出代理人列表
      * @return
      */

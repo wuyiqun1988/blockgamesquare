@@ -7,11 +7,8 @@
     <result column="createTime" property="createTime" />
     <result column="content" property="content" />
     <result column="contact" property="contact" />
-    <association property="userBasic" javaType="userBasic" columnPrefix="u_">
-      <id column="UID" property="UID"/>
-      <result column="nickName" property="nickName"/>
-      <result column="phoneNumber" property="phoneNumber"/>
-    </association>
+    <result column="nickName" property="nickName"/>
+    <result column="phoneNumber" property="phoneNumber"/>
   </resultMap>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
     delete from feedback
@@ -45,7 +42,7 @@
   </select>
   <select id="queryList" resultMap="BaseResultMap">
     select f.fid, f.UID, f.createTime, f.content, f.contact,
-    u.UID u_UID, u.nickName u_nickName, u.phoneNumber u_phoneNumber
+    nickName, phoneNumber
     from feedback f join userbasic u on f.UID = u.UID
     <include refid="baseWhere"/>
     limit #{start}, #{pageSize}

@@ -78,8 +78,8 @@ public class LockWarehouseController {
             //创建单元格信息
             String createdTime = DateUtil.dateToStrLong(lockWarehouse.getCreatedTime()); //转化成string
             currentRow.createCell(0).setCellValue(createdTime);
-            currentRow.createCell(1).setCellValue(lockWarehouse.getUserBasic().getNickName());
-            currentRow.createCell(2).setCellValue(lockWarehouse.getUserBasic().getPhoneNumber());
+            currentRow.createCell(1).setCellValue(lockWarehouse.getNickName());
+            currentRow.createCell(2).setCellValue(lockWarehouse.getPhoneNumber());
             currentRow.createCell(3).setCellValue(lockWarehouse.getAmount());
             currentRow.createCell(4).setCellValue(lockWarehouse.getPeriod());
             switch (lockWarehouse.getTokenType()){

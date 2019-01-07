@@ -18,4 +18,5 @@ public class UserPrivate implements Serializable{
     private String IDCardNumber; //身份证号码
     private byte[] IDCardFront; //身份证正面
     private byte[] IDCardBack; //身份证反面
+    private byte[] face; //人脸
 }
