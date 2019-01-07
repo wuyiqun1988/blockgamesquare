@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jiazhuo.blockgamesquare.mapper.UserStatusMapper" >
+  <resultMap id="BaseResultMap" type="com.jiazhuo.blockgamesquare.domain.UserStatus" >
+    <id column="UID" property="UID" />
+    <result column="lastOpDevice" property="lastOpDevice" />
+    <result column="invitedTime" property="invitedTime"/>
+    <result column="state" property="state"/>
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from userstatus
+    where UID = #{UID}
+  </delete>
+  <insert id="insert" parameterType="com.jiazhuo.blockgamesquare.domain.UserStatus" >
+    insert into userstatus (UID, lastOpDevice, invitedTime, state)
+    values (#{UID}, #{lastOpDevice}, #{invitedTime}, #{state})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.jiazhuo.blockgamesquare.domain.UserStatus" >
+    update userstatus
+    set
+      lastOpDevice = #{lastOpDevice},
+      invitedTime = #{invitedTime},
+      state = #{state}
+    where UID = #{UID}
+  </update>
+  <update id="changeStatus">
+    update userstatus set state = #{state}
+    where UID = #{UID}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select UID, lastOpDevice, invitedTime, state
+    from userstatus
+    where UID = #{UID}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select UID, lastOpDevice, invitedTime, state
+    from userstatus
+  </select>
+  <select id="selectInviteTime" resultType="string">
+    select invitedTime from userstatus where UID = #{UID}
+  </select>
+</mapper>

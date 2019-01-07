@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jiazhuo.blockgamesquare.mapper.BgUserMapper" >
+  <resultMap id="BaseResultMap" type="com.jiazhuo.blockgamesquare.domain.BgUser" >
+    <id column="bid" property="bid" />
+    <result column="username" property="username" />
+    <result column="realName" property="realName" />
+    <result column="password" property="password" />
+    <result column="state" property="state" />
+    <result column="admin" property="admin" />
+    <collection property="roles" column="bid"
+                select="com.jiazhuo.blockgamesquare.mapper.RoleMapper.selectRolesByUgUserID"/>
+  </resultMap>
+  <resultMap id="ListMap" type="com.jiazhuo.blockgamesquare.domain.BgUser" >
+    <id column="bid" property="bid" />
+    <result column="username" property="username" />
+    <result column="realName" property="realName" />
+    <result column="password" property="password" />
+    <result column="state" property="state" />
+    <result column="admin" property="admin" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from bguser
+    where bid = #{bid}
+  </delete>
+  <delete id="deleteRoleRelation">
+    delete from bguser_role where bid = #{bid}
+  </delete>
+  <insert id="insert" parameterType="com.jiazhuo.blockgamesquare.domain.BgUser" useGeneratedKeys="true" keyProperty="bid" >
+    insert into bguser (username, realName, password, state, admin)
+    values (#{username}, #{realName}, #{password}, #{state}, #{admin})
+  </insert>
+  <insert id="insertRoleRelation">
+    insert into bguser_role (bid, rid) values (#{bid}, #{rid})
+  </insert>
+  <update id="updateUserInfo">
+    update bguser set username = #{username} where bid = #{bid}
+  </update>
+  <update id="changePwd">
+    update bguser set password = #{newPwd} where bid = #{bid}
+  </update>
+  <update id="resetPwd">
+    update bguser set password = #{initpassword} where bid = #{bid}
+  </update>
+  <update id="changeStatusOrAdmin">
+    update bguser
+    set state = #{state}, admin = #{admin}
+    where bid = #{bid}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select bid, username, realName, state, admin
+    from bguser
+    where bid = #{bid}
+  </select>
+  <select id="queryCount" resultType="int">
+    select count(1) from bguser
+  </select>
+  <select id="queryList" resultMap="ListMap">
+    select bid, username, realName, password, state, admin
+    from bguser
+    limit #{start}, #{pageSize}
+  </select>
+  <select id="selectBgUserByInfo" resultType="bgUser">
+    select bid, state, username, admin from bguser where username = #{username} and password = #{password}
+  </select>
+  <select id="checkOldPwd" resultType="int">
+    select count(1) from bguser where bid = #{bid} and password = #{oldPwd}
+  </select>
+  <select id="checkUsername" resultType="int">
+    select count(1) from bguser where username = #{username}
+  </select>
+
+</mapper>

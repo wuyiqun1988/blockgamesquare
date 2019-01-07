@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jiazhuo.blockgamesquare.mapper.NotificationMapper" >
+  <resultMap id="BaseResultMap" type="com.jiazhuo.blockgamesquare.domain.Notification" >
+    <id column="nid" property="nid" />
+    <result column="UID" property="UID"/>
+    <result column="title" property="title" />
+    <result column="createTime" property="createTime" />
+    <result column="notice" property="notice" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from notification
+    where nid = #{nid}
+  </delete>
+  <insert id="insert" parameterType="com.jiazhuo.blockgamesquare.domain.Notification" >
+    insert into notification (nid, UID, title, createTime, notice)
+    values (#{nid}, #{UID}, #{title}, #{createTime}, #{notice})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.jiazhuo.blockgamesquare.domain.Notification" >
+    update notification
+    set title = #{title},
+      UID = #{UID},
+      createTime = #{createTime},
+      notice = #{notice}
+    where nid = #{nid}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select nid, UID, title, createTime, notice
+    from notification
+    where nid = #{nid}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select nid, UID, title, createTime, notice
+    from notification
+  </select>
+  <select id="queryCount" resultType="int">
+    select count(nid) from notification where UID = #{UID}
+  </select>
+  <select id="queryList" resultType="notification">
+    select nid, UID, title, createTime, notice
+    from notification
+    where UID = #{UID}
+    limit #{qo.start}, #{qo.pageSize}
+  </select>
+</mapper>

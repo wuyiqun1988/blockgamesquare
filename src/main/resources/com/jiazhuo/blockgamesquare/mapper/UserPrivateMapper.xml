@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jiazhuo.blockgamesquare.mapper.UserPrivateMapper" >
+  <resultMap id="BaseResultMap" type="com.jiazhuo.blockgamesquare.domain.UserPrivate" >
+    <id column="UID" property="UID" />
+    <result column="realName" property="realName" />
+    <result column="IDCardNumber" property="IDCardNumber" />
+    <result column="IDCardFront" property="IDCardFront" />
+    <result column="IDCardBack" property="IDCardBack" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from userprivate
+    where UID = #{UID}
+  </delete>
+  <insert id="insert" parameterType="com.jiazhuo.blockgamesquare.domain.UserPrivate" >
+    insert into userprivate (UID, realName, IDCardNumber, IDCardFront, IDCardBack)
+    values (#{UID}, #{realName}, #{IDCardNumber}, #{IDCardFront}, #{IDCardBack})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.jiazhuo.blockgamesquare.domain.UserPrivate" >
+    update userprivate
+    set realName = #{realName},
+      IDCardNumber = #{IDCardNumber},
+      IDCardFront = #{IDCardFront},
+      IDCardBack = #{IDCardBack}
+    where UID = #{UID}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select UID, realName, IDCardNumber, IDCardFront, IDCardBack
+    from userprivate
+    where UID = #{UID}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select UID, realName, IDCardNumber, IDCardFront, IDCardBack
+    from userprivate
+  </select>
+</mapper>

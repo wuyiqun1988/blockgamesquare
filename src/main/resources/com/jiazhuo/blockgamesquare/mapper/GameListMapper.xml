@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jiazhuo.blockgamesquare.mapper.GameListMapper" >
+  <resultMap id="BaseResultMap" type="com.jiazhuo.blockgamesquare.domain.GameList" >
+    <id column="gid" property="gid" />
+    <result column="gameName" property="gameName" />
+    <result column="link" property="link" />
+    <result column="type" property="type" />
+    <result column="joindate" property="joindate" />
+    <result column="sort" property="sort" />
+    <result column="photo" property="photo" />
+    <result column="status" property="status"/>
+    <result column="text" property="text" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from gamelist
+    where gid = #{gid}
+  </delete>
+  <insert id="insert" parameterType="com.jiazhuo.blockgamesquare.domain.GameList" >
+    insert into gamelist (gid, gameName, link, type, joindate, sort, photo, text, status
+      )
+    values (#{gid}, #{gameName}, #{link}, #{type}, #{joindate}, #{sort}, #{photo}, #{text}, #{status}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.jiazhuo.blockgamesquare.domain.GameList" >
+    update gamelist
+    set gameName = #{gameName},
+      link = #{link},
+      type = #{type},
+      joindate = #{joindate},
+      sort = #{sort},
+      photo = #{photo},
+      status = #{status},
+      text = #{text}
+    where gid = #{gid}
+  </update>
+  <update id="changeStatus">
+    update gamelist set status = #{status}
+    where gid = #{gid}
+  </update>
+  <update id="setSort">
+    update gamelist set sort = #{no}
+    where gid = #{gid}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select gid, gameName, link, type, joindate, sort, photo, text, status
+    from gamelist
+    where gid = #{gid}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select gid, gameName, link, type, joindate, sort, photo, text, status
+    from gamelist
+  </select>
+  <select id="queryCount" resultType="int">
+    select count(gid) from gamelist
+    <include refid="baseWhere"/>
+  </select>
+  <select id="queryList" resultMap="BaseResultMap">
+    select gid, gameName, link, type, joindate, sort, photo, text, status
+    from gamelist
+    <include refid="baseWhere"/>
+    order by if(isnull(sort), 1, 0), sort
+    limit #{start}, #{pageSize}
+  </select>
+  <sql id="baseWhere">
+    <where>
+      <if test="type != null ">
+        and type = #{type}
+      </if>
+    </where>
+  </sql>
+</mapper>

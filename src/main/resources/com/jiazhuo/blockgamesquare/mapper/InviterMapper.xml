@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jiazhuo.blockgamesquare.mapper.InviterMapper">
+  <resultMap id="BaseResultMap" type="com.jiazhuo.blockgamesquare.domain.Inviter">
+    <id column="inviterID" property="inviterID" />
+    <id column="beinvitedID" property="beinvitedID" />
+    <result column="invitingTime" property="invitingTime" />
+  </resultMap>
+  <resultMap id="InviterResultMap" type="com.jiazhuo.blockgamesquare.domain.Inviter">
+    <id column="inviterID" property="inviterID" />
+    <id column="beinvitedID" property="beinvitedID" />
+    <result column="invitingTime" property="invitingTime" />
+    <association columnPrefix="u_" javaType="userBasic" property="userBasic">
+      <id column="UID" property="UID" />
+      <result column="nickName" property="nickName" />
+      <result column="phoneNumber" property="phoneNumber" />
+    </association>
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="map">
+    delete from inviter
+    where inviterID = #{inviterID}
+      and beinvitedID = #{beinvitedID}
+  </delete>
+  <insert id="insert" parameterType="com.jiazhuo.blockgamesquare.domain.Inviter">
+    insert into inviter (inviterID, beinvitedID, invitingTime)
+    values (#{inviterID}, #{beinvitedID}, #{invitingTime})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.jiazhuo.blockgamesquare.domain.Inviter">
+    update inviter
+    set invitingTime = #{invitingTime}
+    where inviterID = #{inviterID}
+      and beinvitedID = #{beinvitedID}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="map" resultMap="BaseResultMap">
+    select inviterID, beinvitedID, invitingTime
+    from inviter
+    where inviterID = #{inviterID}
+      and beinvitedID = #{beinvitedID}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select inviterID, beinvitedID, invitingTime
+    from inviter
+  </select>
+  <select id="queryCount" resultType="int">
+    select count(DISTINCT inviterID) from inviter inv join userbasic u on inv.inviterID = u.UID
+  </select>
+  <select id="queryList" resultMap="InviterResultMap">
+    select DISTINCT u.UID u_UID, u.nickName u_nickName, u.phoneNumber u_phoneNumber
+    from inviter inv join userbasic u on inv.inviterID = u.UID
+    <include refid="baseWhere" />
+    limit #{start}, #{pageSize}
+  </select>
+  <select id="exportInviterData" resultType="userBasic">
+    select DISTINCT UID, nickName, phoneNumber
+    from inviter inv join userbasic u on inv.inviterID = u.UID
+  </select>
+  <select id="queryLowerAmount" resultType="int">
+    select count(inviterID) from inviter where inviterID = #{uid}
+  </select>
+  <sql id="baseWhere">
+    <where>
+      <if test="keyword != null ">
+        and (
+        phoneNumber like concat('%', #{keyword}, '%')
+        or nickName like concat('%', #{keyword}, '%')
+        )
+      </if>
+    </where>
+  </sql>
+</mapper>

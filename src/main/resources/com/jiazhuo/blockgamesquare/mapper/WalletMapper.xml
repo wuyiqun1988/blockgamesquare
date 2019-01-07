@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jiazhuo.blockgamesquare.mapper.WalletMapper" >
+
+  <resultMap id="ChainWelletResultMap" type="com.jiazhuo.blockgamesquare.vo.WalletVo" >
+    <association property="ethtoken" javaType="ETHTOKEN" columnPrefix="eth_">
+      <id column="UID" property="UID" />
+      <id column="type" property="type" />
+      <result column="ETHAddress" property="ETHAddress" />
+    </association>
+    <association property="bgstoken" javaType="ETHTOKEN" columnPrefix="bgs_">
+      <id column="UID" property="UID" />
+      <id column="type" property="type" />
+      <result column="ETHAddress" property="ETHAddress" />
+    </association>
+    <association property="eostoken" javaType="EOSTOKEN" columnPrefix="eos_">
+      <id column="UID" property="UID" />
+      <result column="EOSAccountName" property="EOSAccountName" />
+    </association>
+    <association property="userBasic" javaType="userBasic" columnPrefix="u_">
+      <id column="UID" property="UID" />
+      <result column="nickName" property="nickName" />
+      <result column="phoneNumber" property="phoneNumber" />
+    </association>
+  </resultMap>
+  <resultMap id="CentWelletResultMap" type="com.jiazhuo.blockgamesquare.vo.WalletVo" >
+    <association property="ethtoken" javaType="ETHTOKEN" columnPrefix="eth_">
+      <id column="UID" property="UID" />
+      <id column="type" property="type" />
+      <result column="amount" property="amount" />
+    </association>
+    <association property="bgstoken" javaType="ETHTOKEN" columnPrefix="bgs_">
+      <id column="UID" property="UID" />
+      <id column="type" property="type" />
+      <result column="amount" property="amount" />
+    </association>
+    <association property="eostoken" javaType="EOSTOKEN" columnPrefix="eos_">
+      <id column="UID" property="UID" />
+      <result column="amount" property="amount" />
+    </association>
+    <association property="userBasic" javaType="userBasic" columnPrefix="u_">
+      <id column="UID" property="UID" />
+      <result column="nickName" property="nickName" />
+      <result column="phoneNumber" property="phoneNumber" />
+    </association>
+  </resultMap>
+  <select id="queryChainCount" resultType="int">
+    select count(DISTINCT u.UID)
+    <include refid="countFrom"/>
+    <include refid="baseWhere"/>
+  </select>
+  <select id="queryChainList" resultMap="ChainWelletResultMap">
+    <include refid="chainList"/>
+    <include refid="baseWhere"/>
+    limit #{start}, #{pageSize}
+  </select>
+  <select id="queryChainWalletList" resultMap="ChainWelletResultMap">
+    <include refid="chainList"/>
+  </select>
+  <select id="queryCentCount" resultType="int">
+    select count(DISTINCT u.UID)
+    <include refid="countFrom"/>
+    <include refid="baseWhere"/>
+  </select>
+  <select id="queryCentList" resultMap="CentWelletResultMap">
+    <include refid="centList"/>
+    <include refid="baseWhere"/>
+    limit #{start}, #{pageSize}
+  </select>
+  <select id="queryCentWalletList" resultMap="CentWelletResultMap">
+    <include refid="centList"/>
+  </select>
+  <sql id="countFrom">
+    from userBasic u
+    left join eostoken eos on u.UID = eos.UID
+    left join ethtoken eth on eth.UID = u.UID
+  </sql>
+  <sql id="chainList">
+    select
+    u.UID u_UID, u.nickName u_nickName, u.phoneNumber u_phoneNumber,
+    eth.UID eth_UID, eth.type eth_type, eth.ETHAddress eth_ETHAddress,
+    bgs.UID bgs_UID, bgs.type bgs_type, bgs.ETHAddress bgs_ETHAddress,
+    eos.UID eos_UID, eos.EOSAccountName eos_EOSAccountName
+    from userbasic u
+    left join (select UID, type, ETHAddress from ethtoken where type = 0) eth on u.UID = eth.UID
+    left join (select UID, type, ETHAddress from ethtoken where type = 1) bgs on u.UID = bgs.UID
+    left join eostoken eos on u.UID = eos.UID
+  </sql>
+  <sql id="centList">
+    select
+    u.UID u_UID, u.nickName u_nickName, u.phoneNumber u_phoneNumber,
+    eth.UID eth_UID, eth.type eth_type, eth.amount eth_amount,
+    bgs.UID bgs_UID, bgs.type bgs_type, bgs.amount bgs_amount,
+    eos.UID eos_UID, eos.amount eos_amount
+    from userbasic u
+    left join (select UID, type, amount from ethtoken where type = 0) eth on u.UID = eth.UID
+    left join (select UID, type, amount from ethtoken where type = 1) bgs on u.UID = bgs.UID
+    left join eostoken eos on u.UID = eos.UID
+  </sql>
+  <sql id="baseWhere">
+    <where>
+      <if test="keyword != null ">
+        and (
+        u.phoneNumber like concat('%', #{keyword}, '%')
+        or u.nickName like concat('%', #{keyword}, '%')
+        )
+      </if>
+    </where>
+  </sql>
+</mapper>

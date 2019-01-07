@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jiazhuo.blockgamesquare.mapper.MenuMapper">
+  <resultMap id="BaseResultMap" type="com.jiazhuo.blockgamesquare.domain.Menu">
+    <id column="mid" property="mid" />
+    <result column="text" property="text" />
+    <result column="url" property="url" />
+    <result column="parent_id" property="parent.mid"/>
+    <collection column="mid" ofType="menu" property="children" select="selectChildrenMenus" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from menu
+    where mid = #{mid}
+  </delete>
+  <insert id="insert" keyProperty="mid" parameterType="com.jiazhuo.blockgamesquare.domain.Menu" useGeneratedKeys="true">
+    insert into menu (text, url, parent_id)
+    values (#{text}, #{url}, #{parent.mid})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.jiazhuo.blockgamesquare.domain.Menu">
+    update menu
+    set text = #{text},
+      url = #{url},
+      parent_id = #{parent.mid}
+    where mid = #{mid}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select mid, text, url, parent_id
+    from menu
+    where mid = #{mid}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select mid, text, url, parent_id
+    from menu
+  </select>
+  <select id="selectChildrenMenus" resultMap="BaseResultMap">
+    select mid, text, url, parent_id
+    from menu
+    where parent_id = #{mid}
+  </select>
+  <select id="queryCount" resultType="int">
+    select count(mid) from menu
+  </select>
+  <select id="queryList" resultMap="BaseResultMap">
+    select mid, text, url, parent_id
+    from menu
+    limit #{start}, #{pageSize}
+  </select>
+  <select id="selectRootMenus" resultMap="BaseResultMap">
+    select mid, text, url, parent_id
+    from menu
+    where parent_id is NULL
+  </select>
+  <select id="selectMenuIdsByBgUserId" resultType="_long">
+    select DISTINCT mid
+    from role_menu
+    where rid in (select rid from bguser_role where bid = #{bid})
+  </select>
+  <select id="selectMenusByRoleId" resultType="menu">
+    select m.mid, m.text, m.url, m.parent_id
+    from menu m join role_menu rm on m.mid = rm.mid
+    where rm.rid = #{rid}
+  </select>
+
+</mapper>

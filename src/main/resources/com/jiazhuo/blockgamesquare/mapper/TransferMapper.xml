@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jiazhuo.blockgamesquare.mapper.TransferMapper" >
+  <resultMap id="BaseResultMap" type="com.jiazhuo.blockgamesquare.domain.Transfer" >
+    <id column="transferId" property="transferId" />
+    <id column="UID" property="UID" />
+    <result column="source" property="source" />
+    <result column="destination" property="destination" />
+    <result column="amount" property="amount" />
+    <result column="transferType" property="transferType" />
+    <result column="tokenType" property="tokenType" />
+    <result column="createdTime" property="createdTime" />
+    <result column="status" property="status" />
+  </resultMap>
+  <resultMap id="walletResultMap" type="com.jiazhuo.blockgamesquare.domain.Transfer" >
+    <id column="transferId" property="transferId" />
+    <id column="UID" property="UID" />
+    <result column="amount" property="amount" />
+    <result column="transferType" property="transferType" />
+    <result column="tokenType" property="tokenType" />
+    <result column="createdTime" property="createdTime" />
+    <result column="status" property="status" />
+    <association property="userBasic" javaType="userBasic" columnPrefix="u_">
+      <id column="UID" property="UID" />
+      <result column="nickName" property="nickName" />
+      <result column="phoneNumber" property="phoneNumber" />
+    </association>
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="map" >
+    delete from transfer
+    where transferId = #{transferId}
+      and UID = #{UID}
+  </delete>
+  <insert id="insert" parameterType="com.jiazhuo.blockgamesquare.domain.Transfer" >
+    insert into transfer (transferId, UID, source, destination, amount, transferType, 
+      tokenType, createdTime, status)
+    values (#{transferId}, #{UID}, #{source}, #{destination}, #{amount}, #{transferType}, 
+      #{tokenType}, #{createdTime}, #{status})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.jiazhuo.blockgamesquare.domain.Transfer" >
+    update transfer
+    set source = #{source},
+      destination = #{destination},
+      amount = #{amount},
+      transferType = #{transferType},
+      tokenType = #{tokenType},
+      createdTime = #{createdTime},
+      status = #{status}
+    where transferId = #{transferId}
+      and UID = #{UID}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="map" >
+    select transferId, UID, source, destination, amount, transferType, tokenType, createdTime, 
+    status
+    from transfer
+    where transferId = #{transferId}
+      and UID = #{UID}
+  </select>
+  <select id="queryChainCount" resultType="int">
+    select count(1) from transfer t
+    join userbasic u on t.UID = u.UID
+    <include refid="chainWalletWhere"/>
+  </select>
+  <select id="queryChainList" resultMap="walletResultMap">
+    select t.transferId, t.UID, t.source, t.destination, t.amount, t.transferType, t.tokenType, t.createdTime, t.status,
+    u.UID u_UID, u.nickName u_nickName, u.phoneNumber u_phoneNumber
+    from transfer t join userbasic u on t.UID = u.UID
+    <include refid="chainWalletWhere"/>
+    limit #{start}, #{pageSize}
+  </select>
+  <select id="queryChainWalletItem" resultMap="walletResultMap">
+    select t.transferId, t.UID, t.source, t.destination, t.amount, t.transferType, t.tokenType, t.createdTime, t.status,
+    u.UID u_UID, u.nickName u_nickName, u.phoneNumber u_phoneNumber
+    from transfer t join userbasic u on t.UID = u.UID
+    where transferType &gt;= 1 and transferType &lt;= 7
+  </select>
+  <select id="queryCentCount" resultType="int">
+    select count(1) from transfer t
+    join userbasic u on t.UID = u.UID
+    <include refid="centWalletWhere"/>
+  </select>
+  <select id="queryCentList" resultMap="walletResultMap">
+    select t.transferId, t.UID, t.source, t.destination, t.amount, t.transferType, t.tokenType, t.createdTime, t.status,
+    u.UID u_UID, u.nickName u_nickName, u.phoneNumber u_phoneNumber
+    from transfer t join userbasic u on t.UID = u.UID
+    <include refid="centWalletWhere"/>
+    limit #{start}, #{pageSize}
+  </select>
+  <select id="queryCentWalletItem" resultMap="walletResultMap">
+    select t.transferId, t.UID, t.source, t.destination, t.amount, t.transferType, t.tokenType, t.createdTime, t.status,
+    u.UID u_UID, u.nickName u_nickName, u.phoneNumber u_phoneNumber
+    from transfer t join userbasic u on t.UID = u.UID
+    where transferType &gt;= 8
+  </select>
+  <sql id="chainWalletWhere">
+    <where>
+      <if test="keyword != null ">
+        and (
+        u.phoneNumber like concat('%', #{keyword}, '%')
+        or u.nickName like concat('%', #{keyword}, '%')
+        )
+      </if>
+      <if test="beginDate != null">
+        and createdTime &gt;= #{beginDate}
+      </if>
+      <if test="endDate != null">
+        and createdTime &lt;= #{endDate}
+      </if>
+      <if test="transferType != null">
+        and transferType = #{transferType}
+      </if>
+      <if test="true">
+        and transferType &gt;= 1 and transferType &lt;= 7
+      </if>
+    </where>
+  </sql>
+
+  <sql id="centWalletWhere">
+    <where>
+      <if test="keyword != null ">
+        and (
+        u.phoneNumber like concat('%', #{keyword}, '%')
+        or u.nickName like concat('%', #{keyword}, '%')
+        )
+      </if>
+      <if test="beginDate != null">
+        and createdTime &gt;= #{beginDate}
+      </if>
+      <if test="endDate != null">
+        and createdTime &lt;= #{endDate}
+      </if>
+      <if test="transferType != null">
+        and transferType = #{transferType}
+      </if>
+      <if test="true">
+        and transferType &gt;= 8
+      </if>
+    </where>
+  </sql>
+
+</mapper>

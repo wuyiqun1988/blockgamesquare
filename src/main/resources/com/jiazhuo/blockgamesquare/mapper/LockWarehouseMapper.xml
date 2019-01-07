@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jiazhuo.blockgamesquare.mapper.LockWarehouseMapper" >
+  <resultMap id="BaseResultMap" type="com.jiazhuo.blockgamesquare.domain.LockWarehouse" >
+    <id column="LID" property="LID" />
+    <id column="UID" property="UID" />
+    <result column="amount" property="amount" />
+    <result column="period" property="period" />
+    <result column="createdTime" property="createdTime" />
+    <result column="status" property="status" />
+    <result column="tokenType" property="tokenType"/>
+    <result column="finalProfit" property="finalProfit"/>
+    <result column="profitTokenType" property="profitTokenType"/>
+
+  </resultMap>
+  <resultMap id="ListMap" type="com.jiazhuo.blockgamesquare.domain.LockWarehouse" >
+    <id column="LID" property="LID" />
+    <id column="UID" property="UID" />
+    <result column="amount" property="amount" />
+    <result column="period" property="period" />
+    <result column="createdTime" property="createdTime" />
+    <result column="status" property="status" />
+    <result column="tokenType" property="tokenType"/>
+    <result column="finalProfit" property="finalProfit"/>
+    <result column="profitTokenType" property="profitTokenType"/>
+    <association property="userBasic" javaType="userBasic" columnPrefix="u_">
+      <id column="UID" property="UID" />
+      <result column="nickName" property="nickName" />
+      <result column="phoneNumber" property="phoneNumber" />
+    </association>
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="map" >
+    delete from lockwarehouse
+    where LID = #{LID}
+      and UID = #{UID}
+  </delete>
+  <insert id="insert" parameterType="com.jiazhuo.blockgamesquare.domain.LockWarehouse" >
+    insert into lockwarehouse (LID, UID, amount, period, createdTime, status, tokenType, finalProfit, profitTokenType)
+    values (#{LID}, #{UID}, #{amount}, #{period}, #{createdTime}, #{status}, #{tokenType}, #{finalProfit}, #{profitTokenType})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.jiazhuo.blockgamesquare.domain.LockWarehouse" >
+    update lockwarehouse
+    set amount = #{amount},
+      period = #{period},
+      createdTime = #{createdTime},
+      status = #{status},
+      tokenType = #{tokenType},
+      finalProfit = #{finalProfit},
+      profitTokenType = #{profitTokenType}
+    where LID = #{LID}
+      and UID = #{UID}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="map" >
+    select LID, UID, amount, period, createdTime, status, tokenType, finalProfit, profitTokenType
+    from lockwarehouse
+    where LID = #{LID}
+      and UID = #{UID}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select LID, UID, amount, period, createdTime, status, tokenType, finalProfit, profitTokenType
+    from lockwarehouse
+  </select>
+  <select id="queryCount" resultType="int">
+    select count(1)
+    <include refid="baseFrom"/>
+    <include refid="baseWhere"/>
+  </select>
+  <select id="queryList" resultMap="ListMap">
+    <include refid="baseSelect"/>
+    <include refid="baseFrom"/>
+    <include refid="baseWhere"/>
+    limit #{start}, #{pageSize}
+  </select>
+  <select id="exportLockOrderData" resultMap="ListMap">
+    <include refid="baseSelect"/>
+    <include refid="baseFrom"/>
+  </select>
+  <select id="queryWaitUnlockCount" resultType="int">
+    select count(1)
+    <include refid="baseFrom"/>
+    <include refid="waitUnlockWhere"/>
+  </select>
+  <select id="queryWaitUnlockList" resultType="lockWarehouse">
+    <include refid="baseSelect"/>
+    <include refid="baseFrom"/>
+    <include refid="waitUnlockWhere"/>
+  </select>
+  <sql id="baseSelect">
+    select l.LID, l.UID, l.amount, l.period, l.createdTime, l.status, l.tokenType, l.finalProfit, l.profitTokenType,
+    u.UID u_UID, u.nickName u_nickName, u.phoneNumber u_phoneNumber
+  </sql>
+  <sql id="baseFrom">
+    from lockwarehouse l
+    join userbasic u on l.UID = u.UID
+  </sql>
+  <sql id="baseWhere">
+    <where>
+      <if test="keyword != null ">
+        and (
+        phoneNumber like concat('%', #{keyword}, '%')
+        or nickName like concat('%', #{keyword}, '%')
+        )
+      </if>
+      <if test="beginDate != null">
+        and createdTime &gt;= #{beginDate}
+      </if>
+      <if test="endDate != null">
+        and createdTime &lt;= #{endDate}
+      </if>
+      <if test="tokenType != null">
+        and l.tokenType = #{tokenType}
+      </if>
+    </where>
+  </sql>
+  <sql id="waitUnlockWhere">
+    <where>
+      <if test="keyword != null ">
+        and (
+        phoneNumber like concat('%', #{keyword}, '%')
+        or nickName like concat('%', #{keyword}, '%')
+        )
+      </if>
+      <if test="beginDate != null">
+        and createdTime &gt;= #{beginDate}
+      </if>
+      <if test="endDate != null">
+        and createdTime &lt;= #{endDate}
+      </if>
+      <if test="tokenType != null">
+        and l.tokenType = #{tokenType}
+      </if>
+      <if test="true">
+        and l.status = 2
+      </if>
+    </where>
+  </sql>
+</mapper>

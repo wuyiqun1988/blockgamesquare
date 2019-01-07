@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jiazhuo.blockgamesquare.mapper.WithdrawMoneyMapper" >
+  <resultMap id="BaseResultMap" type="com.jiazhuo.blockgamesquare.domain.WithdrawMoney" >
+    <id column="UID" property="UID" />
+    <id column="WID" property="WID" />
+    <result column="tokenType" property="tokenType" />
+    <result column="amount" property="amount" />
+    <result column="createdTime" property="createdTime" />
+    <result column="status" property="status" />
+    <result column="auditor" property="auditor" />
+    <result column="auditTime" property="auditTime" />
+    <result column="remark" property="remark" />
+  </resultMap>
+  <resultMap id="ListMap" type="com.jiazhuo.blockgamesquare.domain.WithdrawMoney" >
+    <id column="UID" property="UID" />
+    <id column="WID" property="WID" />
+    <result column="tokenType" property="tokenType" />
+    <result column="amount" property="amount" />
+    <result column="createdTime" property="createdTime" />
+    <result column="status" property="status" />
+    <result column="auditor" property="auditor" />
+    <result column="auditTime" property="auditTime" />
+    <result column="remark" property="remark" />
+    <association property="userBasic" javaType="userBasic" columnPrefix="u_">
+      <id column="UID" property="UID" />
+      <result column="nickName" property="nickName" />
+      <result column="phoneNumber" property="phoneNumber" />
+    </association>
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="map" >
+    delete from withdrawmoney
+    where UID = #{UID}
+      and WID = #{WID}
+  </delete>
+  <insert id="insert" parameterType="com.jiazhuo.blockgamesquare.domain.WithdrawMoney" >
+    insert into withdrawmoney (UID, WID, tokenType, amount, createdTime, status, auditor, 
+      auditTime, remark)
+    values (#{UID}, #{WID}, #{tokenType}, #{amount}, #{createdTime}, #{status}, #{auditor}, 
+      #{auditTime}, #{remark})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.jiazhuo.blockgamesquare.domain.WithdrawMoney" >
+    update withdrawmoney
+    set tokenType = #{tokenType},
+      amount = #{amount},
+      createdTime = #{createdTime},
+      status = #{status},
+      auditor = #{auditor},
+      auditTime = #{auditTime},
+      remark = #{remark}
+    where UID = #{UID}
+      and WID = #{WID}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="map" >
+    select UID, WID, tokenType, amount, createdTime, status, auditor, auditTime, remark
+    from withdrawmoney
+    where UID = #{UID}
+      and WID = #{WID}
+  </select>
+  <select id="queryApplyCount" resultType="int">
+    select count(1)
+    <include refid="baseFrom"/>
+    <include refid="applyWhere"/>
+  </select>
+  <select id="queryApplyList" resultMap="ListMap">
+    <include refid="baseList"/>
+    <include refid="baseFrom"/>
+    <include refid="applyWhere"/>
+    limit #{start}, #{pageSize}
+  </select>
+  <select id="queryPassCount" resultType="int">
+    select count(1)
+    <include refid="baseFrom"/>
+    <include refid="passWhere"/>
+  </select>
+  <select id="queryPassList" resultMap="ListMap">
+    <include refid="baseList"/>
+    <include refid="baseFrom"/>
+    <include refid="passWhere"/>
+    limit #{start}, #{pageSize}
+  </select>
+  <select id="queryFailCount" resultType="int">
+    select count(1)
+    <include refid="baseFrom"/>
+    <include refid="failWhere"/>
+  </select>
+  <select id="queryFailList" resultMap="ListMap">
+    <include refid="baseList"/>
+    <include refid="baseFrom"/>
+    <include refid="failWhere"/>
+    limit #{start}, #{pageSize}
+  </select>
+  <select id="exportWithdrawMoneyPassData" resultMap="ListMap">
+    <include refid="baseList"/>
+    <include refid="baseFrom"/>
+    <include refid="passWhere"/>
+  </select>
+  <select id="exportWithdrawMoneyFailData" resultMap="ListMap">
+    <include refid="baseList"/>
+    <include refid="baseFrom"/>
+    <include refid="failWhere"/>
+  </select>
+  <sql id="baseFrom">
+    from withdrawmoney w
+    join userBasic u on w.UID = u.UID
+  </sql>
+  <sql id="baseList">
+    select
+    w.UID, w.WID, w.tokenType, w.amount, w.createdTime, w.status, w.auditor, w.auditTime, w.remark,
+    u.UID u_UID, u.nickName u_nickName, u.phoneNumber u_phoneNumber
+  </sql>
+  <sql id="applyWhere">
+    <where>
+      <if test="keyword != null ">
+        and (
+        phoneNumber like concat('%', #{keyword}, '%')
+        or nickName like concat('%', #{keyword}, '%')
+        )
+      </if>
+      <if test="beginDate != null">
+        and createdTime &gt;= #{beginDate}
+      </if>
+      <if test="endDate != null">
+        and createdTime &lt;= #{endDate}
+      </if>
+      <if test="tokenType != null">
+        and tokenType = #{tokenType}
+      </if>
+      <if test="true">
+        and w.status = 0
+      </if>
+    </where>
+  </sql>
+  <sql id="passWhere">
+    <where>
+      <if test="keyword != null ">
+        and (
+        phoneNumber like concat('%', #{keyword}, '%')
+        or nickName like concat('%', #{keyword}, '%')
+        )
+      </if>
+      <if test="beginDate != null">
+        and createdTime &gt;= #{beginDate}
+      </if>
+      <if test="endDate != null">
+        and createdTime &lt;= #{endDate}
+      </if>
+      <if test="tokenType != null">
+        and tokenType = #{tokenType}
+      </if>
+      <if test="true">
+        and w.status = 1
+      </if>
+    </where>
+  </sql>
+  <sql id="failWhere">
+    <where>
+      <if test="keyword != null ">
+        and (
+        phoneNumber like concat('%', #{keyword}, '%')
+        or nickName like concat('%', #{keyword}, '%')
+        )
+      </if>
+      <if test="beginDate != null">
+        and createdTime &gt;= #{beginDate}
+      </if>
+      <if test="endDate != null">
+        and createdTime &lt;= #{endDate}
+      </if>
+      <if test="tokenType != null">
+        and tokenType = #{tokenType}
+      </if>
+      <if test="true">
+        and w.status = 2
+      </if>
+    </where>
+  </sql>
+</mapper>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jiazhuo.blockgamesquare.mapper.SystemlogMapper" >
+  <resultMap id="BaseResultMap" type="com.jiazhuo.blockgamesquare.domain.Systemlog" >
+    <id column="sid" property="sid" />
+    <result column="opuserId" property="opuserId" />
+    <result column="optime" property="optime" />
+    <result column="ipaddr" property="ipaddr"/>
+    <result column="function" property="function" />
+    <result column="opusername" property="opusername" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from systemlog
+    where sid = #{sid}
+  </delete>
+  <insert id="insert" parameterType="com.jiazhuo.blockgamesquare.domain.Systemlog" useGeneratedKeys="true" keyProperty="sid" >
+    insert into systemlog (opuserId, optime, function, opusername, ipaddr)
+    values (#{opuserId}, #{optime}, #{function}, #{opusername}, #{ipaddr})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.jiazhuo.blockgamesquare.domain.Systemlog" >
+    update systemlog
+    set opuserId = #{opuserId},
+      ipaddr = #{ipaddr},
+      optime = #{optime},
+      function = #{function},
+      opusername = #{opusername}
+    where sid = #{sid}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select sid, opuserId, optime, function, opusername, ipaddr
+    from systemlog
+    where sid = #{sid}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select sid, opuserId, optime, function, opusername, ipaddr
+    from systemlog
+  </select>
+  <select id="queryCount" resultType="int">
+    select count(sid) from systemlog
+    <include refid="baseWhere"/>
+  </select>
+  <select id="queryList" resultMap="BaseResultMap">
+    select sid, opuserId, optime, function, opusername, ipaddr
+    from systemlog
+    <include refid="baseWhere"/>
+    limit #{start}, #{pageSize}
+  </select>
+  <sql id="baseWhere">
+    <where>
+      <if test="keyword != null ">
+        and (
+        opusername like concat('%', #{keyword}, '%')
+        or function like concat('%', #{keyword}, '%')
+        )
+      </if>
+      <if test="beginDate != null">
+        and optime &gt;= #{beginDate}
+      </if>
+      <if test="endDate != null">
+        and optime &lt;= #{endDate}
+      </if>
+    </where>
+  </sql>
+</mapper>

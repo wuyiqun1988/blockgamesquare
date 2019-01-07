@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jiazhuo.blockgamesquare.mapper.UserBasicMapper" >
+  <resultMap id="BaseResultMap" type="com.jiazhuo.blockgamesquare.domain.UserBasic" >
+    <id column="UID" property="UID" />
+    <result column="nickName" property="nickName" />
+    <result column="sex" property="sex" />
+    <result column="isAgency" property="isAgency" />
+    <result column="phoneNumber" property="phoneNumber" />
+    <result column="inviter" property="inviter" />
+    <result column="status" property="status" />
+    <result column="invitedCode" property="invitedCode" />
+    <result column="headPhoto" property="headPhoto" />
+    <result column="registerTime" property="registerTime"/>
+    <result column="state" property="state"/>
+  </resultMap>
+
+  <resultMap id="LowerResultMap" type="com.jiazhuo.blockgamesquare.domain.UserBasic" >
+    <id column="UID" property="UID" />
+    <result column="nickName" property="nickName" />
+    <result column="phoneNumber" property="phoneNumber" />
+    <result column="registerTime" property="registerTime"/>
+    <association property="in" javaType="inviter" columnPrefix="i_">
+      <id column="inviterID" property="inviterID" />
+      <result column="invitingTime" property="invitingTime" />
+    </association>
+  </resultMap>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from userbasic
+    where UID = #{UID}
+  </delete>
+  <select id="queryRegisterUsers" resultType="int">
+    select count(1) from userbasic
+  </select>
+  <select id="queryCount" resultType="int">
+    select count(ub.UID) from userbasic ub join userstatus us on ub.UID = us.UID
+    <include refid="baseWhere"/>
+  </select>
+  <select id="queryList" resultMap="BaseResultMap">
+    select ub.UID, nickName, sex, isAgency, phoneNumber, inviter, status,
+    invitedCode, headPhoto, registerTime,
+    us.state state
+    from userbasic ub join userstatus us on ub.UID = us.UID
+    <include refid="baseWhere"/>
+    limit #{start}, #{pageSize}
+  </select>
+  <select id="exportUserData" resultMap="BaseResultMap">
+    select UID, nickName, sex, isAgency, phoneNumber, registerTime
+    from userbasic
+    <include refid="exportDataWhere"/>
+  </select>
+  <select id="queryLowerCount" resultType="int">
+    select count(1)
+    from userbasic
+    where inviter = #{BUID}
+  </select>
+  <select id="queryLowerList" resultMap="LowerResultMap">
+    select b.UID, nickName, phoneNumber, registerTime,
+    i.inviterID i_inviterID, i.invitingTime i_invitingTime
+    from userbasic b join inviter i on b.UID = i.beinvitedID
+    where b.inviter = #{BUID}
+    limit #{qo.start}, #{qo.pageSize}
+  </select>
+  <select id="querylowersActiveCount" resultType="int">
+    select count(1)
+    from userbasic
+    where inviter = #{BUID}
+  </select>
+  <select id="queryLowerActiveList" resultMap="LowerResultMap">
+    select b.UID, nickName, phoneNumber,
+    i.inviterID i_inviterID, i.invitingTime i_invitingTime
+    from userbasic b join inviter i on b.UID = i.beinvitedID
+    where b.inviter = #{BUID}
+    limit #{qo.start}, #{qo.pageSize}
+  </select>
+  <select id="queryLowerAmount" resultType="int">
+    select count(1)
+    from userbasic
+    where inviter = #{UID}
+  </select>
+  <select id="queryAgentCount" resultType="int">
+    select count(1) from userbasic
+    <include refid="agentWhere"/>
+  </select>
+  <select id="queryAgentList" resultType="userBasic">
+    select
+    UID, nickName, phoneNumber, registerTime
+    from userbasic
+    <include refid="agentWhere"/>
+    limit #{start}, #{pageSize}
+  </select>
+  <select id="selectLowerAmount" resultType="int">
+    select count(1) from userbasic where inviter = #{uid}
+  </select>
+  <select id="exportAgentData" resultType="userBasic">
+    select
+    UID, nickName, phoneNumber, registerTime
+    from userbasic
+    <include refid="agentWhere"/>
+  </select>
+  <sql id="baseWhere">
+    <where>
+      <if test="keyword != null ">
+        and (
+        phoneNumber like concat('%', #{keyword}, '%')
+        or nickName like concat('%', #{keyword}, '%')
+        )
+      </if>
+    </where>
+  </sql>
+  <sql id="agentWhere">
+    <where>
+      <if test="keyword != null ">
+        and (
+        phoneNumber like concat('%', #{keyword}, '%')
+        or nickName like concat('%', #{keyword}, '%')
+        )
+      </if>
+      <if test="beginDate != null">
+        and registerTime &gt;= #{beginDate}
+      </if>
+      <if test="endDate != null">
+        and registerTime &lt;= #{endDate}
+      </if>
+      <if test="true">
+        and isAgency = 1
+      </if>
+    </where>
+  </sql>
+  <sql id="exportDataWhere">
+    <where>
+      <if test="phoneNumber != null ">
+        and (
+        phoneNumber like concat('%', #{phoneNumber}, '%')
+        )
+      </if>
+      <if test="nickName != null ">
+        and (
+        nickName like concat('%', #{nickName}, '%')
+        )
+      </if>
+    </where>
+  </sql>
+</mapper>

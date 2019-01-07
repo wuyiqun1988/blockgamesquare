@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jiazhuo.blockgamesquare.mapper.EOSTOKENMapper" >
+  <resultMap id="BaseResultMap" type="com.jiazhuo.blockgamesquare.domain.EOSTOKEN" >
+    <id column="UID" property="UID" />
+    <id column="type" property="type" />
+    <result column="EOSAccountName" property="EOSAccountName" />
+    <result column="lockedAmount" property="lockedAmount" />
+    <result column="availableAmount" property="availableAmount" />
+    <result column="amount" property="amount" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="map" >
+    delete from eostoken
+    where UID = #{UID}
+      and type = #{type}
+  </delete>
+  <insert id="insert" parameterType="com.jiazhuo.blockgamesquare.domain.EOSTOKEN" >
+    insert into eostoken (UID, type, EOSAccountName, lockedAmount, availableAmount, 
+      amount)
+    values (#{UID}, #{type}, #{EOSAccountName}, #{lockedAmount}, #{availableAmount}, 
+      #{amount})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.jiazhuo.blockgamesquare.domain.EOSTOKEN" >
+    update eostoken
+    set EOSAccountName = #{EOSAccountName},
+      lockedAmount = #{lockedAmount},
+      availableAmount = #{availableAmount},
+      amount = #{amount}
+    where UID = #{UID}
+      and type = #{type}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="map" >
+    select UID, type, EOSAccountName, lockedAmount, availableAmount, amount
+    from eostoken
+    where UID = #{UID}
+      and type = #{type}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select UID, type, EOSAccountName, lockedAmount, availableAmount, amount
+    from eostoken
+  </select>
+</mapper>

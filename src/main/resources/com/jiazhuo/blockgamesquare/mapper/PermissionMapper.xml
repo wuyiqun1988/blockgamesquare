@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jiazhuo.blockgamesquare.mapper.PermissionMapper" >
+  <resultMap id="BaseResultMap" type="com.jiazhuo.blockgamesquare.domain.Permission" >
+    <id column="pid" property="pid" />
+    <result column="name" property="name" />
+    <result column="resource" property="resource" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from permission
+    where pid = #{pid}
+  </delete>
+  <insert id="insert" parameterType="com.jiazhuo.blockgamesquare.domain.Permission" useGeneratedKeys="true" keyProperty="pid" >
+    insert into permission (name, resource)
+    values (#{name}, #{resource})
+  </insert>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select pid, name, resource
+    from permission
+    where pid = #{pid}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select pid, name, resource
+    from permission
+  </select>
+  <select id="queryCount" resultType="int">
+    select count(1) from permission
+  </select>
+  <select id="queryList" resultMap="BaseResultMap">
+    select pid, name, resource
+    from permission
+    limit #{start}, #{pageSize}
+  </select>
+  <select id="selectResources" resultType="string">
+    select resource from permission
+  </select>
+  <select id="selectResourcesByBgUserId" resultType="string">
+    select DISTINCT p.resource
+    from permission p join role_permission rp on p.pid = rp.pid
+    join bguser_role br on br.rid = rp.rid
+    where br.bid = #{bid}
+  </select>
+  <select id="selectPermissionsByRoleId" resultType="permission">
+    select p.pid, p.name
+    from permission p join role_permission rp on p.pid = rp.pid
+    where rp.rid = #{rid}
+  </select>
+</mapper>

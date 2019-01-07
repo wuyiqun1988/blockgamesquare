@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jiazhuo.blockgamesquare.mapper.RoleMapper" >
+  <resultMap id="BaseResultMap" type="com.jiazhuo.blockgamesquare.domain.Role" >
+    <id column="rid" property="rid" />
+    <result column="sn" property="sn" />
+    <result column="name" property="name" />
+    <collection property="permissions" column="rid"
+                select="com.jiazhuo.blockgamesquare.mapper.PermissionMapper.selectPermissionsByRoleId"/>
+    <collection property="menus" column="rid"
+                select="com.jiazhuo.blockgamesquare.mapper.MenuMapper.selectMenusByRoleId"/>
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from role
+    where rid = #{rid}
+  </delete>
+  <delete id="deletePermissionRelation">
+    delete from role_permission where rid = #{rid}
+  </delete>
+  <delete id="deleteMenuRelation">
+    delete from role_menu where rid = #{rid}
+  </delete>
+  <insert id="insert" parameterType="com.jiazhuo.blockgamesquare.domain.Role" useGeneratedKeys="true" keyProperty="rid" >
+    insert into role (sn, name)
+    values (#{sn}, #{name})
+  </insert>
+  <insert id="insertPermissionRelation">
+    insert into role_permission (rid, pid) values (#{rid}, #{pid})
+  </insert>
+  <insert id="insertMenuRelation">
+    insert into role_menu (rid, mid) values (#{rid}, #{mid})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.jiazhuo.blockgamesquare.domain.Role" >
+    update role
+    set sn = #{sn},
+      name = #{name}
+    where rid = #{rid}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select rid, sn, name
+    from role
+    where rid = #{rid}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select rid, sn, name
+    from role
+  </select>
+    <select id="selectRolesByUgUserID" resultType="role">
+      select r.rid, r.sn, r.name
+      from role r join bguser_role br on r.rid = br.rid
+      where br.bid = #{bid}
+    </select>
+  <select id="queryCount" resultType="int">
+    select count(1) from role
+  </select>
+  <select id="queryList" resultMap="BaseResultMap">
+    select rid, sn, name from role
+    limit #{start}, #{pageSize}
+  </select>
+    <select id="selectMenuIdsByRoleId" resultType="_long">
+      select mid from role_menu where rid = #{rid}
+    </select>
+</mapper>
