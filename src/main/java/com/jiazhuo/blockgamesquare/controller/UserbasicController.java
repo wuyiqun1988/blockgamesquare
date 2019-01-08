@@ -2,7 +2,6 @@ package com.jiazhuo.blockgamesquare.controller;
 
 import com.jiazhuo.blockgamesquare.domain.UserBasic;
 import com.jiazhuo.blockgamesquare.domain.UserPrivate;
-import com.jiazhuo.blockgamesquare.exception.DisplayableException;
 import com.jiazhuo.blockgamesquare.qo.PageResult;
 import com.jiazhuo.blockgamesquare.qo.UserQueryObject;
 import com.jiazhuo.blockgamesquare.service.IUserBasicService;
@@ -40,36 +39,28 @@ public class UserbasicController {
     @ResponseBody
     public JSONResultVo totalAmount(){
         JSONResultVo vo = new JSONResultVo();
-        try {
-            int count = userbasicService.queryRegisterUsers();
-            vo.setResult(count);
-        } catch (DisplayableException e){
-            e.printStackTrace();
-            vo.setErrorMsg(e.getMessage());
-        }
+        int count = userbasicService.queryRegisterUsers();
+        vo.setResult(count);
         return vo;
     }
 
     /**
      * 用户列表
+     * @param qo
      * @return
      */
     @RequestMapping(value = "/mgrsite/users", method = RequestMethod.GET)
     @ResponseBody
     public JSONResultVo usersPage(@ModelAttribute("qo") UserQueryObject qo){
         JSONResultVo vo = new JSONResultVo();
-        try {
-            PageResult result = userbasicService.usersPage(qo);
-            vo.setResult(result);
-        } catch (DisplayableException e){
-            e.printStackTrace();
-            vo.setErrorMsg(e.getMessage());
-        }
+        PageResult result = userbasicService.usersPage(qo);
+        vo.setResult(result);
         return vo;
     }
 
     /**
      * 查看用户实名认证信息
+     * @param UID
      * @return
      */
     @RequestMapping(value = "/mgrsite/users/realAuth", method = RequestMethod.GET)
@@ -77,21 +68,21 @@ public class UserbasicController {
     @RequiredPermission("查看用户实名认证信息")
     public JSONResultVo realAuthInfo(String UID){
         JSONResultVo vo = new JSONResultVo();
-        try {
-            UserPrivate result = userPrivateService.realAuthInfo(UID);
-            vo.setResult(result);
-        } catch (DisplayableException e){
-            e.printStackTrace();
-            vo.setErrorMsg(e.getMessage());
+        UserPrivate result = userPrivateService.realAuthInfo(UID);
+        if (result == null){
+            return JSONResultVo.error("用户未实名认证");
         }
+        vo.setResult(result);
         return vo;
     }
 
 
-
     /**
      * excel导出用户列表
-     * @return
+     * @param nickName
+     * @param phoneNumber
+     * @param response
+     * @throws IOException
      */
     @RequestMapping(value = "/mgrsite/users/exportData", method = RequestMethod.GET)
     @RequiredPermission("excel导出用户列表")
@@ -143,47 +134,41 @@ public class UserbasicController {
 
     /**
      * 邀请好友列表
+     * @param qo
      * @return
      */
     @RequestMapping(value = "/mgrsite/users/inviters", method = RequestMethod.GET)
     @ResponseBody
     public JSONResultVo inviterPage(@ModelAttribute("qo") UserQueryObject qo){
         JSONResultVo vo = new JSONResultVo();
-        try {
-            PageResult result = userbasicService.inviterPage(qo);
-            vo.setResult(result);
-        } catch (DisplayableException e){
-            e.printStackTrace();
-            vo.setErrorMsg(e.getMessage());
-        }
+        PageResult result = userbasicService.inviterPage(qo);
+        vo.setResult(result);
         return vo;
     }
 
     /**
      * 邀请好友下级列表
+     * @param qo
+     * @param inviterID
      * @return
      */
     @RequestMapping(value = "/mgrsite/users/lowers", method = RequestMethod.GET)
     @ResponseBody
     public JSONResultVo lowersPage(@ModelAttribute("qo") UserQueryObject qo, String inviterID){
         JSONResultVo vo = new JSONResultVo();
-        try {
-            PageResult result = userbasicService.lowersPage(qo, inviterID);
-            vo.setResult(result);
-        } catch (DisplayableException e){
-            e.printStackTrace();
-            vo.setErrorMsg(e.getMessage());
-        }
+        PageResult result = userbasicService.lowersPage(qo, inviterID);
+        vo.setResult(result);
         return vo;
     }
 
     /**
      * excel导出邀请好友列表
-     * @return
+     * @param response
+     * @throws IOException
      */
     @RequestMapping(value = "/mgrsite/users/inviters/exportData", method = RequestMethod.GET)
     @RequiredPermission("excel导出邀请好友列表")
-    public void exportInviterData(String nickName, String phoneNumber, HttpServletResponse response) throws IOException {
+    public void exportInviterData(HttpServletResponse response) throws IOException {
         //设置想下载的响应头信息
         response.addHeader("Content-disposition", "attachment;filename=inviterInfo.xls");
         //查询需要的用户信息

@@ -1,7 +1,6 @@
 package com.jiazhuo.blockgamesquare.controller;
 
 import com.jiazhuo.blockgamesquare.domain.WithdrawMoney;
-import com.jiazhuo.blockgamesquare.exception.DisplayableException;
 import com.jiazhuo.blockgamesquare.qo.PageResult;
 import com.jiazhuo.blockgamesquare.qo.WithdrawMoneyQueryObject;
 import com.jiazhuo.blockgamesquare.service.IWithdrawMoneyService;
@@ -29,61 +28,50 @@ public class WithdrawMoneyController {
 
     /**
      * 提现申请列表
+     * @param qo
      * @return
      */
     @RequestMapping(value = "/mgrsite/withdrawMoney/apply", method = RequestMethod.GET)
     @ResponseBody
     public JSONResultVo withdrawMoneyApplyPage(@ModelAttribute("qo") WithdrawMoneyQueryObject qo){
         JSONResultVo vo = new JSONResultVo();
-        try {
-            PageResult result = withdrawMoneyService.withdrawMoneyApplyPage(qo);
-            vo.setResult(result);
-        } catch (DisplayableException e){
-            e.printStackTrace();
-            vo.setErrorMsg(e.getMessage());
-        }
+        PageResult result = withdrawMoneyService.withdrawMoneyApplyPage(qo);
+        vo.setResult(result);
         return vo;
     }
 
     /**
      * 提现审核成功列表
+     * @param qo
      * @return
      */
     @RequestMapping(value = "/mgrsite/withdrawMoney/pass", method = RequestMethod.GET)
     @ResponseBody
     public JSONResultVo withdrawMoneyPassPage(@ModelAttribute("qo") WithdrawMoneyQueryObject qo){
         JSONResultVo vo = new JSONResultVo();
-        try {
-            PageResult result = withdrawMoneyService.withdrawMoneyPassPage(qo);
-            vo.setResult(result);
-        } catch (DisplayableException e){
-            e.printStackTrace();
-            vo.setErrorMsg(e.getMessage());
-        }
+        PageResult result = withdrawMoneyService.withdrawMoneyPassPage(qo);
+        vo.setResult(result);
         return vo;
     }
 
     /**
      * 提现审核失败列表
+     * @param qo
      * @return
      */
     @RequestMapping(value = "/mgrsite/withdrawMoney/fail", method = RequestMethod.GET)
     @ResponseBody
     public JSONResultVo withdrawMoneyFailPage(@ModelAttribute("qo") WithdrawMoneyQueryObject qo){
         JSONResultVo vo = new JSONResultVo();
-        try {
-            PageResult result = withdrawMoneyService.withdrawMoneyFailPage(qo);
-            vo.setResult(result);
-        } catch (DisplayableException e){
-            e.printStackTrace();
-            vo.setErrorMsg(e.getMessage());
-        }
+        PageResult result = withdrawMoneyService.withdrawMoneyFailPage(qo);
+        vo.setResult(result);
         return vo;
     }
 
     /**
      * excel导出提现审核通过列表
-     * @return
+     * @param response
+     * @throws IOException
      */
     @RequestMapping(value = "/mgrsite/withdrawMoney/pass/exportData", method = RequestMethod.GET)
     @RequiredPermission("excel导出提现审核通过列表")
@@ -138,7 +126,8 @@ public class WithdrawMoneyController {
 
     /**
      * excel导出提现审核失败列表
-     * @return
+     * @param response
+     * @throws IOException
      */
     @RequestMapping(value = "/mgrsite/withdrawMoney/fail/exportData", method = RequestMethod.GET)
     @RequiredPermission("excel导出提现审核失败列表")

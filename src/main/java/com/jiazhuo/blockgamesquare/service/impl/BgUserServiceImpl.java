@@ -1,13 +1,14 @@
 package com.jiazhuo.blockgamesquare.service.impl;
 
 import com.jiazhuo.blockgamesquare.domain.BgUser;
-import com.jiazhuo.blockgamesquare.exception.DisplayableException;
 import com.jiazhuo.blockgamesquare.mapper.BgUserMapper;
 import com.jiazhuo.blockgamesquare.mapper.PermissionMapper;
 import com.jiazhuo.blockgamesquare.qo.PageResult;
 import com.jiazhuo.blockgamesquare.qo.QueryObject;
 import com.jiazhuo.blockgamesquare.service.IBgUserService;
+import com.jiazhuo.blockgamesquare.util.SHA1;
 import com.jiazhuo.blockgamesquare.util.UserContext;
+import com.jiazhuo.blockgamesquare.vo.JSONResultVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -59,13 +60,13 @@ public class BgUserServiceImpl implements IBgUserService {
     }
 
     @Override
-    public void login(String username, String password) {
-        BgUser bgUser = bgUserMapper.selectBgUserByInfo(username, password);
+    public JSONResultVo login(String username, String password) {
+        BgUser bgUser = bgUserMapper.selectBgUserByInfo(username, SHA1.encode(password));
         if (bgUser == null) {
-            throw new DisplayableException("账号和密码不匹配");
+            return JSONResultVo.error("账号和密码不匹配");
         }
         if (bgUser.getState() == 1){
-            throw new DisplayableException("您已被禁用,请联系管理员");
+            return JSONResultVo.error("您已被禁用,请联系管理员");
         }
         HttpSession session = UserContext.getRequest().getSession();
         //把当前登录成功的用户保存到session中
@@ -73,45 +74,50 @@ public class BgUserServiceImpl implements IBgUserService {
         //把当前用户拥有的权限表达式查询出来存入session中,用户后期权限的校验
         List<String> resources = permissionMapper.selectResourcesByBgUserId(bgUser.getBid());
         session.setAttribute(UserContext.RESOURCE_IN_SESSION, resources);
+        return JSONResultVo.ok("登录成功");
     }
 
     @Override
-    public void userUpdate(String username, Long bid) {
+    public boolean userUpdate(String username, Long bid) {
         if (UserContext.getCurrent().getBid() != bid) {
-            throw new DisplayableException("您不是当前用户!");
+            return false;
         }
         bgUserMapper.updateUserInfo(username, bid);
+        return true;
     }
 
     @Override
-    public void changePwd(Long bid, String oldPwd, String newPwd) {
-        if (bgUserMapper.checkOldPwd(bid, oldPwd) == 0){   //判断旧密码是否正确
-            throw new DisplayableException("旧密码不正确");
+    public boolean changePwd(Long bid, String oldPwd, String newPwd) {
+        if (bgUserMapper.checkOldPwd(bid, SHA1.encode(oldPwd)) == 0){   //判断旧密码是否正确
+            return false;
         }
-        bgUserMapper.changePwd(bid, newPwd);
+        bgUserMapper.changePwd(bid, SHA1.encode(newPwd));
+        return true;
     }
 
     @Override
-    public void resetPwd(Long bid) {
+    public boolean resetPwd(Long bid) {
         if (!UserContext.getCurrent().isAdmin()) {
-            throw new DisplayableException("请联系管理员重置密码");
+            return false;
         }
-        String initpassword = UserContext.INITPASSWORD;
-        bgUserMapper.resetPwd(bid, initpassword);
+        String initpassword = UserContext.DEFALUT_PASSWORD;
+        bgUserMapper.resetPwd(bid, SHA1.encode(initpassword));
+        return true;
     }
 
     @Override
-    public void newBgUser(BgUser bgUser) {
+    public boolean newBgUser(BgUser bgUser) {
         if (!UserContext.getCurrent().isAdmin()) {
-            throw new DisplayableException("请联系管理员新建用户");
+            return false;
         }
         BgUser bu = new BgUser();
         bu.setAdmin(bgUser.isAdmin());
-        bu.setPassword(bgUser.getPassword());
+        bu.setPassword(SHA1.encode(bgUser.getPassword()));
         bu.setRealName(bgUser.getRealName());
         bu.setState(bgUser.getState());
         bu.setUsername(bgUser.getUsername());
         bgUserMapper.insert(bu);
+        return true;
     }
 
     @Override
@@ -120,11 +126,26 @@ public class BgUserServiceImpl implements IBgUserService {
     }
 
     @Override
-    public void changeStatusOrAdmin(Long bid, int state, boolean admin) {
+    public boolean changeStatusOrAdmin(Long bid, int state, boolean admin) {
         if (!UserContext.getCurrent().isAdmin()) {
-            throw new DisplayableException("不是管理员无权限");
+            return false;
         }
         bgUserMapper.changeStatusOrAdmin(bid, state, admin);
+        return true;
+    }
+
+    @Override
+    public void initAdmin() {
+        int count = bgUserMapper.queryAdminCount();
+        if (count == 0){
+            BgUser bgUser = new BgUser();
+            bgUser.setUsername("管理员");
+            bgUser.setPassword(SHA1.encode(UserContext.DEFALUT_PASSWORD));
+            bgUser.setRealName("管理员");
+            bgUser.setAdmin(true);
+            bgUser.setState((byte) 0);
+            bgUserMapper.insert(bgUser);
+        }
     }
 }
 

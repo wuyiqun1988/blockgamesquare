@@ -18,7 +18,7 @@ public class BgUser implements Serializable{
     private String realName; //姓名
     @JsonIgnore
     private String password; //密码
-    private Byte state; //状态
+    private Byte state; //状态 (0:正常 2:禁用)
     private boolean admin; //是否管理员
 
     //关联角色

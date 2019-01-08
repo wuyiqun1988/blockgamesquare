@@ -1,7 +1,6 @@
 package com.jiazhuo.blockgamesquare.controller;
 
 import com.jiazhuo.blockgamesquare.domain.Menu;
-import com.jiazhuo.blockgamesquare.exception.DisplayableException;
 import com.jiazhuo.blockgamesquare.qo.PageResult;
 import com.jiazhuo.blockgamesquare.qo.QueryObject;
 import com.jiazhuo.blockgamesquare.service.IMenuService;
@@ -23,6 +22,7 @@ public class MenuController {
 
     /**
      * 菜单列表
+     * @param qo
      * @return
      */
     @RequestMapping(value = "/mgrsite/menuPage", method = RequestMethod.GET)
@@ -36,20 +36,20 @@ public class MenuController {
 
     /**
      * 保存或更新菜单
+     * @param menu
      * @return
      */
     @RequestMapping(value = "/mgrsite/menu/saveOrUpdate", method = RequestMethod.POST)
     @ResponseBody
     @RequiredPermission("保存或更新菜单")
     public JSONResultVo saveOrUpdate(Menu menu){
-        JSONResultVo vo = new JSONResultVo();
         if (menu.getMid() == null){
             menuService.save(menu);
+            return JSONResultVo.ok("保存成功");
         } else {
             menuService.update(menu);
+            return JSONResultVo.ok("更新成功");
         }
-        vo.setResult("保存或更新成功");
-        return vo;
     }
 
     /**
@@ -68,6 +68,7 @@ public class MenuController {
 
     /**
      * 查询子菜单
+     * @param mid
      * @return
      */
     @RequestMapping(value = "/mgrsite/menu/childrenMenus", method = RequestMethod.GET)

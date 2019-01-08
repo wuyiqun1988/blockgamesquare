@@ -1,7 +1,6 @@
 package com.jiazhuo.blockgamesquare.controller;
 
 import com.jiazhuo.blockgamesquare.domain.Transfer;
-import com.jiazhuo.blockgamesquare.exception.DisplayableException;
 import com.jiazhuo.blockgamesquare.qo.PageResult;
 import com.jiazhuo.blockgamesquare.qo.UserQueryObject;
 import com.jiazhuo.blockgamesquare.qo.WalletItemQueryObject;
@@ -34,25 +33,22 @@ public class ChainWalletController {
 
     /**
      * 用户链上钱包列表
+     * @param qo
      * @return
      */
     @RequestMapping(value = "/mgrsite/users/chainWallet", method = RequestMethod.GET)
     @ResponseBody
     public JSONResultVo chainWalletPage(@ModelAttribute("qo") UserQueryObject qo){
         JSONResultVo vo = new JSONResultVo();
-        try {
-            PageResult result = chainWalletService.chainWalletPage(qo);
-            vo.setResult(result);
-        } catch (DisplayableException e){
-            e.printStackTrace();
-            vo.setErrorMsg(e.getMessage());
-        }
+        PageResult result = chainWalletService.chainWalletPage(qo);
+        vo.setResult(result);
         return vo;
     }
 
     /**
      * excel导出用户链上钱包列表
-     * @return
+     * @param response
+     * @throws IOException
      */
     @RequestMapping(value = "/mgrsite/users/chainWallet/exportData", method = RequestMethod.GET)
     @RequiredPermission("excel导出用户链上钱包列表")
@@ -95,26 +91,23 @@ public class ChainWalletController {
 
     /**
      * 用户链上钱包交易明细
+     * @param qo
      * @return
      */
     @RequestMapping(value = "/mgrsite/users/chainWalletItem", method = RequestMethod.GET)
     @ResponseBody
     public JSONResultVo chainWalletItem(@ModelAttribute("qo") WalletItemQueryObject qo){
         JSONResultVo vo = new JSONResultVo();
-        try {
-            PageResult result = transferService.chainWalletItemPage(qo);
-            vo.setResult(result);
-        } catch (DisplayableException e){
-            e.printStackTrace();
-            vo.setErrorMsg(e.getMessage());
-        }
+        PageResult result = transferService.chainWalletItemPage(qo);
+        vo.setResult(result);
         return vo;
     }
 
 
     /**
      * excel导出用户链上钱包交易明细
-     * @return
+     * @param response
+     * @throws IOException
      */
     @RequestMapping(value = "/mgrsite/users/chainWalletItem/exportData", method = RequestMethod.GET)
     @RequiredPermission("excel导出用户链上钱包交易明细")

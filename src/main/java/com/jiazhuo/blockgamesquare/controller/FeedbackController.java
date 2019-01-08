@@ -1,6 +1,5 @@
 package com.jiazhuo.blockgamesquare.controller;
 
-import com.jiazhuo.blockgamesquare.exception.DisplayableException;
 import com.jiazhuo.blockgamesquare.qo.PageResult;
 import com.jiazhuo.blockgamesquare.qo.UserQueryObject;
 import com.jiazhuo.blockgamesquare.service.IFeedbackService;
@@ -20,24 +19,23 @@ public class FeedbackController {
 
     /**
      * 用户反馈列表
+     * @param qo
      * @return
      */
     @RequestMapping(value = "/mgrsite/userFeedbackList", method = RequestMethod.GET)
     @ResponseBody
     public JSONResultVo feedbackPage(@ModelAttribute("qo") UserQueryObject qo){
         JSONResultVo vo = new JSONResultVo();
-        try {
-            PageResult result = feedbackService.feedbackPage(qo);
-            vo.setResult(result);
-        } catch (DisplayableException e){
-            e.printStackTrace();
-            vo.setErrorMsg(e.getMessage());
-        }
+        PageResult result = feedbackService.feedbackPage(qo);
+        vo.setResult(result);
         return vo;
     }
 
     /**
      * 用户进行反馈
+     * @param UID
+     * @param content
+     * @param contact
      * @return
      */
     @RequestMapping(value = "/appsite/userFeedback", method = RequestMethod.POST)

@@ -84,125 +84,129 @@ public class ConfController {
 
     /**
      * 功能配置 转出最低限额
+     * @param ETHTransferLimit
+     * @param EOSTransferLimit
+     * @param BGSTransferLimit
      * @return
      */
     @RequestMapping(value = "/mgrsite/transferLimit", method = RequestMethod.POST)
     @ResponseBody
     @RequiredPermission("功能配置 转出最低限额")
     public JSONResultVo transferLimit(String ETHTransferLimit, String EOSTransferLimit, String BGSTransferLimit){
-        JSONResultVo vo = new JSONResultVo();
         jedisClient.hset("operationCode", "MINI_TRANSFER_ETH", ETHTransferLimit);
         jedisClient.hset("operationCode", "MINI_TRANSFER_EOS", EOSTransferLimit);
         jedisClient.hset("operationCode", "MINI_TRANSFER_BGS", BGSTransferLimit);
-        vo.setResult("修改转出最低限额成功");
-        return vo;
+        return JSONResultVo.ok("修改转出最低限额成功");
     }
 
     /**
      * 功能配置 锁仓最低限额
+     * @param miniLockETH
+     * @param miniLockEOS
+     * @param miniLockBGS
      * @return
      */
     @RequestMapping(value = "/mgrsite/lockConf/miniLock", method = RequestMethod.POST)
     @ResponseBody
     @RequiredPermission("功能配置 锁仓最低限额")
     public JSONResultVo lockConf(String miniLockETH, String miniLockEOS, String miniLockBGS){
-        JSONResultVo vo = new JSONResultVo();
         jedisClient.hset("operationCode", "MINI_LOCK_ETH", miniLockETH);
         jedisClient.hset("operationCode", "MINI_LOCK_EOS", miniLockEOS);
         jedisClient.hset("operationCode", "MINI_LOCK_BGS", miniLockBGS);
-        vo.setResult("修改转出最低限额成功");
-        return vo;
+        return JSONResultVo.ok("修改转出最低限额成功");
     }
 
     /**
      * 功能设置 锁仓收益权重
+     * @param profitWeight30
+     * @param profitWeight90
      * @return
      */
     @RequestMapping(value = "/mgrsite/lockConf/profitWeight", method = RequestMethod.POST)
     @ResponseBody
     @RequiredPermission("功能设置 锁仓收益权重")
     public JSONResultVo profitWeight(String profitWeight30, String profitWeight90){
-        JSONResultVo vo = new JSONResultVo();
         jedisClient.hset("operationCode", "PROFITWEIGHT_30", profitWeight30);
         jedisClient.hset("operationCode", "PROFITWEIGHT_90", profitWeight90);
-        vo.setResult("修改锁仓收益权重成功");
-        return vo;
+        return JSONResultVo.ok("修改锁仓收益权重成功");
     }
 
     /**
      * 功能设置 锁仓对应每天返回的BGS数量
+     * @param profitBGSLock07
+     * @param profitBGSLock30
+     * @param profitBGSLock90
      * @return
      */
     @RequestMapping(value = "/mgrsite/lockConf/profitBGSLock", method = RequestMethod.POST)
     @ResponseBody
     @RequiredPermission("功能设置 锁仓对应每天返回的BGS数量")
     public JSONResultVo profitBGSLock(String profitBGSLock07, String profitBGSLock30, String profitBGSLock90){
-        JSONResultVo vo = new JSONResultVo();
         jedisClient.hset("operationCode", "PROFIT_BGS_LOCK_07", profitBGSLock07);
         jedisClient.hset("operationCode", "PROFIT_BGS_LOCK_30", profitBGSLock30);
         jedisClient.hset("operationCode", "PROFIT_BGS_LOCK_90", profitBGSLock90);
-        vo.setResult("修改锁仓对应每天返回BGS数量成功");
-        return vo;
+        return JSONResultVo.ok("修改锁仓对应每天返回BGS数量成功");
     }
 
     /**
      * 功能设置 提现最低限额
+     * @param miniWithdrawETH
+     * @param miniWithdrawEOS
+     * @param miniWithdrawBGS
      * @return
      */
     @RequestMapping(value = "/mgrsite/withdrawLimit", method = RequestMethod.POST)
     @ResponseBody
     @RequiredPermission("功能设置 提现最低限额")
     public JSONResultVo withdrawLimit(String miniWithdrawETH, String miniWithdrawEOS, String miniWithdrawBGS){
-        JSONResultVo vo = new JSONResultVo();
         jedisClient.hset("operationCode", "MINI_WITHDRAW_ETH", miniWithdrawETH);
         jedisClient.hset("operationCode", "MINI_WITHDRAW_EOS", miniWithdrawEOS);
         jedisClient.hset("operationCode", "MINI_WITHDRAW_BGS", miniWithdrawBGS);
-        vo.setResult("修改提现最低限额成功");
-        return vo;
+        return JSONResultVo.ok("修改提现最低限额成功");
     }
 
     /**
      * 功能设置 代理人价格
+     * @param priceBuyAgentBGS
      * @return
      */
     @RequestMapping(value = "/mgrsite/priceBuyAgentBGS", method = RequestMethod.POST)
     @ResponseBody
     @RequiredPermission("功能设置 代理人价格")
     public JSONResultVo withdrawLimit(String priceBuyAgentBGS){
-        JSONResultVo vo = new JSONResultVo();
         jedisClient.hset("operationCode", "PRICE_BUYAGENT_BGS", priceBuyAgentBGS);
-        vo.setResult("修改购买代理人价格成功");
-        return vo;
+        return JSONResultVo.ok("修改购买代理人价格成功");
     }
 
     /**
      * 功能设置 邀请好友设置
+     * @param maxDailyInvitingCount
+     * @param profitInvitingBGS
      * @return
      */
     @RequestMapping(value = "/mgrsite/inviteConf", method = RequestMethod.POST)
     @ResponseBody
     @RequiredPermission("功能设置 邀请好友设置")
     public JSONResultVo inviteConf(String maxDailyInvitingCount, String profitInvitingBGS){
-        JSONResultVo vo = new JSONResultVo();
         jedisClient.hset("operationCode", "MAX_DAILY_INVITING_COUNT", maxDailyInvitingCount);
         jedisClient.hset("operationCode", "PROFIT_INVITING_BGS", profitInvitingBGS);
-        vo.setResult("修改邀请好友设置成功");
-        return vo;
+        return JSONResultVo.ok("修改邀请好友设置成功");
     }
 
     /**
      * 功能设置 dapp返现分配
+     * @param profitDappLock
+     * @param profitDappAgent
+     * @param profitDappPlatform
      * @return
      */
     @RequestMapping(value = "/mgrsite/dappReturnConf", method = RequestMethod.POST)
     @ResponseBody
     @RequiredPermission("功能设置 dapp返现分配")
     public JSONResultVo dappReturnConf(String profitDappLock, String profitDappAgent, String profitDappPlatform){
-        JSONResultVo vo = new JSONResultVo();
         jedisClient.hset("operationCode", "PROFIT_DAPP_LOCK", profitDappLock);
         jedisClient.hset("operationCode", "PROFIT_DAPP_AGENT", profitDappAgent);
         jedisClient.hset("operationCode", "PROFIT_DAPP_PLATFORM", profitDappPlatform);
-        vo.setResult("修改dapp返现分配比例成功");
-        return vo;
+        return JSONResultVo.ok("修改dapp返现分配比例成功");
     }
 }

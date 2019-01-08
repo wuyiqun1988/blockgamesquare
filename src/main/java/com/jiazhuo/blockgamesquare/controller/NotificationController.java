@@ -19,6 +19,8 @@ public class NotificationController {
 
     /**
      * 消息通知列表(app端)
+     * @param qo
+     * @param UID
      * @return
      */
     @RequestMapping(value = "/appsite/notifications", method = RequestMethod.GET)

@@ -13,7 +13,6 @@ public interface BgUserMapper {
 
     BgUser selectByPrimaryKey(Long bid);
 
-
     int queryCount(QueryObject qo);
 
     List<BgUser> queryList(QueryObject qo);
@@ -56,4 +55,10 @@ public interface BgUserMapper {
 
 
     void changeStatusOrAdmin(@Param("bid") Long bid, @Param("state") int state, @Param("admin") boolean admin);
+
+    /**
+     * 查询是否有初始化管理员
+     * @return
+     */
+    int queryAdminCount();
 }

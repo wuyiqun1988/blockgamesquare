@@ -13,7 +13,7 @@ import java.util.List;
  */
 public class UserContext {
 
-    public static final String INITPASSWORD = "123456"; //初始化密码
+    public static final String DEFALUT_PASSWORD = "123456"; //初始化密码
 
     public static final String BGUSER_IN_SESSION = "loginInfo:"; //登录信息
     public static final String RESOURCE_IN_SESSION = "resource"; //权限表达式

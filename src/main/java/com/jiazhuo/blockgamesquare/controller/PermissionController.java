@@ -1,6 +1,5 @@
 package com.jiazhuo.blockgamesquare.controller;
 
-import com.jiazhuo.blockgamesquare.exception.DisplayableException;
 import com.jiazhuo.blockgamesquare.qo.PageResult;
 import com.jiazhuo.blockgamesquare.qo.QueryObject;
 import com.jiazhuo.blockgamesquare.service.IPermissionService;
@@ -23,22 +22,23 @@ public class PermissionController {
 
     /**
      * 加载权限
+     * @param resp
      * @return
+     * @throws Exception
      */
     @RequestMapping(value = "/mgrsite/permission/reload", method = RequestMethod.GET)
     @ResponseBody
     @RequiredPermission("加载权限")
     public JSONResultVo reload(HttpServletResponse resp) throws Exception {
-        JSONResultVo vo = new JSONResultVo();
         permissionService.reload();
         resp.setContentType("text/json;charset=utf-8");
         resp.getWriter().print("{\"success\":true}");
-        vo.setResult("加载权限成功");
-        return null;
+        return JSONResultVo.ok("加载权限成功");
     }
 
     /**
      * 权限列表
+     * @param qo
      * @return
      */
     @RequestMapping(value = "/mgrsite/permissionPage", method = RequestMethod.GET)
@@ -46,34 +46,23 @@ public class PermissionController {
     @RequiredPermission("权限列表")
     public JSONResultVo permissionPage(@ModelAttribute("qo") QueryObject qo){
         JSONResultVo vo = new JSONResultVo();
-        try {
-            PageResult result = permissionService.permissionPage(qo);
-            vo.setResult(result);
-        } catch (DisplayableException e){
-            e.printStackTrace();
-            vo.setErrorMsg(e.getMessage());
-        }
+        PageResult result = permissionService.permissionPage(qo);
+        vo.setResult(result);
         return vo;
     }
 
     /**
      * 删除权限
+     * @param pid
      * @return
      */
     @RequestMapping(value = "/mgrsite/permission/delete", method = RequestMethod.DELETE)
     @ResponseBody
     @RequiredPermission("删除权限")
     public JSONResultVo deletePermission(Long pid){
-        JSONResultVo vo = new JSONResultVo();
-        try {
-            if (pid != null){
-                permissionService.delete(pid);
-            }
-            vo.setResult("删除权限成功");
-        } catch (DisplayableException e){
-            e.printStackTrace();
-            vo.setErrorMsg(e.getMessage());
+        if (pid != null){
+            permissionService.delete(pid);
         }
-        return vo;
+        return JSONResultVo.ok("删除权限成功");
     }
 }

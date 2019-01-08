@@ -20,22 +20,22 @@
 	</bean>
 
 	<!--配置拦截器-->
-	<!--<mvc:interceptors>
-		&lt;!&ndash;检查登录拦截器&ndash;&gt;
+	<mvc:interceptors>
+		<!--检查登录拦截器-->
 		<mvc:interceptor>
 			<mvc:mapping path="/**"/>
-			<mvc:exclude-mapping path="/mgrsite/user/login.do"/>
+			<mvc:exclude-mapping path="/mgrsite/bgUser/login.do"/>
 			<mvc:exclude-mapping path="/appsite/*.do"/>
 			<bean class="com.jiazhuo.blockgamesquare.interceptor.CheckLoginInterceptor"/>
 		</mvc:interceptor>
-		&lt;!&ndash;权限检查拦截器&ndash;&gt;
-		&lt;!&ndash;<mvc:interceptor>
+		<!--权限检查拦截器-->
+		<!--<mvc:interceptor>
 			<mvc:mapping path="/**"/>
-			<mvc:exclude-mapping path="/mgrsite/user/login.do"/>
-			<mvc:exclude-mapping path="/mgrsite/user/logout.do"/>
+			<mvc:exclude-mapping path="/mgrsite/bgUser/login.do"/>
+			<mvc:exclude-mapping path="/mgrsite/bgUser/logout.do"/>
 			<bean class="com.jiazhuo.blockgamesquare.interceptor.SecurityInterceptor"/>
-		</mvc:interceptor>&ndash;&gt;
-	</mvc:interceptors>-->
+		</mvc:interceptor>-->
+	</mvc:interceptors>
 
 	<!--文件上传解析器-->
 	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">

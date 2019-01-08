@@ -1,7 +1,6 @@
 package com.jiazhuo.blockgamesquare.controller;
 
 import com.jiazhuo.blockgamesquare.domain.Transfer;
-import com.jiazhuo.blockgamesquare.exception.DisplayableException;
 import com.jiazhuo.blockgamesquare.qo.PageResult;
 import com.jiazhuo.blockgamesquare.qo.UserQueryObject;
 import com.jiazhuo.blockgamesquare.qo.WalletItemQueryObject;
@@ -34,25 +33,22 @@ public class CentWalletController {
 
     /**
      * 用户中心化钱包列表
+     * @param qo
      * @return
      */
     @RequestMapping(value = "/mgrsite/users/centWallet", method = RequestMethod.GET)
     @ResponseBody
     public JSONResultVo centWalletPage(@ModelAttribute("qo") UserQueryObject qo){
         JSONResultVo vo = new JSONResultVo();
-        try {
-            PageResult result = centWalletService.centWalletPage(qo);
-            vo.setResult(result);
-        } catch (DisplayableException e){
-            e.printStackTrace();
-            vo.setErrorMsg(e.getMessage());
-        }
+        PageResult result = centWalletService.centWalletPage(qo);
+        vo.setResult(result);
         return vo;
     }
 
     /**
      * excel导出用户中心化钱包列表
-     * @return
+     * @param response
+     * @throws IOException
      */
     @RequestMapping(value = "/mgrsite/users/centWallet/exportData", method = RequestMethod.GET)
     @RequiredPermission("excel导出用户中心化钱包信息")
@@ -95,26 +91,23 @@ public class CentWalletController {
 
     /**
      * 用户中心化钱包交易明细
+     * @param qo
      * @return
      */
     @RequestMapping(value = "/mgrsite/users/centWalletItem", method = RequestMethod.GET)
     @ResponseBody
     public JSONResultVo centWalletItem(@ModelAttribute("qo") WalletItemQueryObject qo){
         JSONResultVo vo = new JSONResultVo();
-        try {
-            PageResult result = transferService.centWalletItemPage(qo);
-            vo.setResult(result);
-        } catch (DisplayableException e){
-            e.printStackTrace();
-            vo.setErrorMsg(e.getMessage());
-        }
+        PageResult result = transferService.centWalletItemPage(qo);
+        vo.setResult(result);
         return vo;
     }
 
 
     /**
      * excel导出用户中心化钱包交易明细
-     * @return
+     * @param response
+     * @throws IOException
      */
     @RequestMapping(value = "/mgrsite/users/centWalletItem/exportData", method = RequestMethod.GET)
     @RequiredPermission("excel导出用户中心化钱包交易明细")

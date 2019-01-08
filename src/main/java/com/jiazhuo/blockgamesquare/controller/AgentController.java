@@ -1,7 +1,5 @@
 package com.jiazhuo.blockgamesquare.controller;
 
-import com.jiazhuo.blockgamesquare.domain.UserBasic;
-import com.jiazhuo.blockgamesquare.exception.DisplayableException;
 import com.jiazhuo.blockgamesquare.qo.AgentQueryObject;
 import com.jiazhuo.blockgamesquare.qo.PageResult;
 import com.jiazhuo.blockgamesquare.qo.QueryObject;
@@ -32,43 +30,37 @@ public class AgentController {
 
     /**
      * 代理人列表
+     * @param qo
      * @return
      */
     @RequestMapping(value = "/mgrsite/users/agents", method = RequestMethod.GET)
     @ResponseBody
     public JSONResultVo agentPage(@ModelAttribute("qo") AgentQueryObject qo){
         JSONResultVo vo = new JSONResultVo();
-        try {
-            PageResult result = userBasicService.agentPage(qo);
-            vo.setResult(result);
-        } catch (DisplayableException e){
-            e.printStackTrace();
-            vo.setErrorMsg(e.getMessage());
-        }
+        PageResult result = userBasicService.agentPage(qo);
+        vo.setResult(result);
         return vo;
     }
 
     /**
      * 代理人下级列表
+     * @param qo
+     * @param agentUID
      * @return
      */
     @RequestMapping(value = "/mgrsite/users/agentlowers", method = RequestMethod.GET)
     @ResponseBody
     public JSONResultVo agentLowersPage(@ModelAttribute("qo") UserQueryObject qo, String agentUID){
         JSONResultVo vo = new JSONResultVo();
-        try {
-            PageResult result = userBasicService.agentLowersPage(qo, agentUID);
-            vo.setResult(result);
-        } catch (DisplayableException e){
-            e.printStackTrace();
-            vo.setErrorMsg(e.getMessage());
-        }
+        PageResult result = userBasicService.agentLowersPage(qo, agentUID);
+        vo.setResult(result);
         return vo;
     }
 
     /**
      * excel导出代理人列表
-     * @return
+     * @param response
+     * @throws IOException
      */
     @RequestMapping(value = "/mgrsite/users/agents/exportData", method = RequestMethod.GET)
     @RequiredPermission("excel导出代理人列表")

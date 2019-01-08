@@ -1,7 +1,6 @@
 package com.jiazhuo.blockgamesquare.controller;
 
 import com.jiazhuo.blockgamesquare.domain.LockWarehouse;
-import com.jiazhuo.blockgamesquare.exception.DisplayableException;
 import com.jiazhuo.blockgamesquare.qo.LockWarehouseQueryObject;
 import com.jiazhuo.blockgamesquare.qo.PageResult;
 import com.jiazhuo.blockgamesquare.service.ILockWarehouseService;
@@ -30,26 +29,23 @@ public class LockWarehouseController {
 
     /**
      * 锁仓订单
+     * @param qo
      * @return
      */
     @RequestMapping(value = "/mgrsite/lockOrder", method = RequestMethod.GET)
     @ResponseBody
     public JSONResultVo lockOrderPage(@ModelAttribute("qo") LockWarehouseQueryObject qo){
         JSONResultVo vo = new JSONResultVo();
-        try {
-            PageResult result = lockWarehouseService.lockOrderPage(qo);
-            vo.setResult(result);
-        } catch (DisplayableException e){
-            e.printStackTrace();
-            vo.setErrorMsg(e.getMessage());
-        }
+        PageResult result = lockWarehouseService.lockOrderPage(qo);
+        vo.setResult(result);
         return vo;
     }
 
 
     /**
      * excel导出锁仓订单列表
-     * @return
+     * @param response
+     * @throws IOException
      */
     @RequestMapping(value = "/mgrsite/lockOrder/exportData", method = RequestMethod.GET)
     @RequiredPermission("excel导出锁仓订单列表")
@@ -113,19 +109,15 @@ public class LockWarehouseController {
 
     /**
      * 归仓中列表(等待解仓)
+     * @param qo
      * @return
      */
     @RequestMapping(value = "/mgrsite/waitUnlockOrder", method = RequestMethod.GET)
     @ResponseBody
     public JSONResultVo unlockOrderPage(@ModelAttribute("qo") LockWarehouseQueryObject qo){
         JSONResultVo vo = new JSONResultVo();
-        try {
-            PageResult result = lockWarehouseService.unlockOrderPage(qo);
-            vo.setResult(result);
-        } catch (DisplayableException e){
-            e.printStackTrace();
-            vo.setErrorMsg(e.getMessage());
-        }
+        PageResult result = lockWarehouseService.unlockOrderPage(qo);
+        vo.setResult(result);
         return vo;
     }
 

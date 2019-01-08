@@ -5,8 +5,10 @@ import com.jiazhuo.blockgamesquare.util.SystemlogAnnotation;
 public interface IUserStatusService {
     /**
      * 改变用户的状态(正常/禁用)
-     * @param uid
+     * @param UID
+     * @param state
+     * @return
      */
     @SystemlogAnnotation("改变用户的状态(正常/禁用)")
-    void changeStatus(String UID, Byte state);
+    boolean changeStatus(String UID, Byte state);
 }

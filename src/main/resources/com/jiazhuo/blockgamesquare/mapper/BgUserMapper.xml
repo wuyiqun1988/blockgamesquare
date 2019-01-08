@@ -69,5 +69,8 @@
   <select id="checkUsername" resultType="int">
     select count(1) from bguser where username = #{username}
   </select>
+    <select id="queryAdminCount" resultType="int">
+      select count(1) from bguser where admin = 1
+    </select>
 
 </mapper>

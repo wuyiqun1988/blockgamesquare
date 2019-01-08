@@ -1,6 +1,5 @@
 package com.jiazhuo.blockgamesquare.controller;
 
-import com.jiazhuo.blockgamesquare.exception.DisplayableException;
 import com.jiazhuo.blockgamesquare.qo.PageResult;
 import com.jiazhuo.blockgamesquare.qo.QueryObject;
 import com.jiazhuo.blockgamesquare.qo.SystemLogQueryObject;
@@ -21,6 +20,7 @@ public class SystemLogController {
 
     /**
      * 后台操作日志列表
+     * @param qo
      * @return
      */
     @RequestMapping(value = "/mgrsite/systemlogList", method = RequestMethod.GET)
@@ -28,13 +28,8 @@ public class SystemLogController {
     @RequiredPermission("后台操作日志列表")
     public JSONResultVo systemLogPage(@ModelAttribute("qo") SystemLogQueryObject qo){
         JSONResultVo vo = new JSONResultVo();
-        try {
-            PageResult result = systemlogService.systemLogPage(qo);
-            vo.setResult(result);
-        } catch (DisplayableException e){
-            e.printStackTrace();
-            vo.setErrorMsg(e.getMessage());
-        }
+        PageResult result = systemlogService.systemLogPage(qo);
+        vo.setResult(result);
         return vo;
     }
 }
