@@ -88,4 +88,5 @@ public interface IUserBasicService {
     List<AgentVo> exportAgentData();
 
 
+    UserBasic userinfo(String UID);
 }

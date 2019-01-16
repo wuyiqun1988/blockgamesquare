@@ -71,6 +71,7 @@ public class BgUserServiceImpl implements IBgUserService {
         HttpSession session = UserContext.getRequest().getSession();
         //把当前登录成功的用户保存到session中
         session.setAttribute(UserContext.BGUSER_IN_SESSION, bgUser);
+        session.setMaxInactiveInterval(30 * 60);
         //把当前用户拥有的权限表达式查询出来存入session中,用户后期权限的校验
         List<String> resources = permissionMapper.selectResourcesByBgUserId(bgUser.getBid());
         session.setAttribute(UserContext.RESOURCE_IN_SESSION, resources);

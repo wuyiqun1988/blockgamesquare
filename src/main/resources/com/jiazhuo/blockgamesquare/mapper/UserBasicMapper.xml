@@ -105,7 +105,10 @@
     from userbasic
     <include refid="agentWhere"/>
   </select>
-  <sql id="baseWhere">
+    <select id="userinfo" resultType="userBasic">
+      select UID, nickName, phoneNumber from userbasic where UID = #{UID}
+    </select>
+    <sql id="baseWhere">
     <where>
       <if test="keyword != null ">
         and (

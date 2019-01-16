@@ -68,6 +68,7 @@ public class LockWarehouseController {
         hander.createCell(5).setCellValue("货币类型");
         hander.createCell(6).setCellValue("锁仓状态");
         hander.createCell(7).setCellValue("收益");
+        hander.createCell(8).setCellValue("收益类型");
         for (int i = 0; i < lockWarehouseList.size(); i++){
             LockWarehouse lockWarehouse = lockWarehouseList.get(i);
             HSSFRow currentRow = sheet.createRow(i + 1);
@@ -101,6 +102,17 @@ public class LockWarehouseController {
                     break;
             }
             currentRow.createCell(7).setCellValue(lockWarehouse.getFinalProfit());
+            switch (lockWarehouse.getProfitTokenType()){
+                case 1:
+                    currentRow.createCell(8).setCellValue("ETH");
+                    break;
+                case 2:
+                    currentRow.createCell(8).setCellValue("EOS");
+                    break;
+                case 3:
+                    currentRow.createCell(8).setCellValue("BGS");
+                    break;
+            }
         }
         workbook.write(response.getOutputStream());
         //关闭流操作

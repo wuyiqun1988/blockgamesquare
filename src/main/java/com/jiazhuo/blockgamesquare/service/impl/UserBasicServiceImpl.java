@@ -142,4 +142,9 @@ public class UserBasicServiceImpl implements IUserBasicService {
         }
         return vo;
     }
+
+    @Override
+    public UserBasic userinfo(String UID) {
+        return userBasicMapper.userinfo(UID);
+    }
 }

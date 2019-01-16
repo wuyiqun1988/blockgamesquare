@@ -18,7 +18,7 @@ public class Notification implements Serializable{
     private String UID; //用户id
     private String title; //通知标题
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone="GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone="GMT+8")
     private Date createTime; //消息时间
     private String notice; //通知内容
 }

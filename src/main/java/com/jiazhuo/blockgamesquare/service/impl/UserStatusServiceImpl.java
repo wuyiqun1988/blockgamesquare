@@ -16,6 +16,6 @@ public class UserStatusServiceImpl implements IUserStatusService {
             return false;
         }
         userStatusMapper.changeStatus(UID, state);
-        return false;
+        return true;
     }
 }

@@ -61,11 +61,11 @@
                 value=""/> -->
         </javaClientGenerator>
 
-        <table tableName="ETHTOKEN" domainObjectName="ETHTOKEN">
+        <table tableName="TextList" domainObjectName="TextList">
             <property name="useActualColumnNames" value="true" />
             <!-- 参考 javaModelGenerator 的 constructorBased属性 -->
             <property name="constructorBased" value="false"/>
-            <generatedKey column="mid" sqlStatement="JDBC"/>
+            <generatedKey column="tid" sqlStatement="JDBC"/>
         </table>
 
 

@@ -7,5 +7,5 @@ import lombok.Setter;
 @Getter@Setter
 public class GameQueryObject extends QueryObject {
     protected Byte type ; //游戏类型 1:ETH 2:EOS
-
+    private Byte status; //游戏状态
 }

@@ -17,20 +17,17 @@
     where gid = #{gid}
   </delete>
   <insert id="insert" parameterType="com.jiazhuo.blockgamesquare.domain.GameList" >
-    insert into gamelist (gid, gameName, link, type, joindate, sort, photo, text, status
+    insert into gamelist (gid, gameName, link, type, joindate, photo, text, status, sort
       )
-    values (#{gid}, #{gameName}, #{link}, #{type}, #{joindate}, #{sort}, #{photo}, #{text}, #{status}
+    values (#{gid}, #{gameName}, #{link}, #{type}, #{joindate}, #{photo}, #{text}, #{status}, #{sort}
       )
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.jiazhuo.blockgamesquare.domain.GameList" >
     update gamelist
     set gameName = #{gameName},
       link = #{link},
-      type = #{type},
-      joindate = #{joindate},
-      sort = #{sort},
       photo = #{photo},
-      status = #{status},
+      type = #{type},
       text = #{text}
     where gid = #{gid}
   </update>
@@ -38,9 +35,8 @@
     update gamelist set status = #{status}
     where gid = #{gid}
   </update>
-  <update id="setSort">
-    update gamelist set sort = #{no}
-    where gid = #{gid}
+  <update id="updateSort">
+    update gamelist set sort = #{sort} where gid = #{gid}
   </update>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select gid, gameName, link, type, joindate, sort, photo, text, status
@@ -62,10 +58,16 @@
     order by if(isnull(sort), 1, 0), sort
     limit #{start}, #{pageSize}
   </select>
+  <select id="selectMaxSort" resultType="_byte">
+    select max(sort) from gamelist where type = #{type}
+  </select>
   <sql id="baseWhere">
     <where>
       <if test="type != null ">
         and type = #{type}
+      </if>
+      <if test="status != null ">
+        and status = #{status}
       </if>
     </where>
   </sql>

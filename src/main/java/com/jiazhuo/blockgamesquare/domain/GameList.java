@@ -25,7 +25,7 @@ public class GameList implements Serializable {
     private String gameName; //游戏名称
     private String link; //链接
     private Byte type; //类型
-    private byte[] photo; //照片
+    private String photo; //照片
     private String text; //文本
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone="GMT+8")

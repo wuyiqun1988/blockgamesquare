@@ -57,4 +57,5 @@ public interface UserBasicMapper {
     List<UserBasic> exportAgentData();
 
 
+    UserBasic userinfo(String UID);
 }

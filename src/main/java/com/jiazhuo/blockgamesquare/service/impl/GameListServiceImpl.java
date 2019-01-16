@@ -8,6 +8,7 @@ import com.jiazhuo.blockgamesquare.service.IGameListService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -27,10 +28,13 @@ public class GameListServiceImpl implements IGameListService {
 
     @Override
     public void saveOrUpdate(GameList gameList) {
-//        gameList.setPhoto(ByteImageConvert.image2byte(photoPath));
         if (gameList.getGid() != null){
             gameListMapper.updateByPrimaryKey(gameList);
         } else {
+            Byte maxSort = gameListMapper.selectMaxSort(gameList.getType());
+            //设置排序序号
+            gameList.setSort((byte) (maxSort + 1));
+            gameList.setJoindate(new Date());
             gameListMapper.insert(gameList);
         }
     }
@@ -48,12 +52,8 @@ public class GameListServiceImpl implements IGameListService {
         Byte temp = game1.getSort();
         game1.setSort(game2.getSort());
         game2.setSort(temp);
-        gameListMapper.updateByPrimaryKey(game1);
-        gameListMapper.updateByPrimaryKey(game2);
+        gameListMapper.updateSort(game1.getGid(), game1.getSort());
+        gameListMapper.updateSort(game2.getGid(), game2.getSort());
     }
 
-    @Override
-    public void setSort(Long gid, Byte no) {
-        gameListMapper.setSort(gid, no);
-    }
 }

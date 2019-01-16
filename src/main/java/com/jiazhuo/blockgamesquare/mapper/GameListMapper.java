@@ -23,10 +23,17 @@ public interface GameListMapper {
 
     void changeStatus(@Param("gid") Long gid, @Param("status") Byte status);
 
+
     /**
-     * 设置游戏的排序序号
-     * @param gid
-     * @param no
+     * 查询当前类型游戏的最大排序
+     * @param type
+     * @return
      */
-    void setSort(@Param("gid") Long gid, @Param("no") Byte no);
+    Byte selectMaxSort(Byte type);
+
+    /**
+     * 更新排序
+     * @param game
+     */
+    void updateSort(@Param("gid") Long gid, @Param("sort") Byte sort);
 }
