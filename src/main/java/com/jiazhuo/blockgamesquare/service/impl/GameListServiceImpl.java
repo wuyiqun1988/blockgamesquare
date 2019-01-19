@@ -32,6 +32,9 @@ public class GameListServiceImpl implements IGameListService {
             gameListMapper.updateByPrimaryKey(gameList);
         } else {
             Byte maxSort = gameListMapper.selectMaxSort(gameList.getType());
+            if (maxSort == null){
+                maxSort = 0;
+            }
             //设置排序序号
             gameList.setSort((byte) (maxSort + 1));
             gameList.setJoindate(new Date());

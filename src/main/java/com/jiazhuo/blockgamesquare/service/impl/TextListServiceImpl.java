@@ -38,4 +38,9 @@ public class TextListServiceImpl implements ITextListService {
     public TextList queryText(String title, Byte type) {
         return textListMapper.queryText(title, type);
     }
+
+    @Override
+    public TextList get(Long tid) {
+        return textListMapper.selectByPrimaryKey(tid);
+    }
 }

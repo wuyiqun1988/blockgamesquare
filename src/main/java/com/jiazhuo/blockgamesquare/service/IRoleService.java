@@ -18,12 +18,17 @@ public interface IRoleService {
     Role get(Long rid);
     List<Role> list();
 
-    PageResult rolePage(QueryObject qo);
-
     /**
      * 查看角色拥有的菜单id集合
      * @param rid
      * @return
      */
     List<Long> selectMenuIdsByRoleId(Long rid);
+
+    /**
+     * 查看角色关联的用户id集合
+     * @param rid
+     * @return
+     */
+    int selectBguserIdsByRoleId(Long rid);
 }

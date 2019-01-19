@@ -138,20 +138,29 @@ public class CentWalletController {
             String createdTime = DateUtil.dateToStrLong(transfer.getCreatedTime()); //转化成string
             currentRow.createCell(2).setCellValue(createdTime);
             switch (transfer.getTransferType()){
-                case 8:
-                    currentRow.createCell(3).setCellValue("提现--中心钱包转到链上钱包");
-                    break;
                 case 9:
-                    currentRow.createCell(3).setCellValue("注册获得BGS");
+                    currentRow.createCell(3).setCellValue("提现支出--中心转到链上");
                     break;
                 case 10:
-                    currentRow.createCell(3).setCellValue("邀请获得BGS");
+                    currentRow.createCell(3).setCellValue("提现收入--链上到链上");
                     break;
                 case 11:
-                    currentRow.createCell(3).setCellValue("锁仓获得收益");
+                    currentRow.createCell(3).setCellValue("注册获得BGS");
                     break;
                 case 12:
+                    currentRow.createCell(3).setCellValue("邀请获得BGS");
+                    break;
+                case 13:
+                    currentRow.createCell(3).setCellValue("锁仓获得收益");
+                    break;
+                case 14:
                     currentRow.createCell(3).setCellValue("代理获得收益");
+                    break;
+                case 15:
+                    currentRow.createCell(3).setCellValue("矿工费支出");
+                    break;
+                case 16:
+                    currentRow.createCell(3).setCellValue("提现失败退回金额收入");
                     break;
             }
             switch (transfer.getTokenType()){

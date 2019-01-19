@@ -18,7 +18,6 @@
   <update id="updateByPrimaryKey" parameterType="com.jiazhuo.blockgamesquare.domain.TextList" >
     update textlist
     set title = #{title},
-      type = #{type},
       text = #{text}
     where tid = #{tid}
   </update>

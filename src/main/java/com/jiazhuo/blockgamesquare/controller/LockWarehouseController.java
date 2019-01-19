@@ -100,6 +100,9 @@ public class LockWarehouseController {
                 case 3:
                     currentRow.createCell(6).setCellValue("已结束");
                     break;
+                case 4:
+                    currentRow.createCell(6).setCellValue("失败");
+                    break;
             }
             currentRow.createCell(7).setCellValue(lockWarehouse.getFinalProfit());
             switch (lockWarehouse.getProfitTokenType()){

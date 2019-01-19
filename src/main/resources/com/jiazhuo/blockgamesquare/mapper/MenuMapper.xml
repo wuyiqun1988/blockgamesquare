@@ -38,17 +38,18 @@
     where parent_id = #{mid}
   </select>
   <select id="queryCount" resultType="int">
-    select count(mid) from menu
+    select count(mid) from menu where parent_id = 0
   </select>
   <select id="queryList" resultMap="BaseResultMap">
     select mid, text, url, parent_id
     from menu
+    where parent_id = 0
     limit #{start}, #{pageSize}
   </select>
   <select id="selectRootMenus" resultMap="BaseResultMap">
     select mid, text, url, parent_id
     from menu
-    where parent_id is NULL
+    where parent_id = 0
   </select>
   <select id="selectMenuIdsByBgUserId" resultType="_long">
     select DISTINCT mid

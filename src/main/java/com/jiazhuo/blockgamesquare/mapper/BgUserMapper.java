@@ -54,11 +54,13 @@ public interface BgUserMapper {
     int checkUsername(String username);
 
 
-    void changeStatusOrAdmin(@Param("bid") Long bid, @Param("state") int state, @Param("admin") boolean admin);
+    void changeStatus(@Param("bid") Long bid, @Param("state") int state);
 
     /**
      * 查询是否有初始化管理员
      * @return
      */
     int queryAdminCount();
+
+    List<BgUser> selectAll();
 }

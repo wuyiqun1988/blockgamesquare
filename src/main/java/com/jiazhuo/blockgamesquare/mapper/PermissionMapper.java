@@ -37,4 +37,10 @@ public interface PermissionMapper {
      * @return
      */
     List<Permission> selectPermissionsByRoleId(Long rid);
+
+    /**
+     * 查询所有权限id集合
+     * @return
+     */
+    List<Long> selectAllPids();
 }

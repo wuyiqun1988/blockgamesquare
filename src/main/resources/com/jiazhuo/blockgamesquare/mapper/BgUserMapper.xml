@@ -11,14 +11,6 @@
     <collection property="roles" column="bid"
                 select="com.jiazhuo.blockgamesquare.mapper.RoleMapper.selectRolesByUgUserID"/>
   </resultMap>
-  <resultMap id="ListMap" type="com.jiazhuo.blockgamesquare.domain.BgUser" >
-    <id column="bid" property="bid" />
-    <result column="username" property="username" />
-    <result column="realName" property="realName" />
-    <result column="password" property="password" />
-    <result column="state" property="state" />
-    <result column="admin" property="admin" />
-  </resultMap>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
     delete from bguser
     where bid = #{bid}
@@ -42,9 +34,9 @@
   <update id="resetPwd">
     update bguser set password = #{initpassword} where bid = #{bid}
   </update>
-  <update id="changeStatusOrAdmin">
+  <update id="changeStatus">
     update bguser
-    set state = #{state}, admin = #{admin}
+    set state = #{state}
     where bid = #{bid}
   </update>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
@@ -55,13 +47,13 @@
   <select id="queryCount" resultType="int">
     select count(1) from bguser
   </select>
-  <select id="queryList" resultMap="ListMap">
+  <select id="queryList" resultMap="BaseResultMap">
     select bid, username, realName, password, state, admin
     from bguser
     limit #{start}, #{pageSize}
   </select>
-  <select id="selectBgUserByInfo" resultType="bgUser">
-    select bid, state, username, admin from bguser where username = #{username} and password = #{password}
+  <select id="selectBgUserByInfo" resultMap="BaseResultMap">
+    select bid, state, username, realName, admin from bguser where username = #{username} and password = #{password}
   </select>
   <select id="checkOldPwd" resultType="int">
     select count(1) from bguser where bid = #{bid} and password = #{oldPwd}
@@ -72,5 +64,9 @@
     <select id="queryAdminCount" resultType="int">
       select count(1) from bguser where admin = 1
     </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select bid, username, realName, password, state, admin
+    from bguser
+  </select>
 
 </mapper>

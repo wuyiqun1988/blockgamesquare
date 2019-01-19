@@ -15,12 +15,12 @@ import java.util.Date;
 public class WithdrawMoney implements Serializable{
     private String UID;
     private String WID; //提现id
-    private Byte tokenType; //类型  1:ETH 2:BGS 3:EOS
+    private Byte tokenType; //类型  1:ETH 2:EOS 3:BGS
     private Double amount; //提现金额
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone="GMT+8")
     private Date createdTime; //申请时间
-    private Byte status; //状态 0:待审核 1:审核成功 2:审核失败
+    private Byte status; //状态 1:待审核 2:审核成功 3:审核失败
     private String auditor; //审核人
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone="GMT+8")

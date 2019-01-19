@@ -69,7 +69,7 @@
     select t.transferId, t.UID, t.source, t.destination, t.amount, t.transferType, t.tokenType, t.createdTime, t.status,
     nickName, phoneNumber
     from transfer t join userbasic u on t.UID = u.UID
-    where transferType &gt;= 1 and transferType &lt;= 7
+    where transferType &gt;= 1 and transferType &lt;= 8
   </select>
   <select id="queryCentCount" resultType="int">
     select count(1) from transfer t
@@ -87,7 +87,7 @@
     select t.transferId, t.UID, t.source, t.destination, t.amount, t.transferType, t.tokenType, t.createdTime, t.status,
     nickName, phoneNumber
     from transfer t join userbasic u on t.UID = u.UID
-    where transferType &gt;= 8
+    where transferType &gt;= 9
   </select>
   <sql id="chainWalletWhere">
     <where>
@@ -107,7 +107,7 @@
         and transferType = #{transferType}
       </if>
       <if test="true">
-        and transferType &gt;= 1 and transferType &lt;= 7
+        and transferType &gt;= 1 and transferType &lt;= 8
       </if>
     </where>
   </sql>
@@ -130,7 +130,7 @@
         and transferType = #{transferType}
       </if>
       <if test="true">
-        and transferType &gt;= 8
+        and transferType &gt;= 9
       </if>
     </where>
   </sql>

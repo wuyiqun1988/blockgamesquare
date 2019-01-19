@@ -60,4 +60,7 @@
     <select id="selectMenuIdsByRoleId" resultType="_long">
       select mid from role_menu where rid = #{rid}
     </select>
+  <select id="selectBguserIdsByRoleId" resultType="int">
+      select count(1) from bguser_role where rid = #{rid}
+  </select>
 </mapper>

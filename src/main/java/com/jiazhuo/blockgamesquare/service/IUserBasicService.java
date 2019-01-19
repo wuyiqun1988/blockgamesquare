@@ -89,4 +89,5 @@ public interface IUserBasicService {
 
 
     UserBasic userinfo(String UID);
+
 }

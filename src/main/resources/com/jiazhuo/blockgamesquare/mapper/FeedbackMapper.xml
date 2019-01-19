@@ -37,13 +37,13 @@
   </select>
   <select id="queryCount" resultType="int">
     select count(fid) from feedback f
-    join userbasic u on f.UID = u.UID
+    left join userbasic u on f.UID = u.UID
     <include refid="baseWhere"/>
   </select>
   <select id="queryList" resultMap="BaseResultMap">
     select f.fid, f.UID, f.createTime, f.content, f.contact,
     nickName, phoneNumber
-    from feedback f join userbasic u on f.UID = u.UID
+    from feedback f left join userbasic u on f.UID = u.UID
     <include refid="baseWhere"/>
     limit #{start}, #{pageSize}
   </select>

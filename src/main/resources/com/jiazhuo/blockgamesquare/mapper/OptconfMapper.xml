@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jiazhuo.blockgamesquare.mapper.OptconfMapper" >
+  <resultMap id="BaseResultMap" type="com.jiazhuo.blockgamesquare.domain.Optconf" >
+    <id column="confName" property="confName" />
+    <result column="confValue" property="confValue" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from optconf
+    where confName = #{confName}
+  </delete>
+  <insert id="insert" parameterType="com.jiazhuo.blockgamesquare.domain.Optconf" >
+    insert into optconf (confName, confValue)
+    values (#{confName}, #{confValue})
+  </insert>
+  <update id="update">
+    update optconf
+    set confValue = #{confValue}
+    where confName = #{confName}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select confName, confValue
+    from optconf
+    where confName = #{confName}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select confName, confValue
+    from optconf
+  </select>
+</mapper>

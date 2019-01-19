@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletResponse;
+
 @Controller
 public class FeedbackController {
     @Autowired
@@ -40,8 +43,12 @@ public class FeedbackController {
      */
     @RequestMapping(value = "/appsite/userFeedback", method = RequestMethod.POST)
     @ResponseBody
-    public SuperResult userFeedback(String UID, String content, String contact){
+    public SuperResult userFeedback(String UID, String content, String contact, ServletResponse res){
         try {
+            HttpServletResponse httpResponse = (HttpServletResponse) res;
+            httpResponse.setHeader("Access-Control-Allow-Origin", "*");
+            httpResponse.setHeader("Access-Control-Allow-Headers","Origin, X-Requested-With, Content-Type, Accept");
+            httpResponse.setHeader("Access-Control-Allow-Credentials", "true");
             feedbackService.userFeedback(UID, content, contact);
             return new SuperResult(0, 0, "反馈成功", null);
         } catch (Exception e){

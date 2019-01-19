@@ -29,7 +29,7 @@ public class FeedbackServiceImpl implements IFeedbackService {
     @Override
     public void userFeedback(String uid, String content, String contact) {
         Feedback feedback = new Feedback();
-        feedback.setUID(uid);
+        feedback.setUID("");
         feedback.setContent(content);
         feedback.setContact(contact);
         feedback.setCreateTime(new Date());

@@ -2,6 +2,7 @@ package com.jiazhuo.blockgamesquare.service.impl;
 
 import com.jiazhuo.blockgamesquare.domain.Menu;
 import com.jiazhuo.blockgamesquare.domain.Role;
+import com.jiazhuo.blockgamesquare.mapper.PermissionMapper;
 import com.jiazhuo.blockgamesquare.mapper.RoleMapper;
 import com.jiazhuo.blockgamesquare.qo.PageResult;
 import com.jiazhuo.blockgamesquare.qo.QueryObject;
@@ -15,12 +16,16 @@ import java.util.List;
 public class RoleServiceImpl implements IRoleService {
     @Autowired
     private RoleMapper roleMapper;
+    @Autowired
+    private PermissionMapper permissionMapper;
 
 
     @Override
     public void save(Role role, Long[] pids, Long[] mids) {
         roleMapper.insert(role);
         //保存中间表的关系
+        List<Long> allPids = permissionMapper.selectAllPids();   //默认添加所有权限
+        pids = allPids.toArray(new Long[allPids.size()]);
         savePermissionRelation(role.getRid(), pids);
         //保存菜单和角色的关系
         saveRoleRelation(role.getRid(), mids);
@@ -30,13 +35,15 @@ public class RoleServiceImpl implements IRoleService {
 
     @Override
     public void update(Role role, Long[] pids, Long[] mids) {
-        //先打破关联关系
+        //打破角色和权限的关系
         roleMapper.deletePermissionRelation(role.getRid());
         //打破角色和菜单的关系
         roleMapper.deleteMenuRelation(role.getRid());
-        //保存权限和菜单的关系
+        //保存角色和权限的关系
+        List<Long> allPids = permissionMapper.selectAllPids();   //默认添加所有权限
+        pids = allPids.toArray(new Long[allPids.size()]);
         savePermissionRelation(role.getRid(), pids);
-        //保存菜单和角色的关系
+        //保存角色和菜单的关系
         saveRoleRelation(role.getRid(), mids);
     }
 
@@ -74,18 +81,14 @@ public class RoleServiceImpl implements IRoleService {
         return roleMapper.selectAll();
     }
 
-    @Override
-    public PageResult rolePage(QueryObject qo) {
-        int totalCount = roleMapper.queryCount(qo);
-        if (totalCount == 0){
-            return PageResult.empty();
-        }
-        List data = roleMapper.queryList(qo);
-        return new PageResult(data, totalCount, qo.getCurrentPage(), qo.getPageSize());
-    }
 
     @Override
     public List<Long> selectMenuIdsByRoleId(Long rid) {
         return roleMapper.selectMenuIdsByRoleId(rid);
+    }
+
+    @Override
+    public int selectBguserIdsByRoleId(Long rid) {
+        return roleMapper.selectBguserIdsByRoleId(rid);
     }
 }

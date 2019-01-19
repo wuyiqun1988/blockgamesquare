@@ -18,6 +18,8 @@ import sun.misc.BASE64Decoder;
 import javax.servlet.ServletContext;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 @Controller
@@ -56,7 +58,10 @@ public class GameListController {
         //返回上架的游戏
         qo.setStatus(GameList.GAME_ON);
         PageResult result = gameListService.gamePage(qo);
-        SuperResult res = SuperResult.ok(result);
+        Map<String, Object> map = new HashMap<>();
+        map.put("result", result);
+        map.put("type", qo.getType());
+        SuperResult res = SuperResult.ok(map);
         res.setMsg("请求游戏列表成功");
         return res;
     }

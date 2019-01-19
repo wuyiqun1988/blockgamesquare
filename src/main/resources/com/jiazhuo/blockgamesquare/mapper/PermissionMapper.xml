@@ -45,4 +45,8 @@
     from permission p join role_permission rp on p.pid = rp.pid
     where rp.rid = #{rid}
   </select>
+  <select id="selectAllPids" resultType="_long">
+    select pid from permission
+  </select>
+
 </mapper>

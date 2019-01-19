@@ -22,7 +22,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class UserbasicController {
@@ -58,6 +60,7 @@ public class UserbasicController {
         vo.setResult(result);
         return vo;
     }
+
 
     /**
      * 查看用户实名认证信息

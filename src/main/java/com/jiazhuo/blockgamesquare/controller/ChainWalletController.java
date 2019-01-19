@@ -154,10 +154,13 @@ public class ChainWalletController {
                     currentRow.createCell(3).setCellValue("购买代理人支出");
                     break;
                 case 6:
-                    currentRow.createCell(3).setCellValue("买EOS的RAM支出");
+                    currentRow.createCell(3).setCellValue("质押EOS的RAM支出 ");
                     break;
                 case 7:
-                    currentRow.createCell(3).setCellValue("买EOS的CPU和NET支出");
+                    currentRow.createCell(3).setCellValue("质押EOS的CPU支出");
+                    break;
+                case 8:
+                    currentRow.createCell(3).setCellValue("质押EOS的NET支出");
                     break;
             }
             switch (transfer.getTokenType()){

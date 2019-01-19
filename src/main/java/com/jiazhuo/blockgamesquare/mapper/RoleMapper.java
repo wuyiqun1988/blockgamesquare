@@ -60,4 +60,12 @@ public interface RoleMapper {
      * @param rid
      */
     void deleteMenuRelation(Long rid);
+
+    /**
+     * 查看角色关联的用户id集合
+     * @param rid
+     * @return
+     */
+    int selectBguserIdsByRoleId(Long rid);
+
 }

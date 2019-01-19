@@ -1,11 +1,18 @@
 package com.jiazhuo.blockgamesquare.service.impl;
 
 import com.jiazhuo.blockgamesquare.domain.BgUser;
+import com.jiazhuo.blockgamesquare.domain.Menu;
+import com.jiazhuo.blockgamesquare.domain.Permission;
+import com.jiazhuo.blockgamesquare.domain.Role;
 import com.jiazhuo.blockgamesquare.mapper.BgUserMapper;
+import com.jiazhuo.blockgamesquare.mapper.MenuMapper;
 import com.jiazhuo.blockgamesquare.mapper.PermissionMapper;
+import com.jiazhuo.blockgamesquare.mapper.RoleMapper;
 import com.jiazhuo.blockgamesquare.qo.PageResult;
 import com.jiazhuo.blockgamesquare.qo.QueryObject;
 import com.jiazhuo.blockgamesquare.service.IBgUserService;
+import com.jiazhuo.blockgamesquare.service.IMenuService;
+import com.jiazhuo.blockgamesquare.service.IPermissionService;
 import com.jiazhuo.blockgamesquare.util.SHA1;
 import com.jiazhuo.blockgamesquare.util.UserContext;
 import com.jiazhuo.blockgamesquare.vo.JSONResultVo;
@@ -13,7 +20,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class BgUserServiceImpl implements IBgUserService {
@@ -21,6 +30,12 @@ public class BgUserServiceImpl implements IBgUserService {
     private BgUserMapper bgUserMapper;
     @Autowired
     private PermissionMapper permissionMapper;
+    @Autowired
+    private RoleMapper roleMapper;
+    @Autowired
+    private MenuMapper menuMapper;
+    @Autowired
+    private IPermissionService permissionService;
 
     @Override
     public void saveBgUserRole(Long bid, Long[] rids) {
@@ -75,7 +90,20 @@ public class BgUserServiceImpl implements IBgUserService {
         //把当前用户拥有的权限表达式查询出来存入session中,用户后期权限的校验
         List<String> resources = permissionMapper.selectResourcesByBgUserId(bgUser.getBid());
         session.setAttribute(UserContext.RESOURCE_IN_SESSION, resources);
-        return JSONResultVo.ok("登录成功");
+        JSONResultVo vo = new JSONResultVo();
+        List<Role> roles = bgUser.getRoles();
+        List<Menu> menus = new ArrayList<>();
+        //查询角色拥有的菜单
+        for (Role role : roles) {
+            List<Long> mids = roleMapper.selectMenuIdsByRoleId(role.getRid());
+            for (Long mid : mids) {
+                Menu menu = menuMapper.selectByPrimaryKey(mid);
+                menus.add(menu);
+            }
+            role.setMenus(menus);
+        }
+        vo.setResult(bgUser);
+        return vo;
     }
 
     @Override
@@ -107,7 +135,7 @@ public class BgUserServiceImpl implements IBgUserService {
     }
 
     @Override
-    public boolean newBgUser(BgUser bgUser) {
+    public boolean newBgUser(BgUser bgUser, Long rid) {
         if (!UserContext.getCurrent().isAdmin()) {
             return false;
         }
@@ -117,7 +145,13 @@ public class BgUserServiceImpl implements IBgUserService {
         bu.setRealName(bgUser.getRealName());
         bu.setState(bgUser.getState());
         bu.setUsername(bgUser.getUsername());
+        List<Role> roles = new ArrayList<>();
+        Role role = roleMapper.selectByPrimaryKey(rid);
+        roles.add(role);
+        bu.setRoles(roles);
         bgUserMapper.insert(bu);
+        //插入关联关系
+        bgUserMapper.insertRoleRelation(bu.getBid(), rid);
         return true;
     }
 
@@ -127,11 +161,11 @@ public class BgUserServiceImpl implements IBgUserService {
     }
 
     @Override
-    public boolean changeStatusOrAdmin(Long bid, int state, boolean admin) {
+    public boolean changeStatus(Long bid, int state) {
         if (!UserContext.getCurrent().isAdmin()) {
             return false;
         }
-        bgUserMapper.changeStatusOrAdmin(bid, state, admin);
+        bgUserMapper.changeStatus(bid, state);
         return true;
     }
 
@@ -140,13 +174,33 @@ public class BgUserServiceImpl implements IBgUserService {
         int count = bgUserMapper.queryAdminCount();
         if (count == 0){
             BgUser bgUser = new BgUser();
-            bgUser.setUsername("管理员");
+            bgUser.setUsername("admin");
             bgUser.setPassword(SHA1.encode(UserContext.DEFALUT_PASSWORD));
             bgUser.setRealName("管理员");
             bgUser.setAdmin(true);
             bgUser.setState((byte) 0);
             bgUserMapper.insert(bgUser);
+            Role role = new Role();
+            role.setName("一级管理员");
+            role.setSn("ADMIN");
+            roleMapper.insert(role);
+            bgUserMapper.insertRoleRelation(bgUser.getBid(), role.getRid());   //保存用户和角色的关系
+            List<Menu> menus = menuMapper.selectAll();
+            for (Menu menu : menus) {   //保存角色和菜单的关系
+                roleMapper.insertMenuRelation(role.getRid(), menu.getMid());
+            }
+            permissionService.reload(); //加载权限
+            List<Permission> permissions = permissionMapper.selectAll();
+            for (Permission permission : permissions) {  //保存角色和权限的关系
+                roleMapper.insertPermissionRelation(role.getRid(), permission.getPid());
+            }
+
         }
+    }
+
+    @Override
+    public List<BgUser> queryAll() {
+        return bgUserMapper.selectAll();
     }
 }
 

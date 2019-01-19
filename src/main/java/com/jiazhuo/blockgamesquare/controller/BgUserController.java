@@ -48,9 +48,9 @@ public class BgUserController {
      */
     @RequestMapping(value = "/mgrsite/bgUserList", method = RequestMethod.GET)
     @ResponseBody
-    public JSONResultVo bgUserPage(@ModelAttribute("qo") UserQueryObject qo){
+    public JSONResultVo bgUserPage(){
         JSONResultVo vo = new JSONResultVo();
-        PageResult result = bgUserService.bgUserPage(qo);
+        List<BgUser> result = bgUserService.queryAll();
         vo.setResult(result);
         return vo;
     }
@@ -103,21 +103,20 @@ public class BgUserController {
     }
 
     /**
-     * 修改用户状态或分配管理员权限(管理员修改)
+     * 修改用户状态(管理员修改)
      * @param bid
      * @param state
-     * @param admin
      * @return
      */
-    @RequestMapping(value = "/mgrsite/bgUser/changeStatusOrAdmin", method = RequestMethod.POST)
+    @RequestMapping(value = "/mgrsite/bgUser/changeStatus", method = RequestMethod.POST)
     @ResponseBody
-    @RequiredPermission("管理员修改用户状态或分配管理员的权限")
-    public JSONResultVo changeStatusOrAdmin(Long bid, int state, boolean admin){
-        boolean ret = bgUserService.changeStatusOrAdmin(bid, state, admin);
+    @RequiredPermission("管理员修改用户状态")
+    public JSONResultVo changeStatus(Long bid, int state){
+        boolean ret = bgUserService.changeStatus(bid, state);
         if (!ret){
             return JSONResultVo.error("不是管理员无权限");
         }
-        return JSONResultVo.ok("修改用户状态或分配管理员权限成功");
+        return JSONResultVo.ok("修改用户状态成功");
     }
 
     /**
@@ -144,11 +143,11 @@ public class BgUserController {
     @RequestMapping(value = "/mgrsite/bgUser/newBguser", method = RequestMethod.POST)
     @ResponseBody
     @RequiredPermission("管理员新建后台用户")
-    public JSONResultVo newBguser(BgUser bgUser){
+    public JSONResultVo newBguser(BgUser bgUser, Long rid){
         if (bgUserService.checkUsername(bgUser.getUsername()) != 0) {
             return JSONResultVo.error("用户名已存在");
         }
-        boolean ret = bgUserService.newBgUser(bgUser);
+        boolean ret = bgUserService.newBgUser(bgUser, rid);
         if (!ret){
             return JSONResultVo.error("请联系管理员新建用户");
         }

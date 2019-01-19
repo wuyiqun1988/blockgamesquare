@@ -61,11 +61,11 @@
                 value=""/> -->
         </javaClientGenerator>
 
-        <table tableName="TextList" domainObjectName="TextList">
+        <table tableName="Optconf" domainObjectName="Optconf">
             <property name="useActualColumnNames" value="true" />
             <!-- 参考 javaModelGenerator 的 constructorBased属性 -->
             <property name="constructorBased" value="false"/>
-            <generatedKey column="tid" sqlStatement="JDBC"/>
+            <generatedKey column="id" sqlStatement="JDBC"/>
         </table>
 
 

@@ -24,14 +24,13 @@ public class RoleController {
 
     /**
      * 角色列表
-     * @param qo
      * @return
      */
     @RequestMapping(value = "/mgrsite/rolePage", method = RequestMethod.GET)
     @ResponseBody
-    public JSONResultVo rolePage(@ModelAttribute("qo") QueryObject qo){
+    public JSONResultVo rolePage(){
         JSONResultVo vo = new JSONResultVo();
-        PageResult result = roleService.rolePage(qo);
+        List<Role> result = roleService.list();
         vo.setResult(result);
         return vo;
     }
@@ -41,10 +40,14 @@ public class RoleController {
      * @param rid
      * @return
      */
-    @RequestMapping(value = "/mgrsite/role/delete", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/mgrsite/role/delete", method = RequestMethod.POST)
     @ResponseBody
     @RequiredPermission("删除角色")
     public JSONResultVo deleteRole(Long rid){
+        int count = roleService.selectBguserIdsByRoleId(rid);
+        if (count != 0){
+            return JSONResultVo.error("该角色还有用户使用");
+        }
         roleService.delete(rid);
         return JSONResultVo.ok("删除角色成功");
     }
@@ -59,12 +62,17 @@ public class RoleController {
     @RequestMapping(value = "/mgrsite/role/saveOrUpdate", method = RequestMethod.POST)
     @ResponseBody
     @RequiredPermission("保存或更新角色")
-    public JSONResultVo saveOrUpdate(Role role, Long[] pids, Long[] mids){
+    public JSONResultVo saveOrUpdate(Role role, Long[] pids, String mids){
+        String[] memus = mids.split(",");
+        Long[] ms = new Long[memus.length];
+        for (int idx = 0; idx < memus.length; idx++) {
+            ms[idx] = Long.parseLong(memus[idx]);
+        }
         if (role.getRid() == null){
-            roleService.save(role, pids, mids);
+            roleService.save(role, pids, ms);
             return JSONResultVo.ok("保存角色成功");
         } else {
-            roleService.update(role, pids, mids);
+            roleService.update(role, pids, ms);
             return JSONResultVo.ok("更新角色成功");
         }
     }

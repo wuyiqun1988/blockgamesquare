@@ -11,11 +11,6 @@
     <title>Title</title>
 </head>
 <body>
-    <a href="javascript:void(0);" onClick="ib_wopen();">欢迎访问</a>
-    <script>
-        ib_tuserid='3';
-        ib_tuserinfo='wangwu';
-    </script>
-    <script type="text/javascript" src="http://c.ibangkf.com/i/c-bgs2018.js"></script>
+欢迎访问
 </body>
 </html>

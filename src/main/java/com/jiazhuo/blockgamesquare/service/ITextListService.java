@@ -7,9 +7,9 @@ import java.util.List;
 
 public interface ITextListService {
     List<TextList> queryList();
-    @SystemlogAnnotation("更新文本")
+    @SystemlogAnnotation("修改文本")
     void update(TextList textList);
-    @SystemlogAnnotation("保存文本")
+    @SystemlogAnnotation("新增文本")
     void save(TextList textList);
     @SystemlogAnnotation("删除文本")
     void delete(Long tid);
@@ -21,4 +21,6 @@ public interface ITextListService {
      * @return
      */
     TextList queryText(String title, Byte type);
+
+    TextList get(Long tid);
 }

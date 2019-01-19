@@ -29,13 +29,13 @@
 			<bean class="com.jiazhuo.blockgamesquare.interceptor.CheckLoginInterceptor"/>
 		</mvc:interceptor>
 		<!--权限检查拦截器-->
-		<!--<mvc:interceptor>
+		<mvc:interceptor>
 			<mvc:mapping path="/**"/>
 			<mvc:exclude-mapping path="/mgrsite/bgUser/login.do"/>
 			<mvc:exclude-mapping path="/mgrsite/bgUser/logout.do"/>
 			<mvc:exclude-mapping path="/appsite/*.do"/>
 			<bean class="com.jiazhuo.blockgamesquare.interceptor.SecurityInterceptor"/>
-		</mvc:interceptor>-->
+		</mvc:interceptor>
 	</mvc:interceptors>
 
 	<!--文件上传解析器-->

@@ -124,7 +124,7 @@
         and tokenType = #{tokenType}
       </if>
       <if test="true">
-        and w.status = 0
+        and w.status = 1
       </if>
     </where>
   </sql>
@@ -146,7 +146,7 @@
         and tokenType = #{tokenType}
       </if>
       <if test="true">
-        and w.status = 1
+        and w.status = 2
       </if>
     </where>
   </sql>
@@ -168,7 +168,7 @@
         and tokenType = #{tokenType}
       </if>
       <if test="true">
-        and w.status = 2
+        and w.status = 3
       </if>
     </where>
   </sql>

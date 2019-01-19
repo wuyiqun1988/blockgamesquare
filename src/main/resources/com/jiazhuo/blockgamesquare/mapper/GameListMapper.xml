@@ -25,9 +25,9 @@
   <update id="updateByPrimaryKey" parameterType="com.jiazhuo.blockgamesquare.domain.GameList" >
     update gamelist
     set gameName = #{gameName},
-      link = #{link},
       photo = #{photo},
       type = #{type},
+      link = #{link},
       text = #{text}
     where gid = #{gid}
   </update>

@@ -6,6 +6,8 @@ import com.jiazhuo.blockgamesquare.qo.QueryObject;
 import com.jiazhuo.blockgamesquare.util.SystemlogAnnotation;
 import com.jiazhuo.blockgamesquare.vo.JSONResultVo;
 
+import java.util.List;
+
 public interface IBgUserService {
     @SystemlogAnnotation("管理员分配用户角色")
     void saveBgUserRole(Long  bid, Long[] rids);
@@ -51,7 +53,7 @@ public interface IBgUserService {
      * @param bgUser
      */
     @SystemlogAnnotation("管理员新建后台用户")
-    boolean newBgUser(BgUser bgUser);
+    boolean newBgUser(BgUser bgUser, Long rid);
 
     /**
      * 查看用户名是否存在
@@ -61,17 +63,19 @@ public interface IBgUserService {
     int checkUsername(String username);
 
     /**
-     * 修改用户状态或分配管理员权限(管理员修改)
+     * 修改用户状态(管理员修改)
      * @param bid
      * @param state
      * @param admin
      * @return
      */
-    @SystemlogAnnotation("修改用户状态或分配管理员权限(管理员修改)")
-    boolean changeStatusOrAdmin(Long bid, int state, boolean admin);
+    @SystemlogAnnotation("修改用户状态(管理员修改)")
+    boolean changeStatus(Long bid, int state);
 
     /**
      * 初始化第一个管理员
      */
     void initAdmin();
+
+    List<BgUser> queryAll();
 }
