@@ -12,4 +12,5 @@ public interface OptconfMapper {
     List<Optconf> selectAll();
 
     void update(@Param("confName") String confName, @Param("confValue") String confValue);
+
 }

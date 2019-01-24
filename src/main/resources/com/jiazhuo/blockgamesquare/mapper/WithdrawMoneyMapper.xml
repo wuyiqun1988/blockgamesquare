@@ -99,7 +99,7 @@
   </select>
   <sql id="baseFrom">
     from withdrawmoney w
-    join userBasic u on w.UID = u.UID
+    join userbasic u on w.UID = u.UID
   </sql>
   <sql id="baseList">
     select

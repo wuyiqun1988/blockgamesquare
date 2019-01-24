@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>用户反馈</title>
+		<link rel="stylesheet" type="text/css" href="css/base.css" />
+		<link rel="stylesheet" type="text/css" href="dist/css/comment.css" />
+		<link rel="stylesheet" type="text/css" href="dist/css/feedback.css" />
+		<style type="text/css">
+			.hintToast {
+				width: 4rem;
+				height: 0.8rem;
+				text-align: center;
+				background: rgba(0, 0, 0, 0.7);
+				position: fixed;
+				top: 3.8rem;
+				left: 50%;
+				margin-left: -2rem;
+				border-radius: 0.2rem;
+				color: #fff;
+				display: none;
+				line-height: 0.8rem;
+				font-size: 0.4rem;
+			}
+		</style>
+		<script src="dist/js/flexible.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/jquery-1.11.3.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+
+	<body>
+		<div class="top-bg">
+			<img src="dist/img/top-bg-icon-logo.png" />
+		</div>
+		<div class="content">
+			<div class="header">
+				<div class="back" id="back">
+					<img src="dist/img/header-back.png" />
+				</div>
+				<span>用户反馈</span>
+			</div>
+			<div class="hint">
+				<p>用户反馈</p>
+				<b></b>
+			</div>
+			<textarea class="feedback-text" placeholder="请简述您遇到的问题或您的建议"></textarea>
+			<div class="contact-user">
+				<p>联系方式</p>
+				<input type="text" placeholder="请输入您的电话/邮箱/微信/QQ (选填)" class="feedbackContact" />
+			</div>
+			<div class="confirm-btn">
+				确认
+			</div>
+			<div class="hintToast"></div>
+		</div>
+		<script src="js/base.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			$(function() {
+				$('.confirm-btn').click(function() {
+					if($('.feedback-text').val().length > 0) {
+						var feedbackText = $('.feedback-text').val();
+						var feedbackContact = $('.feedbackContact').val();
+						$.ajax({
+							url: baseUrl + "/appsite/userFeedback.do",
+							type: "post",
+							data: {
+								content: feedbackText,
+								contact: feedbackContact,
+							},
+							success: function(res) {
+								$('.hintToast').text(res.msg);
+								$('.hintToast').show();
+								setTimeout(function() {
+									$('.hintToast').hide();
+								}, 2000)
+							}
+						})
+					} else {
+						$('.hintToast').text('请填写反馈内容');
+						$('.hintToast').show();
+						setTimeout(function() {
+							$('.hintToast').hide();
+						}, 2000)
+					}
+				})
+
+			})
+		</script>
+	</body>
+
+</html>

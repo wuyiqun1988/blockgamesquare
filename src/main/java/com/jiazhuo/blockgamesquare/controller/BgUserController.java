@@ -43,7 +43,6 @@ public class BgUserController {
 
     /**
      * 获取后台用户列表
-     * @param qo
      * @return
      */
     @RequestMapping(value = "/mgrsite/bgUserList", method = RequestMethod.GET)
@@ -176,14 +175,18 @@ public class BgUserController {
     /**
      * 管理员分配用户角色
      * @param bid
-     * @param rids
+     * @param rid
      * @return
      */
     @RequestMapping(value = "/mgrsite/bgUser/saveBgUserRole", method = RequestMethod.POST)
     @ResponseBody
     @RequiredPermission("管理员分配用户角色")
-    public JSONResultVo saveBgUserRole(Long bid, Long[] rids){
-        bgUserService.saveBgUserRole(bid, rids);
+    public JSONResultVo saveBgUserRole(Long bid, Long rid){
+        BgUser bgUser = bgUserService.get(bid);
+        if (bgUser.isAdmin() || rid == null || bid == null){
+            return JSONResultVo.error("参数错误");
+        }
+        bgUserService.saveBgUserRole(bid, rid);
         return JSONResultVo.ok("分配角色成功");
     }
 

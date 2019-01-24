@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>常见问题</title>
+		<link rel="stylesheet" type="text/css" href="css/base.css" />
+		<link rel="stylesheet" type="text/css" href="dist/css/comment.css" />
+		<link rel="stylesheet" type="text/css" href="dist/css/problems.css" />
+		<script src="dist/js/flexible.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/jquery-1.11.3.js" type="text/javascript" charset="utf-8"></script>
+		
+		<style type="text/css">
+			.main-box{
+				padding: 0.9333rem 0;
+			}
+			.main-box ul{
+				padding: 0 1.6000rem;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="top-bg">
+			<img src="dist/img/top-bg-wen.png" />
+		</div>
+		<div class="content">
+			<div class="header">
+				<div class="back">
+					<img src="dist/img/header-back.png" />
+				</div>
+				<span>常见问题</span>
+			</div>
+			<div class="hint">
+				<p class="p1">请上下滑动选择</p>
+				<p class="p2">您遇到的相关问题</p>
+				<b></b>
+			</div>
+			<div class="main-box">
+				<ul class="problemList">
+					
+				</ul>
+			</div>
+		</div>
+		<script src="js/base.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			$(function() {
+				$.ajax({
+					url: baseUrl + "/appsite/textList.do",
+					type: "get",
+					success: function(res) {
+						if(res.success) {
+							var problemListStr='';
+							res.result.forEach(function(x) {
+								if(x.type == '0') {
+									problemListStr+='<li tid='+x.tid+'><i></i><span>'+x.title+'</span></li>'
+								}
+							})
+							$('.problemList').html(problemListStr);
+						}
+					}
+				})
+				$('.problemList').on('click','li',function(e){
+					window.location.href='problem.html?tid='+e.currentTarget.attributes.tid.value
+				})
+			})
+		</script>
+	</body>
+
+</html>

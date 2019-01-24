@@ -9,4 +9,6 @@ import java.io.Serializable;
 public class Optconf implements Serializable {
     private String confName;
     private String confValue;
+
+    private String explain; // 说明
 }

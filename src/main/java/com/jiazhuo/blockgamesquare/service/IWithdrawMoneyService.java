@@ -42,4 +42,10 @@ public interface IWithdrawMoneyService {
      */
     @SystemlogAnnotation("excel导出提现审核失败列表")
     List<WithdrawMoney> exportWithdrawMoneyFailData();
+
+    /**
+     * 记录提现审核的系统日志
+     */
+    @SystemlogAnnotation("提现审核")
+    void recordWithdrawMoneyAuditSystemLog();
 }

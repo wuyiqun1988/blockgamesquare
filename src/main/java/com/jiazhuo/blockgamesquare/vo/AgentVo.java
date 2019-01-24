@@ -10,11 +10,11 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.io.Serializable;
 import java.util.Date;
 
-@Getter
-@Setter
-@ToString
-@NoArgsConstructor
-@AllArgsConstructor
+/**
+ * 代理人
+ */
+@Getter@Setter@ToString
+@NoArgsConstructor@AllArgsConstructor
 public class AgentVo implements Serializable {
     private String UID;
     private String nickName; //昵称

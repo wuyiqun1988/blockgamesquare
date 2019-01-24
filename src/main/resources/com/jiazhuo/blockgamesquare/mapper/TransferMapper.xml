@@ -54,41 +54,44 @@
       and UID = #{UID}
   </select>
   <select id="queryChainCount" resultType="int">
-    select count(1) from transfer t
-    join userbasic u on t.UID = u.UID
+    select count(1)
+    <include refid="baseFrom"/>
     <include refid="chainWalletWhere"/>
   </select>
   <select id="queryChainList" resultMap="walletResultMap">
-    select t.transferId, t.UID, t.source, t.destination, t.amount, t.transferType, t.tokenType, t.createdTime, t.status,
-    nickName, phoneNumber
-    from transfer t join userbasic u on t.UID = u.UID
+    <include refid="baseSelect"/>
+    <include refid="baseFrom"/>
     <include refid="chainWalletWhere"/>
     limit #{start}, #{pageSize}
   </select>
   <select id="queryChainWalletItem" resultMap="walletResultMap">
-    select t.transferId, t.UID, t.source, t.destination, t.amount, t.transferType, t.tokenType, t.createdTime, t.status,
-    nickName, phoneNumber
-    from transfer t join userbasic u on t.UID = u.UID
+    <include refid="baseSelect"/>
+    <include refid="baseFrom"/>
     where transferType &gt;= 1 and transferType &lt;= 8
   </select>
   <select id="queryCentCount" resultType="int">
-    select count(1) from transfer t
-    join userbasic u on t.UID = u.UID
+    select count(1)
+    <include refid="baseFrom"/>
     <include refid="centWalletWhere"/>
   </select>
   <select id="queryCentList" resultMap="walletResultMap">
-    select t.transferId, t.UID, t.source, t.destination, t.amount, t.transferType, t.tokenType, t.createdTime, t.status,
-    nickName, phoneNumber
-    from transfer t join userbasic u on t.UID = u.UID
+    <include refid="baseSelect"/>
+    <include refid="baseFrom"/>
     <include refid="centWalletWhere"/>
     limit #{start}, #{pageSize}
   </select>
   <select id="queryCentWalletItem" resultMap="walletResultMap">
-    select t.transferId, t.UID, t.source, t.destination, t.amount, t.transferType, t.tokenType, t.createdTime, t.status,
-    nickName, phoneNumber
-    from transfer t join userbasic u on t.UID = u.UID
+    <include refid="baseSelect"/>
+    <include refid="baseFrom"/>
     where transferType &gt;= 9
   </select>
+  <sql id="baseSelect">
+    select t.transferId, t.UID, t.source, t.destination, t.amount, t.transferType, t.tokenType, t.createdTime, t.status,
+    nickName, phoneNumber
+  </sql>
+  <sql id="baseFrom">
+    from transfer t join userbasic u on t.UID = u.UID
+  </sql>
   <sql id="chainWalletWhere">
     <where>
       <if test="keyword != null ">

@@ -1,0 +1,49 @@
+.top-bg {
+  width: 100%;
+  height: 7.4133rem;
+  overflow: hidden;
+  position: relative;
+  background: -webkit-linear-gradient(left bottom, #a65bfb, #5946ea);
+  /* Safari 5.1 - 6.0 */
+  background: -o-linear-gradient(right top, #a65bfb, #5946ea);
+  /* Opera 11.1 - 12.0 */
+  background: -moz-linear-gradient(right top, #a65bfb, #5946ea);
+  /* Firefox 3.6 - 15 */
+  background: linear-gradient(right top, #a65bfb, #5946ea);
+}
+.top-bg img {
+  display: block;
+  position: absolute;
+  top: 1.5467rem;
+  right: -0.8667rem;
+  width: 3.2000rem;
+  height: 3.1200rem;
+  opacity: 0.1;
+}
+.main-box {
+  width: 9.0667rem;
+  height: calc(100% - 4.6667rem);
+  margin: 0 auto;
+  margin-top: 2.1867rem;
+  background: #fff;
+  border-radius: 0.1333rem;
+  box-shadow: 0.0267rem 0.0800rem 0.1333rem #ddd;
+}
+.main-box .title {
+  width: 100%;
+  height: 2.1333rem;
+  font-size: 0.4800rem;
+  color: #333;
+  text-align: center;
+  line-height: 0.6667rem;
+  padding-top: 0.5600rem;
+}
+.main-box p {
+  width: 6.9333rem;
+  height: calc(100% - 2.8000rem);
+  overflow: auto;
+  line-height: 0.4533rem;
+  color: #949494;
+  font-size: 0.3200rem;
+  margin: 0 auto;
+}

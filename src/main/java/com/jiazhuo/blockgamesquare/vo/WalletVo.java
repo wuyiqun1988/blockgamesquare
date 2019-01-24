@@ -6,11 +6,12 @@ import com.jiazhuo.blockgamesquare.domain.UserBasic;
 import lombok.*;
 
 import java.io.Serializable;
-@Getter
-@Setter
-@ToString
-@NoArgsConstructor
-@AllArgsConstructor
+
+/**
+ * 钱包信息
+ */
+@Getter@Setter@ToString
+@NoArgsConstructor@AllArgsConstructor
 public class WalletVo implements Serializable {
     private ETHTOKEN bgstoken; //bgstoken信息
 

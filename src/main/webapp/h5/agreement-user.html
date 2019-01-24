@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>用户协议</title>
+		<link rel="stylesheet" type="text/css" href="css/base.css" />
+		<link rel="stylesheet" type="text/css" href="dist/css/comment.css" />
+		<link rel="stylesheet" type="text/css" href="dist/css/introduce.css" />
+		<script src="dist/js/flexible.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/jquery-1.11.3.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+
+	<body>
+		<div class="top-bg">
+			<img src="dist/img/top-bg-icon-logo.png" />
+		</div>
+		<div class="content">
+			<div class="header">
+				<div class="back">
+					<img src="dist/img/header-back.png" />
+				</div>
+				<span>用户协议</span>
+			</div>
+			<div class="main-box">
+				<div class="title">
+					用户协议
+				</div>
+				<p class="textContent"></p>
+			</div>
+		</div>
+		<script src="js/base.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			$(function() {
+				$.ajax({
+					url: baseUrl + "/appsite/textList.do",
+					type: "get",
+					success: function(res) {
+						if(res.success) {
+							res.result.forEach(function(x) {
+								if(x.tid == '1') {
+									$('.textContent').html(x.text);
+								}
+							})
+						}
+					}
+				})
+			})
+		</script>
+	</body>
+
+</html>

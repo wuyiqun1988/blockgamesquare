@@ -71,7 +71,7 @@
     <include refid="centList"/>
   </select>
   <sql id="countFrom">
-    from userBasic u
+    from userbasic u
     left join eostoken eos on u.UID = eos.UID
     left join ethtoken eth on eth.UID = u.UID
   </sql>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			#POP800_PANEL_DIV {
+				opacity: 0;
+				left: -10000px !important;
+			}
+		</style>
+	</head>
+	<body>
+		<script type="text/javascript">
+			function btnClick(idText,nameText){
+				var userid = idText;
+				var username = nameText;				
+				document.write('<script language="javascript" src="http://api.pop800.com/800.js?n=457660&s=01&p=l&l=cn&userid=' + userid + '&username=' + username + '"></sc' + 'ript>');
+				setTimeout(function(){
+					document.getElementById('POP800_GROUP_0').children[0].onclick()
+				},1000)
+			}
+			btnClick('idText','nameText')
+		</script>
+	</body>
+</html>

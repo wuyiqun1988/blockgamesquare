@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>关于我们</title>
+		<link rel="stylesheet" type="text/css" href="css/base.css" />
+		<link rel="stylesheet" type="text/css" href="dist/css/comment.css" />
+		<link rel="stylesheet" type="text/css" href="dist/css/aboutus.css" />
+		<script src="dist/js/flexible.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/jquery-1.11.3.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+
+	<body>
+		<div class="top-bg">
+			<img src="dist/img/top-bg-icon-logo.png" />
+		</div>
+		<div class="content">
+			<div class="header">
+				<div class="back">
+					<img src="dist/img/header-back.png" />
+				</div>
+				<span>关于我们</span>
+			</div>
+			<div class="hint"></div>
+			<div class="main-box">
+				<ul>
+					<li id='introduce'>
+						<i></i>
+						<span>项目介绍</span>
+					</li>
+					<li id='contact'>
+						<i></i>
+						<span>联系我们</span>
+					</li>
+					<li id='problems'>
+						<i></i>
+						<span>常见问题</span>
+					</li>
+					<li id="agreement-user">
+						<i></i>
+						<span>用户协议</span>
+					</li>
+					<li id="agreement-block">
+						<i></i>
+						<span>锁仓协议</span>
+					</li>
+					<li id="feedback">
+						<i></i>
+						<span>用户反馈</span>
+					</li>
+
+				</ul>
+			</div>
+		</div>
+		<script src="js/base.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			document.getElementById('introduce').onclick = function() {
+				window.location.href = 'introduction.html'
+			}
+			document.getElementById('contact').onclick = function() {
+				window.location.href = 'contact.html'
+			}
+			document.getElementById('problems').onclick = function() {
+				window.location.href = 'problems.html'
+			}
+			document.getElementById('agreement-user').onclick = function() {
+				window.location.href = 'agreement-user.html'
+			}
+			document.getElementById('agreement-block').onclick = function() {
+				window.location.href = 'agreement-block.html'
+			}
+			document.getElementById('feedback').onclick = function() {
+				window.location.href = 'feedback.html'
+			}
+		</script>
+	</body>
+
+</html>

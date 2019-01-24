@@ -6,6 +6,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.Serializable;
 import java.util.List;
 
+/**
+ * 响应格式
+ */
 public class SuperResult implements Serializable {
 
     // 定义jackson对象

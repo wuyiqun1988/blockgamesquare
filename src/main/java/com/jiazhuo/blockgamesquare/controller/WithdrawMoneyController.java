@@ -5,6 +5,7 @@ import com.jiazhuo.blockgamesquare.qo.PageResult;
 import com.jiazhuo.blockgamesquare.qo.WithdrawMoneyQueryObject;
 import com.jiazhuo.blockgamesquare.service.IWithdrawMoneyService;
 import com.jiazhuo.blockgamesquare.util.DateUtil;
+import com.jiazhuo.blockgamesquare.util.HttpClientUtil;
 import com.jiazhuo.blockgamesquare.util.RequiredPermission;
 import com.jiazhuo.blockgamesquare.vo.JSONResultVo;
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -19,7 +20,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class WithdrawMoneyController {
@@ -39,6 +42,34 @@ public class WithdrawMoneyController {
         vo.setResult(result);
         return vo;
     }
+
+    /**
+     * 提现审核
+     * @return
+     */
+    @RequestMapping(value = "/mgrsite/withdrawMoney/audit", method = RequestMethod.POST)
+    @ResponseBody
+    @RequiredPermission("提现审核")
+    public JSONResultVo withdrawMoneyAudit(String UID, String WID, int tokenType, double tokenAmount, double gasPrice, String auditor, String remark, int status){
+        JSONResultVo vo = new JSONResultVo();
+        //请求服务器提现审核接口
+        String url = HttpClientUtil.HOST_POST + HttpClientUtil.WITHDRAW_AUDIT;
+        Map<String, String> map = new HashMap<>();
+        map.put("UID", UID);
+        map.put("WID", WID);
+        map.put("tokenType", String.valueOf(tokenType));
+        map.put("tokenAmount", String.valueOf(tokenAmount));
+        map.put("gasPrice", String.valueOf(gasPrice));
+        map.put("auditor", auditor);
+        map.put("remark", remark);
+        map.put("status", String.valueOf(status));
+        String result = HttpClientUtil.doPost(url, map);
+        vo.setResult(result);
+        //记录系统日志
+        withdrawMoneyService.recordWithdrawMoneyAuditSystemLog();
+        return vo;
+    }
+
 
     /**
      * 提现审核成功列表

@@ -1,0 +1,92 @@
+.top-bg {
+  overflow: hidden;
+  width: 100%;
+  height: 7.4133rem;
+  background: -webkit-linear-gradient(left bottom, #fe8e04, #ff4112);
+  /* Safari 5.1 - 6.0 */
+  background: -o-linear-gradient(right top, #fe8f04, #ff4112);
+  /* Opera 11.1 - 12.0 */
+  background: -moz-linear-gradient(right top, #fe8f04, #ff4112);
+  /* Firefox 3.6 - 15 */
+  background: linear-gradient(right top, #fe8f04, #ff4112);
+}
+.top-bg img {
+  display: block;
+  position: absolute;
+  top: 1.5333rem;
+  right: -0.7333rem;
+  width: 3.2000rem;
+  height: 3.1200rem;
+  opacity: 0.1;
+}
+.hint {
+  width: 9.0667rem;
+  height: 1.0133rem;
+  margin: 0 auto;
+  margin-top: 1.8133rem;
+  padding-left: 0.5333rem;
+  font-size: 0.4267rem;
+  color: #fff;
+  line-height: 0.5867rem;
+}
+.hint p {
+  width: 100%;
+  height: 0.8800rem;
+}
+.hint b {
+  display: block;
+  width: 0.5333rem;
+  height: 0.1333rem;
+  background: #fff;
+  opacity: 0.2;
+  border-radius: 0.0267rem;
+}
+.main-box {
+  width: 9.0667rem;
+  height: calc(100% - 5.8667rem);
+  margin: 0 auto;
+  margin-top: 0.4000rem;
+  background: #fff;
+  border-radius: 0.1333rem;
+  box-shadow: 0.0267rem 0.0800rem 0.1333rem #ddd;
+}
+.main-box .title {
+  width: 100%;
+  height: 2.1333rem;
+  font-size: 0.4800rem;
+  color: #333;
+  text-align: center;
+  line-height: 0.6667rem;
+  padding-top: 0.5600rem;
+}
+.main-box .title img {
+  float: left;
+  width: 0.2667rem;
+  height: 0.2667rem;
+  margin-left: 3.2000rem;
+  margin-top: 0.2000rem;
+  margin-right: 0.2667rem;
+}
+.main-box .title span {
+  float: left;
+  font-weight: 500;
+}
+.main-box .borde {
+  display: block;
+  margin: 0 auto;
+  width: 6.1333rem;
+  height: 0.0133rem;
+  background: #f4f4f4;
+  margin-top: -0.6400rem;
+  margin-bottom: 0.2667rem;
+}
+.main-box p {
+  width: 6.9333rem;
+  height: calc(100% - 2.2667rem);
+  overflow: auto;
+  line-height: 0.4533rem;
+  color: #949494;
+  font-size: 0.3200rem;
+  margin: 0 auto;
+  padding: 0.2667rem 0;
+}

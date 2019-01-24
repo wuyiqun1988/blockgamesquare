@@ -54,4 +54,9 @@ public class WithdrawMoneyServiceImpl implements IWithdrawMoneyService {
     public List<WithdrawMoney> exportWithdrawMoneyFailData() {
         return withdrawMoneyMapper.exportWithdrawMoneyFailData();
     }
+
+    @Override
+    public void recordWithdrawMoneyAuditSystemLog() {
+        System.out.println("记录提现审核操作成功");
+    }
 }

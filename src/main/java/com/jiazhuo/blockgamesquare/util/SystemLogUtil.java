@@ -11,6 +11,9 @@ import org.springframework.stereotype.Component;
 import java.lang.reflect.Method;
 import java.util.Date;
 
+/**
+ * 记录系统日志
+ */
 @Component
 public class SystemLogUtil {
     @Autowired

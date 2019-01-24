@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>联系我们</title>
+		<script src="dist/js/flexible.min.js" type="text/javascript" charset="utf-8"></script>
+		<link rel="stylesheet" type="text/css" href="css/base.css" />
+		<link rel="stylesheet" type="text/css" href="dist/css/comment.css" />
+		<link rel="stylesheet" type="text/css" href="dist/css/contact.css" />
+		<script src="js/jquery-1.11.3.js" type="text/javascript" charset="utf-8"></script>
+		
+		<style type="text/css">
+			.content {
+				width: 100%;
+				height: 100%;
+			}
+			
+			.content .header {
+				background: url(dist/img/contact-bg.jpg);
+				background-size: 100% 100%;
+				height: 1.7rem;
+			}
+			
+			.main-box {
+				width: 100%;
+				min-height: calc( 100% - 1.7rem);
+				background: url(dist/img/contact-bg2.png);
+				background-size: 100% 100%;
+				overflow: hidden;
+				position: relative;
+			}
+			
+			.logoPic {
+				display: block;
+				width: 4.875rem;
+				height: 4.875rem;
+				margin: 0 auto;
+				margin-top: 0.4rem;
+			}
+			
+			.box-bg3 {
+				position: absolute;
+				left: 0;
+				top: -0.1rem;
+				width: 1.6rem;
+				height: 3.925rem;
+			}
+			
+			.box-bg4 {
+				position: absolute;
+				right: 0;
+				top: 3.4rem;
+				width: 2.025rem;
+				height: 3.725rem;
+			}
+			
+			.box-bg5 {
+				position: absolute;
+				left: 0.825rem;
+				top: 5.4rem;
+				width: 3.85rem;
+				height: 4.1rem;
+			}
+			
+			.box-bg6 {
+				position: absolute;
+				left: 1.7rem;
+				top: 10.25rem;
+				width: 2.45rem;
+				height: 1.675rem;
+				z-index: 10;
+			}
+			
+			.box-bg7 {
+				position: absolute;
+				left: 50%;
+				margin-left: -4.3rem;
+				top: 5.25rem;
+				width: 8.6rem;
+				height: 5.15rem;
+			}
+			
+			.box-bg9 {
+				display: block;
+				width: 8.6rem;
+				margin: 0 auto;
+				margin-top: 5.7rem;
+			}
+			
+			.text1 {
+				position: absolute;
+				width: 4.6rem;
+				font-size: 0.3rem;
+				height: 0.4rem;
+				line-height: 0.4rem;
+				color: #fff;
+				top: 9.76rem;
+				left: 50%;
+				margin-left: -2.3rem;
+				text-align: center;
+			}
+			
+			.text2 {
+				position: absolute;
+				width: 4.6rem;
+				font-size: 0.34rem;
+				height: 0.4rem;
+				line-height: 0.4rem;
+				color: #333;
+				top: 12.9rem;
+				left: 50%;
+				margin-left: -2.3rem;
+				text-align: center;
+			}
+			
+			#POP800_PANEL_DIV {
+				opacity: 0;
+				left: -10000px !important;
+			}
+			
+			.btn {
+				width: 2.6rem;
+				height: 1.1rem;
+				position: fixed;
+				top: 10.08rem;
+				left: 50%;
+				margin-left: -1.3rem;
+				z-index: 100;
+				border-radius: 0.4rem;
+				opacity: 0;
+			}
+		</style>
+
+	</head>
+
+	<body>
+		<div class="content">
+			<div class="header">
+				<div class="back">
+					<img src="dist/img/header-back.png" />
+				</div>
+				<span>联系我们</span>
+			</div>
+			<div class="main-box">
+				<img src="dist/img/contact-logo.png" class="logoPic" />
+				<img src="dist/img/contact-bg3.png" class="box-bg3" />
+				<img src="dist/img/contact-bg4.png" class="box-bg4" />
+				<img src="dist/img/contact-bg6.png" class="box-bg6" />
+				<img src="dist/img/contact-bg7.png" class="box-bg7" />
+				<img src="dist/img/contact-bg9.png" class="box-bg9" />
+				<div class="btn"></div>
+				<p class="text1">点击直接在线联系</p>
+				<p class="text2">客服微信：<span>17605882335</span></p>
+			</div>
+		</div>
+		<script src="js/base.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			$(function() {
+				$.ajax({
+					url: baseUrl + "/appsite/textList.do",
+					type: "get",
+					success: function(res) {
+						if(res.success) {
+							res.result.forEach(function(x) {
+								if(x.tid == '2') {
+									$('.textContent').html(x.text);
+								}
+							})
+						}
+					}
+				})
+				$('.btn').click(function() {
+					if(browser.versions.ios || browser.versions.iPhone || browser.versions.iPad) {
+						window.webkit.messageHandlers.gotoService.postMessage();
+					} else if(browser.versions.android) {
+						window.android.contact();
+					}
+				})
+			})
+		</script>
+	</body>
+
+</html>

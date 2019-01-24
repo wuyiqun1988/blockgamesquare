@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface IBgUserService {
     @SystemlogAnnotation("管理员分配用户角色")
-    void saveBgUserRole(Long  bid, Long[] rids);
+    void saveBgUserRole(Long bid, Long rid);
     void delete(Long bid);
     BgUser get(Long bid);
 

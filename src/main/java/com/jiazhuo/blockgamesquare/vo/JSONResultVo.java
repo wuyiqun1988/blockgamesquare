@@ -4,6 +4,9 @@ import lombok.*;
 
 import java.io.Serializable;
 
+/**
+ * 响应格式
+ */
 @Getter@Setter@ToString
 @AllArgsConstructor@NoArgsConstructor
 public class JSONResultVo implements Serializable {

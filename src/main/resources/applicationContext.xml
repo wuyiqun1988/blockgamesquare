@@ -18,7 +18,7 @@
 	<!--自动DI解析器-->
 	<context:annotation-config/>
 
-	<context:property-placeholder location="classpath:db.properties" system-properties-mode="NEVER"/>
+	<context:property-placeholder location="classpath:/*.properties" system-properties-mode="NEVER"/>
 
 	<!-- 连接池对象 -->
 	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"

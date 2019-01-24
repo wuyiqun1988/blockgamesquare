@@ -176,11 +176,14 @@ public class CentWalletController {
             }
             currentRow.createCell(5).setCellValue(transfer.getAmount());
             switch (transfer.getStatus()){
-                case 0:
-                    currentRow.createCell(6).setCellValue("失败");
-                    break;
                 case 1:
+                    currentRow.createCell(6).setCellValue("进行中");
+                    break;
+                case 2:
                     currentRow.createCell(6).setCellValue("成功");
+                    break;
+                case 3:
+                    currentRow.createCell(6).setCellValue("失败");
                     break;
             }
         }

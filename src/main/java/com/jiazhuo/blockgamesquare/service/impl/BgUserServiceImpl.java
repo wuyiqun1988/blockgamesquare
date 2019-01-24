@@ -38,18 +38,10 @@ public class BgUserServiceImpl implements IBgUserService {
     private IPermissionService permissionService;
 
     @Override
-    public void saveBgUserRole(Long bid, Long[] rids) {
+    public void saveBgUserRole(Long bid, Long rid) {
         //先删除关联关系.再保存
         bgUserMapper.deleteRoleRelation(bid);
-        saveRelation(bid, rids);
-    }
-
-    private void saveRelation(Long bid, Long[] rids) {
-        if (rids != null) {
-            for (Long rid : rids) {
-                bgUserMapper.insertRoleRelation(bid, rid);
-            }
-        }
+        bgUserMapper.insertRoleRelation(bid, rid);
     }
 
     @Override

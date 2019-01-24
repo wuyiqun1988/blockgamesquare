@@ -27,4 +27,9 @@ public class OptconfServiceImpl implements IOptconfService {
     public void updateConf(String confName, String confValue) {
         optconfMapper.update(confName, confValue);
     }
+
+    @Override
+    public void recordRecycleEOSWalletSystemLog() {
+        System.out.println("记录回收钱包日志成功");
+    }
 }
