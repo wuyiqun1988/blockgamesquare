@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -79,22 +80,17 @@ public class BgUserServiceImpl implements IBgUserService {
         //把当前登录成功的用户保存到session中
         session.setAttribute(UserContext.BGUSER_IN_SESSION, bgUser);
         session.setMaxInactiveInterval(30 * 60);
-        //把当前用户拥有的权限表达式查询出来存入session中,用户后期权限的校验
-        List<String> resources = permissionMapper.selectResourcesByBgUserId(bgUser.getBid());
-        session.setAttribute(UserContext.RESOURCE_IN_SESSION, resources);
-        JSONResultVo vo = new JSONResultVo();
+        //把当前用户拥有的菜单查询出来放入session中
         List<Role> roles = bgUser.getRoles();
-        List<Menu> menus = new ArrayList<>();
-        //查询角色拥有的菜单
         for (Role role : roles) {
-            List<Long> mids = roleMapper.selectMenuIdsByRoleId(role.getRid());
-            for (Long mid : mids) {
-                Menu menu = menuMapper.selectByPrimaryKey(mid);
-                menus.add(menu);
-            }
-            role.setMenus(menus);
+            List<Long> menuIds = roleMapper.selectMenuIdsByRoleId(role.getRid());
+            session.setAttribute(UserContext.MENUIDS_IN_SESSION, menuIds);
         }
-        vo.setResult(bgUser);
+        Map<String, Object> map = new HashMap<>();
+        map.put("bgUser", bgUser);
+        map.put("menuIds", session.getAttribute(UserContext.MENUIDS_IN_SESSION));
+        JSONResultVo vo = new JSONResultVo();
+        vo.setResult(map);
         return vo;
     }
 

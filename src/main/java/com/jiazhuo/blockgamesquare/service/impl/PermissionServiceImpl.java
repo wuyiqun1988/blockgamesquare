@@ -1,7 +1,9 @@
 package com.jiazhuo.blockgamesquare.service.impl;
 
 import com.jiazhuo.blockgamesquare.domain.Permission;
+import com.jiazhuo.blockgamesquare.domain.Role;
 import com.jiazhuo.blockgamesquare.mapper.PermissionMapper;
+import com.jiazhuo.blockgamesquare.mapper.RoleMapper;
 import com.jiazhuo.blockgamesquare.qo.PageResult;
 import com.jiazhuo.blockgamesquare.qo.QueryObject;
 import com.jiazhuo.blockgamesquare.service.IPermissionService;
@@ -22,6 +24,8 @@ public class PermissionServiceImpl implements IPermissionService {
     private PermissionMapper permissionMapper;
     @Autowired
     private ApplicationContext ctx; //容器对象
+    @Autowired
+    private RoleMapper roleMapper;
 
 
     @Override
@@ -68,6 +72,11 @@ public class PermissionServiceImpl implements IPermissionService {
                     p.setName(anno.value());
                     p.setResource(resource);
                     permissionMapper.insert(p);
+                    //把新的权限分配给角色
+                    List<Role> roles = roleMapper.selectAll();
+                    for (Role role : roles) {
+                        roleMapper.insertPermissionRelation(role.getRid(), p.getPid());
+                    }
                 }
             }
         }

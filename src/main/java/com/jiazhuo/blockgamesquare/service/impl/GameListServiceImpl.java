@@ -5,6 +5,7 @@ import com.jiazhuo.blockgamesquare.mapper.GameListMapper;
 import com.jiazhuo.blockgamesquare.qo.PageResult;
 import com.jiazhuo.blockgamesquare.qo.QueryObject;
 import com.jiazhuo.blockgamesquare.service.IGameListService;
+import com.jiazhuo.blockgamesquare.util.HttpClientUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,12 +23,20 @@ public class GameListServiceImpl implements IGameListService {
         if (totalCount == 0){
             return PageResult.empty();
         }
-        List data = gameListMapper.queryList(qo);
+        List<GameList> data = gameListMapper.queryList(qo);
+        for (GameList game : data) {
+            game.setPhoto(HttpClientUtil.HOST + game.getPhoto());
+        }
         return new PageResult(data, totalCount, qo.getCurrentPage(), qo.getPageSize());
     }
 
     @Override
     public void saveOrUpdate(GameList gameList) {
+        String photo = gameList.getPhoto();
+        //保存相对路径
+        String[] str = photo.split(HttpClientUtil.HOST);
+        photo = str[1];
+        gameList.setPhoto(photo);
         if (gameList.getGid() != null){
             gameListMapper.updateByPrimaryKey(gameList);
         } else {

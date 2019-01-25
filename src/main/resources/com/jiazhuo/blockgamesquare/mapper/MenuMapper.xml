@@ -16,6 +16,9 @@
     insert into menu (text, url, parent_id)
     values (#{text}, #{url}, #{parent.mid})
   </insert>
+  <insert id="insertMenuPermissionRelation">
+    insert into menu_permission (mid, pid) values (#{mid}, #{pid})
+  </insert>
   <update id="updateByPrimaryKey" parameterType="com.jiazhuo.blockgamesquare.domain.Menu">
     update menu
     set text = #{text},
@@ -60,6 +63,14 @@
     select m.mid, m.text, m.url, m.parent_id
     from menu m join role_menu rm on m.mid = rm.mid
     where rm.rid = #{rid}
+  </select>
+  <select id="selectMenuPermissionRelation" resultType="int">
+    select count(1) from menu_permission
+  </select>
+  <select id="selectResources" resultType="string">
+    select resource from permission p
+    join menu_permission mp on mp.pid = p.pid
+    where mp.mid = #{mid}
   </select>
 
 </mapper>

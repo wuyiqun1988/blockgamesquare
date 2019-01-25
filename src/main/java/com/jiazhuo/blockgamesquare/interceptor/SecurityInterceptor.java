@@ -2,9 +2,14 @@ package com.jiazhuo.blockgamesquare.interceptor;
 
 import com.gexin.fastjson.JSONObject;
 import com.jiazhuo.blockgamesquare.domain.BgUser;
+import com.jiazhuo.blockgamesquare.domain.Role;
+import com.jiazhuo.blockgamesquare.mapper.MenuMapper;
+import com.jiazhuo.blockgamesquare.mapper.RoleMapper;
 import com.jiazhuo.blockgamesquare.util.PermissionUtil;
 import com.jiazhuo.blockgamesquare.util.RequiredPermission;
 import com.jiazhuo.blockgamesquare.util.UserContext;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
@@ -14,6 +19,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,7 +27,10 @@ import java.util.Map;
 /**
  * 安全控制拦截器
  */
+@Component
 public class SecurityInterceptor extends HandlerInterceptorAdapter {
+    @Autowired
+    private MenuMapper menuMapper;
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         //权限检验
@@ -34,14 +43,15 @@ public class SecurityInterceptor extends HandlerInterceptorAdapter {
         //拿到当前被访问的方法对象
         HandlerMethod hm = (HandlerMethod) handler;
         Method m = hm.getMethod();
-        //判断该方法是否需要权限
-        if (!m.isAnnotationPresent(RequiredPermission.class)) {
-            return true;
-        }
         //判断当前用户是否有执行的权限
-        String resource = PermissionUtil.buildResource(m);
-        List<String> rs = (List<String>) session.getAttribute(UserContext.RESOURCE_IN_SESSION);
-        if (rs.contains(resource)) {
+        String resource = PermissionUtil.buildResource(m); //构建权限表达式
+        List<Long> menuIds = (List<Long>) session.getAttribute(UserContext.MENUIDS_IN_SESSION);
+        List<List<String>> resourceList = new ArrayList<>();
+        for (Long mid : menuIds) {
+            List<String> resources = menuMapper.selectResources(mid); //获取拥有的权限表达式
+            resourceList.add(resources);
+        }
+        if (resourceList.contains(resource)) {      //如果拥有权限,放行
             return true;
         }
         //如果没有权限,提示没有权限

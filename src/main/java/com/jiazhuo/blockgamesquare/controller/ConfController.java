@@ -178,23 +178,27 @@ public class ConfController {
     @ResponseBody
     public SuperResult gasConf(){
         List<Optconf> confs = optconfService.queryList();
-        List<Map<String, String>> gasConf = new ArrayList<>();
-        Map<String, String> eth = new HashMap<>();
-        Map<String, String> bgs = new HashMap<>();
+        List<Map<String, Object>> gasConf = new ArrayList<>();
+        Map<String, Object> eth = new HashMap<>();
+        Map<String, Object> bgs = new HashMap<>();
         for (Optconf op : confs) {
             if (op.getConfName().equals("BGS_GAS_MAX")){
+                Double i = Double.parseDouble(op.getConfValue());
                 bgs.put("type", "3");
-                bgs.put("max", op.getConfValue());
+                bgs.put("max", i);
             }
             if (op.getConfName().equals("BGS_GAS_MIN")){
-                bgs.put("min", op.getConfValue());
+                Double i = Double.parseDouble(op.getConfValue());
+                bgs.put("min", i);
             }
             if (op.getConfName().equals("ETH_GAS_MAX")){
+                Double i = Double.parseDouble(op.getConfValue());
                 eth.put("type", "1");
-                eth.put("max", op.getConfValue());
+                eth.put("max", i);
             }
             if (op.getConfName().equals("ETH_GAS_MIN")){
-                eth.put("min", op.getConfValue());
+                Double i = Double.parseDouble(op.getConfValue());
+                eth.put("min", i);
             }
         }
         gasConf.add(eth);

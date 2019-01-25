@@ -4,6 +4,7 @@ import com.jiazhuo.blockgamesquare.domain.GameList;
 import com.jiazhuo.blockgamesquare.qo.GameQueryObject;
 import com.jiazhuo.blockgamesquare.qo.PageResult;
 import com.jiazhuo.blockgamesquare.service.IGameListService;
+import com.jiazhuo.blockgamesquare.util.HttpClientUtil;
 import com.jiazhuo.blockgamesquare.util.RequiredPermission;
 import com.jiazhuo.blockgamesquare.util.SuperResult;
 import com.jiazhuo.blockgamesquare.vo.JSONResultVo;
@@ -124,6 +125,7 @@ public class GameListController {
     public JSONResultVo fireUpload(String pic, String suffix){
         JSONResultVo vo = new JSONResultVo();
         String path = GenerateImage(pic, suffix);
+        path = HttpClientUtil.HOST + path;
         vo.setResult(path);
         return vo;
     }

@@ -34,7 +34,7 @@ public class UserBasicServiceImpl implements IUserBasicService {
         if (totalCount == 0){
             return PageResult.empty();
         }
-        List data = userBasicMapper.queryList(qo);
+        List<UserBasic> data = userBasicMapper.queryList(qo);
         return new PageResult(data, totalCount, qo.getCurrentPage(), qo.getPageSize());
     }
 

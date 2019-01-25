@@ -2,6 +2,8 @@ package com.jiazhuo.blockgamesquare.mapper;
 
 import com.jiazhuo.blockgamesquare.domain.Menu;
 import com.jiazhuo.blockgamesquare.qo.QueryObject;
+import org.apache.ibatis.annotations.Param;
+
 import java.util.List;
 
 public interface MenuMapper {
@@ -45,4 +47,24 @@ public interface MenuMapper {
      * @return
      */
     List<Menu> selectMenusByRoleId(Long rid);
+
+    /**
+     * 查询菜单和权限的关系
+     * @return
+     */
+    int selectMenuPermissionRelation();
+
+    /**
+     * 保存菜单和权限的关系
+     * @param mid
+     * @param pid
+     */
+    void insertMenuPermissionRelation(@Param("mid") Long mid, @Param("pid") Long pid);
+
+    /**
+     * 查询权限表达式
+     * @param mid
+     * @return
+     */
+    List<String> selectResources(Long mid);
 }

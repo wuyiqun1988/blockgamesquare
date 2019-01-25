@@ -32,4 +32,9 @@ public interface IMenuService {
      * @return
      */
     List<Menu> selectChildrenMenus(Long mid);
+
+    /**
+     * 初始化菜单和权限的关系
+     */
+    void initMenuPermission();
 }

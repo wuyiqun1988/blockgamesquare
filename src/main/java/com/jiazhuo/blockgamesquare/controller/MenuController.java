@@ -20,6 +20,7 @@ public class MenuController {
     @Autowired
     private IMenuService menuService;
 
+
     /**
      * 菜单列表
      * @param qo
@@ -93,5 +94,4 @@ public class MenuController {
         vo.setResult(bgUserMenus);
         return vo;
     }
-
 }
