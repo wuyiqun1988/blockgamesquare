@@ -6,6 +6,7 @@ import com.jiazhuo.blockgamesquare.qo.PageResult;
 import com.jiazhuo.blockgamesquare.service.IGameListService;
 import com.jiazhuo.blockgamesquare.util.HttpClientUtil;
 import com.jiazhuo.blockgamesquare.util.RequiredPermission;
+import com.jiazhuo.blockgamesquare.util.StringUtil;
 import com.jiazhuo.blockgamesquare.util.SuperResult;
 import com.jiazhuo.blockgamesquare.vo.JSONResultVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,6 +75,21 @@ public class GameListController {
     @ResponseBody
     @RequiredPermission("游戏新增或修改")
     public JSONResultVo saveOrUpdate(GameList gameList){
+        if (StringUtil.isNull(gameList.getGameName())){
+            return JSONResultVo.error("gameName不能为空");
+        }
+        if (StringUtil.isNull(gameList.getPhoto())){
+            return JSONResultVo.error("photo不能为空");
+        }
+        if (StringUtil.isNull(gameList.getStatus())){
+            return JSONResultVo.error("status不能为空");
+        }
+        if (StringUtil.isNull(gameList.getText())){
+            return JSONResultVo.error("text不能为空");
+        }
+        if (StringUtil.isNull(gameList.getType())){
+            return JSONResultVo.error("type不能为空");
+        }
         gameListService.saveOrUpdate(gameList);
         return JSONResultVo.ok("更新或保存成功");
     }
@@ -89,6 +105,12 @@ public class GameListController {
     @ResponseBody
     @RequiredPermission("游戏上架或下架")
     public JSONResultVo changeStatus(Long gid, Byte status){
+        if (StringUtil.isNull(status)){
+            return JSONResultVo.error("status不能为空");
+        }
+        if (StringUtil.isNull(gid)){
+            return JSONResultVo.error("gid不能为空");
+        }
         JSONResultVo vo = new JSONResultVo();
         gameListService.changeStatus(gid, status);
         if (status == 0){
@@ -111,6 +133,12 @@ public class GameListController {
     @ResponseBody
     @RequiredPermission("游戏置顶排序")
     public JSONResultVo updateSort(Long gid1, Long gid2){
+        if (StringUtil.isNull(gid1)){
+            return JSONResultVo.error("gid1不能为空");
+        }
+        if (StringUtil.isNull(gid2)){
+            return JSONResultVo.error("gid2不能为空");
+        }
         gameListService.updateSort(gid1, gid2);
         return JSONResultVo.ok("更改排序成功");
     }
@@ -123,9 +151,15 @@ public class GameListController {
     @RequestMapping(value = "/mgrsite/fireUpload", method = RequestMethod.POST)
     @ResponseBody
     public JSONResultVo fireUpload(String pic, String suffix){
+        if (StringUtil.isNull(pic)){
+            return JSONResultVo.error("pic不能为空");
+        }
+        if (StringUtil.isNull(suffix)){
+            return JSONResultVo.error("suffix不能为空");
+        }
         JSONResultVo vo = new JSONResultVo();
         String path = GenerateImage(pic, suffix);
-        path = HttpClientUtil.HOST + path;
+        path = HttpClientUtil.URL + path;
         vo.setResult(path);
         return vo;
     }

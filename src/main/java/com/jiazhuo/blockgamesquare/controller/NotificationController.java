@@ -4,6 +4,7 @@ import com.jiazhuo.blockgamesquare.qo.GameQueryObject;
 import com.jiazhuo.blockgamesquare.qo.PageResult;
 import com.jiazhuo.blockgamesquare.qo.QueryObject;
 import com.jiazhuo.blockgamesquare.service.INotificationService;
+import com.jiazhuo.blockgamesquare.util.StringUtil;
 import com.jiazhuo.blockgamesquare.util.SuperResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -26,6 +27,9 @@ public class NotificationController {
     @RequestMapping(value = "/appsite/notifications", method = RequestMethod.GET)
     @ResponseBody
     public SuperResult notifications(@ModelAttribute("qo") QueryObject qo, String UID){
+        if (StringUtil.isNull(UID)){
+            return SuperResult.ok("UID不能为空");
+        }
         PageResult result = notificationService.notifications(qo, UID);
         SuperResult res = SuperResult.ok(result);
         res.setMsg("请求消息列表成功");

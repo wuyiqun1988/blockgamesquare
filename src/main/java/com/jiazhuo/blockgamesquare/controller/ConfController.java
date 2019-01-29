@@ -2,10 +2,7 @@ package com.jiazhuo.blockgamesquare.controller;
 
 import com.jiazhuo.blockgamesquare.domain.Optconf;
 import com.jiazhuo.blockgamesquare.service.IOptconfService;
-import com.jiazhuo.blockgamesquare.util.HttpClientUtil;
-import com.jiazhuo.blockgamesquare.util.JedisClient;
-import com.jiazhuo.blockgamesquare.util.RequiredPermission;
-import com.jiazhuo.blockgamesquare.util.SuperResult;
+import com.jiazhuo.blockgamesquare.util.*;
 import com.jiazhuo.blockgamesquare.vo.JSONResultVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -155,6 +152,12 @@ public class ConfController {
     @ResponseBody
     @RequiredPermission("修改配置数据")
     public JSONResultVo updateConf(String confName, String confValue){
+        if (StringUtil.isNull(confName)){
+            return JSONResultVo.error("confName不能为空");
+        }
+        if (StringUtil.isNull(confValue)){
+            return JSONResultVo.error("confValue不能为空");
+        }
         if (jedisClient.hget("operationCode", confName) == null){ //缓存中没有数据
             Optconf optconf = optconfService.get(confName);
             if (optconf != null){   //数据库中有数据(缓存失效)

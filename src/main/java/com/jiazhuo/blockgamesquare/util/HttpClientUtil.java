@@ -27,7 +27,8 @@ public class HttpClientUtil {
     public static final String HOST_POST = "http://18.222.214.253:80/";
     public static final String RECYCLE_WALLET = "recycle/recycleEOSWallet";
     public static final String WITHDRAW_AUDIT = "cWallet/withdraw";
-    public static final String HOST = "http://admin.bgsgame.com/";
+    public static final String PREINVITER = "common/preInviter";
+    public static final String URL = "http://admin.bgsgame.com/";
 
     public static String doGet(String url, Map<String, String> param) {
         // 创建Httpclient对象

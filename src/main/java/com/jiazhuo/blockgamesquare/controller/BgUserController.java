@@ -7,6 +7,7 @@ import com.jiazhuo.blockgamesquare.qo.UserQueryObject;
 import com.jiazhuo.blockgamesquare.service.IBgUserService;
 import com.jiazhuo.blockgamesquare.service.IRoleService;
 import com.jiazhuo.blockgamesquare.util.RequiredPermission;
+import com.jiazhuo.blockgamesquare.util.StringUtil;
 import com.jiazhuo.blockgamesquare.util.UserContext;
 import com.jiazhuo.blockgamesquare.vo.JSONResultVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +38,12 @@ public class BgUserController {
     @RequestMapping(value = "/mgrsite/bgUser/login", method = RequestMethod.POST)
     @ResponseBody
     public JSONResultVo login(String username, String password){
+        if (StringUtil.isNull(username)){
+            return JSONResultVo.error("username不能为空");
+        }
+        if (StringUtil.isNull(password)){
+            return JSONResultVo.error("password不能为空");
+        }
         JSONResultVo vo = bgUserService.login(username, password);
         return vo;
     }
@@ -75,6 +82,9 @@ public class BgUserController {
     @RequestMapping(value = "/mgrsite/bgUser/update", method = RequestMethod.POST)
     @ResponseBody
     public JSONResultVo userUpdate(String username){
+        if (StringUtil.isNull(username)){
+            return JSONResultVo.error("username不能为空");
+        }
         if (bgUserService.checkUsername(username) != 0) {
             return JSONResultVo.error("用户名已存在");
         }
@@ -94,6 +104,12 @@ public class BgUserController {
     @RequestMapping(value = "/mgrsite/bgUser/changePwd", method = RequestMethod.POST)
     @ResponseBody
     public JSONResultVo changePwd(String oldPwd, String newPwd){
+        if (StringUtil.isNull(oldPwd)){
+            return JSONResultVo.error("oldPwd不能为空");
+        }
+        if (StringUtil.isNull(newPwd)){
+            return JSONResultVo.error("newPwd不能为空");
+        }
         boolean ret = bgUserService.changePwd(UserContext.getCurrent().getBid(), oldPwd, newPwd);
         if (!ret){
             return JSONResultVo.error("旧密码不正确");
@@ -110,7 +126,16 @@ public class BgUserController {
     @RequestMapping(value = "/mgrsite/bgUser/changeStatus", method = RequestMethod.POST)
     @ResponseBody
     @RequiredPermission("管理员修改用户状态")
-    public JSONResultVo changeStatus(Long bid, int state){
+    public JSONResultVo changeStatus(Long bid, Byte state){
+        if (StringUtil.isNull(bid)){
+            return JSONResultVo.error("bid不能为空");
+        }
+        if (StringUtil.isNull(state)){
+            return JSONResultVo.error("state不能为空");
+        }
+        if (state != 0 && state != 1){
+            return JSONResultVo.error("state为0或1");
+        }
         boolean ret = bgUserService.changeStatus(bid, state);
         if (!ret){
             return JSONResultVo.error("不是管理员无权限");
@@ -127,6 +152,9 @@ public class BgUserController {
     @ResponseBody
     @RequiredPermission("重置密码(管理员重置)")
     public JSONResultVo resetPwd(Long bid){
+        if (StringUtil.isNull(bid)){
+            return JSONResultVo.error("bid不能为空");
+        }
         boolean ret = bgUserService.resetPwd(bid);
         if (!ret){
             return JSONResultVo.error("请联系管理员重置密码");
@@ -143,6 +171,21 @@ public class BgUserController {
     @ResponseBody
     @RequiredPermission("管理员新建后台用户")
     public JSONResultVo newBguser(BgUser bgUser, Long rid){
+        if (StringUtil.isNull(bgUser.getPassword())){
+            return JSONResultVo.error("password不能为空");
+        }
+        if (StringUtil.isNull(bgUser.getRealName())){
+            return JSONResultVo.error("realName不能为空");
+        }
+        if (StringUtil.isNull(bgUser.getState())){
+            return JSONResultVo.error("state不能为空");
+        }
+        if (StringUtil.isNull(bgUser.getUsername())){
+            return JSONResultVo.error("username不能为空");
+        }
+        if (StringUtil.isNull(rid)){
+            return JSONResultVo.error("rid不能为空");
+        }
         if (bgUserService.checkUsername(bgUser.getUsername()) != 0) {
             return JSONResultVo.error("用户名已存在");
         }
@@ -162,6 +205,9 @@ public class BgUserController {
     @ResponseBody
     @RequiredPermission("管理员编辑用户角色")
     public JSONResultVo editBgUserRole(Long bid){
+        if (StringUtil.isNull(bid)){
+            return JSONResultVo.error("bid不能为空");
+        }
         JSONResultVo vo = new JSONResultVo();
         BgUser bgUser = bgUserService.get(bid);
         List<Role> roles = roleService.list();
@@ -182,9 +228,15 @@ public class BgUserController {
     @ResponseBody
     @RequiredPermission("管理员分配用户角色")
     public JSONResultVo saveBgUserRole(Long bid, Long rid){
+        if (StringUtil.isNull(bid)){
+            return JSONResultVo.error("bid不能为空");
+        }
+        if (StringUtil.isNull(rid)){
+            return JSONResultVo.error("rid不能为空");
+        }
         BgUser bgUser = bgUserService.get(bid);
-        if (bgUser.isAdmin() || rid == null || bid == null){
-            return JSONResultVo.error("参数错误");
+        if (bgUser.isAdmin()){
+            return JSONResultVo.error("管理员无需分配");
         }
         bgUserService.saveBgUserRole(bid, rid);
         return JSONResultVo.ok("分配角色成功");

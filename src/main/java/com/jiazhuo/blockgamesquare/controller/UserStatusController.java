@@ -2,6 +2,7 @@ package com.jiazhuo.blockgamesquare.controller;
 
 import com.jiazhuo.blockgamesquare.service.IUserStatusService;
 import com.jiazhuo.blockgamesquare.util.RequiredPermission;
+import com.jiazhuo.blockgamesquare.util.StringUtil;
 import com.jiazhuo.blockgamesquare.vo.JSONResultVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,6 +26,12 @@ public class UserStatusController {
     @ResponseBody
     @RequiredPermission("操作用户 禁用/恢复")
     public JSONResultVo changeStatus(String UID, Byte state){
+        if (StringUtil.isNull(UID)){
+            return JSONResultVo.error("UID不能为空");
+        }
+        if (StringUtil.isNull(state)){
+            return JSONResultVo.error("state不能为空");
+        }
         JSONResultVo vo = new JSONResultVo();
         boolean ret = userStatusService.changeStatus(UID, state);
         if (!ret){

@@ -7,6 +7,7 @@ import com.jiazhuo.blockgamesquare.qo.UserQueryObject;
 import com.jiazhuo.blockgamesquare.service.IUserBasicService;
 import com.jiazhuo.blockgamesquare.util.DateUtil;
 import com.jiazhuo.blockgamesquare.util.RequiredPermission;
+import com.jiazhuo.blockgamesquare.util.StringUtil;
 import com.jiazhuo.blockgamesquare.vo.AgentVo;
 import com.jiazhuo.blockgamesquare.vo.JSONResultVo;
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -51,6 +52,9 @@ public class AgentController {
     @RequestMapping(value = "/mgrsite/users/agentlowers", method = RequestMethod.GET)
     @ResponseBody
     public JSONResultVo agentLowersPage(@ModelAttribute("qo") UserQueryObject qo, String agentUID){
+        if (StringUtil.isNull(agentUID)){
+            return JSONResultVo.error("agentUID不能为空");
+        }
         JSONResultVo vo = new JSONResultVo();
         PageResult result = userBasicService.agentLowersPage(qo, agentUID);
         vo.setResult(result);

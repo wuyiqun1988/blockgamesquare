@@ -54,7 +54,7 @@ public interface BgUserMapper {
     int checkUsername(String username);
 
 
-    void changeStatus(@Param("bid") Long bid, @Param("state") int state);
+    void changeStatus(@Param("bid") Long bid, @Param("state") Byte state);
 
     /**
      * 查询是否有初始化管理员

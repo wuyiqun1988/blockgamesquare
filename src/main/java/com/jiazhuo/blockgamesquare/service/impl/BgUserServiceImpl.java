@@ -149,7 +149,7 @@ public class BgUserServiceImpl implements IBgUserService {
     }
 
     @Override
-    public boolean changeStatus(Long bid, int state) {
+    public boolean changeStatus(Long bid, Byte state) {
         if (!UserContext.getCurrent().isAdmin()) {
             return false;
         }

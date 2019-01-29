@@ -1,13 +1,13 @@
 package com.jiazhuo.blockgamesquare.controller;
 
+import com.gexin.fastjson.JSONObject;
 import com.jiazhuo.blockgamesquare.domain.UserBasic;
 import com.jiazhuo.blockgamesquare.domain.UserPrivate;
 import com.jiazhuo.blockgamesquare.qo.PageResult;
 import com.jiazhuo.blockgamesquare.qo.UserQueryObject;
 import com.jiazhuo.blockgamesquare.service.IUserBasicService;
 import com.jiazhuo.blockgamesquare.service.IUserPrivateService;
-import com.jiazhuo.blockgamesquare.util.DateUtil;
-import com.jiazhuo.blockgamesquare.util.RequiredPermission;
+import com.jiazhuo.blockgamesquare.util.*;
 import com.jiazhuo.blockgamesquare.vo.JSONResultVo;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashMap;
@@ -71,6 +72,9 @@ public class UserbasicController {
     @ResponseBody
     @RequiredPermission("查看用户实名认证信息")
     public JSONResultVo realAuthInfo(String UID){
+        if (StringUtil.isNull(UID)){
+            return JSONResultVo.error("UID不能为空");
+        }
         JSONResultVo vo = new JSONResultVo();
         UserPrivate result = userPrivateService.realAuthInfo(UID);
         if (result == null){
@@ -159,6 +163,9 @@ public class UserbasicController {
     @RequestMapping(value = "/mgrsite/users/lowers", method = RequestMethod.GET)
     @ResponseBody
     public JSONResultVo lowersPage(@ModelAttribute("qo") UserQueryObject qo, String inviterID){
+        if (StringUtil.isNull(inviterID)){
+            return JSONResultVo.error("inviterID不能为空");
+        }
         JSONResultVo vo = new JSONResultVo();
         PageResult result = userbasicService.lowersPage(qo, inviterID);
         vo.setResult(result);
@@ -201,5 +208,33 @@ public class UserbasicController {
         workbook.write(response.getOutputStream());
         //关闭流操作
         workbook.close();
+    }
+
+    /**
+     * 预邀请(注册有礼)
+     * @param phoneNum
+     * @param invitedCode
+     * @return
+     */
+    @RequestMapping(value = "/appsite/preInviter", method = RequestMethod.POST)
+    @ResponseBody
+    public JSONResultVo preInviter(String phoneNum, String invitedCode, ServletResponse res){
+        AccessUtil.access(res); //跨域请求
+        if (StringUtil.isNull(phoneNum)){
+            return JSONResultVo.error("phoneNum不能为空");
+        }
+        if (StringUtil.isNull(invitedCode)){
+            return JSONResultVo.error("invitedCode不能为空");
+        }
+        JSONResultVo vo = new JSONResultVo();
+        //请求服务器预邀请接口
+        String url = HttpClientUtil.HOST_POST + HttpClientUtil.PREINVITER;
+        Map<String, String> map = new HashMap<>();
+        map.put("phoneNum", phoneNum);
+        map.put("invitedCode", invitedCode);
+        String result = HttpClientUtil.doPost(url, map);
+        JSONObject json = JSONObject.parseObject(result);
+        vo.setResult(json);
+        return vo;
     }
 }

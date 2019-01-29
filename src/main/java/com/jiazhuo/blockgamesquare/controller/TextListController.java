@@ -3,6 +3,7 @@ package com.jiazhuo.blockgamesquare.controller;
 import com.jiazhuo.blockgamesquare.domain.TextList;
 import com.jiazhuo.blockgamesquare.qo.PageResult;
 import com.jiazhuo.blockgamesquare.service.ITextListService;
+import com.jiazhuo.blockgamesquare.util.AccessUtil;
 import com.jiazhuo.blockgamesquare.util.RequiredPermission;
 import com.jiazhuo.blockgamesquare.util.StringUtil;
 import com.jiazhuo.blockgamesquare.util.SuperResult;
@@ -46,6 +47,15 @@ public class TextListController {
     @ResponseBody
     @RequiredPermission("修改或新增文本")
     public JSONResultVo saveOrUpdate(TextList textList){
+        if (StringUtil.isNull(textList.getText())){
+            return JSONResultVo.error("text不能为空");
+        }
+        if (StringUtil.isNull(textList.getTitle())){
+            return JSONResultVo.error("title不能为空");
+        }
+        if (StringUtil.isNull(textList.getType())){
+            return JSONResultVo.error("type不能为空");
+        }
         if (textList.getTid() != null) {
             textListService.update(textList);
             return JSONResultVo.ok("修改成功");
@@ -83,10 +93,7 @@ public class TextListController {
     @RequestMapping(value = "/appsite/textList", method = RequestMethod.GET)
     @ResponseBody
     public JSONResultVo appText(ServletResponse res){
-        HttpServletResponse httpResponse = (HttpServletResponse) res;
-        httpResponse.setHeader("Access-Control-Allow-Origin", "*");
-        httpResponse.setHeader("Access-Control-Allow-Headers","Origin, X-Requested-With, Content-Type, Accept");
-        httpResponse.setHeader("Access-Control-Allow-Credentials", "true");
+        AccessUtil.access(res); //跨域请求
         JSONResultVo vo = new JSONResultVo();
         List<TextList> data = textListService.queryList();
         if (data == null){

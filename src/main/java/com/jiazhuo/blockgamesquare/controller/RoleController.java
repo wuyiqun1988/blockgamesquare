@@ -5,6 +5,7 @@ import com.jiazhuo.blockgamesquare.qo.PageResult;
 import com.jiazhuo.blockgamesquare.qo.QueryObject;
 import com.jiazhuo.blockgamesquare.service.IRoleService;
 import com.jiazhuo.blockgamesquare.util.RequiredPermission;
+import com.jiazhuo.blockgamesquare.util.StringUtil;
 import com.jiazhuo.blockgamesquare.vo.JSONResultVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -44,6 +45,9 @@ public class RoleController {
     @ResponseBody
     @RequiredPermission("删除角色")
     public JSONResultVo deleteRole(Long rid){
+        if (StringUtil.isNull(rid)){
+            return JSONResultVo.error("rid不能为空");
+        }
         int count = roleService.selectBguserIdsByRoleId(rid);
         if (count != 0){
             return JSONResultVo.error("该角色还有用户使用");
@@ -63,6 +67,15 @@ public class RoleController {
     @ResponseBody
     @RequiredPermission("保存或更新角色")
     public JSONResultVo saveOrUpdate(Role role, Long[] pids, String mids){
+        if (StringUtil.isNull(role.getName())){
+            return JSONResultVo.error("name不能为空");
+        }
+        if (StringUtil.isNull(role.getSn())){
+            return JSONResultVo.error("sn不能为空");
+        }
+        if (StringUtil.isNull(mids)){
+            return JSONResultVo.error("mids不能为空");
+        }
         String[] memus = mids.split(",");
         Long[] ms = new Long[memus.length];
         for (int idx = 0; idx < memus.length; idx++) {
@@ -85,6 +98,9 @@ public class RoleController {
     @RequestMapping(value = "/mgrsite/role/menuIds", method = RequestMethod.GET)
     @ResponseBody
     public JSONResultVo selectMenuIdsByRoleId(Long rid){
+        if (StringUtil.isNull(rid)){
+            return JSONResultVo.error("rid不能为空");
+        }
         JSONResultVo vo = new JSONResultVo();
         List<Long> menuIds = roleService.selectMenuIdsByRoleId(rid);
         Map<String, List<Long>> map = new HashMap<>();

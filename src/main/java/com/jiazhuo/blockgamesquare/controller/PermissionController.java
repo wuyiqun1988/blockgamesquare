@@ -4,6 +4,7 @@ import com.jiazhuo.blockgamesquare.qo.PageResult;
 import com.jiazhuo.blockgamesquare.qo.QueryObject;
 import com.jiazhuo.blockgamesquare.service.IPermissionService;
 import com.jiazhuo.blockgamesquare.util.RequiredPermission;
+import com.jiazhuo.blockgamesquare.util.StringUtil;
 import com.jiazhuo.blockgamesquare.vo.JSONResultVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -60,9 +61,10 @@ public class PermissionController {
     @ResponseBody
     @RequiredPermission("删除权限")
     public JSONResultVo deletePermission(Long pid){
-        if (pid != null){
-            permissionService.delete(pid);
+        if (StringUtil.isNull(pid)){
+            return JSONResultVo.error("pid不能为空");
         }
+        permissionService.delete(pid);
         return JSONResultVo.ok("删除权限成功");
     }
 }

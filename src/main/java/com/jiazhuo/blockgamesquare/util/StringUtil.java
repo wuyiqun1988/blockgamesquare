@@ -10,4 +10,32 @@ public class StringUtil {
         return StringUtils.hasLength(s) ? s : null;
     }
 
+    public static boolean isNull(String param){
+        if (param == null || "".equals(param.trim())){
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean isNull(Long param){
+        if (param == null){
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean isNull(Byte param){
+        if (param == null){
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean isNull(Boolean param){
+        if (param == null){
+            return true;
+        }
+        return false;
+    }
+
 }

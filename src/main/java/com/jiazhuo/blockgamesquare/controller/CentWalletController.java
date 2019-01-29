@@ -25,7 +25,7 @@ import java.io.IOException;
 import java.util.List;
 
 @Controller
-public class CentWalletController {
+public class  CentWalletController {
     @Autowired
     private ICentWalletService centWalletService;
     @Autowired

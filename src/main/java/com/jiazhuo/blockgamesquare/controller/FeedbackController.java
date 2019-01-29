@@ -3,6 +3,7 @@ package com.jiazhuo.blockgamesquare.controller;
 import com.jiazhuo.blockgamesquare.qo.PageResult;
 import com.jiazhuo.blockgamesquare.qo.UserQueryObject;
 import com.jiazhuo.blockgamesquare.service.IFeedbackService;
+import com.jiazhuo.blockgamesquare.util.AccessUtil;
 import com.jiazhuo.blockgamesquare.util.SuperResult;
 import com.jiazhuo.blockgamesquare.vo.JSONResultVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,10 +46,7 @@ public class FeedbackController {
     @ResponseBody
     public SuperResult userFeedback(String UID, String content, String contact, ServletResponse res){
         try {
-            HttpServletResponse httpResponse = (HttpServletResponse) res;
-            httpResponse.setHeader("Access-Control-Allow-Origin", "*");
-            httpResponse.setHeader("Access-Control-Allow-Headers","Origin, X-Requested-With, Content-Type, Accept");
-            httpResponse.setHeader("Access-Control-Allow-Credentials", "true");
+            AccessUtil.access(res); //跨域请求
             feedbackService.userFeedback(UID, content, contact);
             return new SuperResult(0, 0, "反馈成功", null);
         } catch (Exception e){

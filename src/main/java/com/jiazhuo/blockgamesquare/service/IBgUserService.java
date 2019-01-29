@@ -70,7 +70,7 @@ public interface IBgUserService {
      * @return
      */
     @SystemlogAnnotation("修改用户状态(管理员修改)")
-    boolean changeStatus(Long bid, int state);
+    boolean changeStatus(Long bid, Byte state);
 
     /**
      * 初始化第一个管理员
@@ -78,4 +78,5 @@ public interface IBgUserService {
     void initAdmin();
 
     List<BgUser> queryAll();
+
 }
