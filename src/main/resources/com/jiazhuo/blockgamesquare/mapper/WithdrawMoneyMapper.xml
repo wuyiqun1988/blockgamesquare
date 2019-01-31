@@ -74,6 +74,7 @@
     <include refid="baseList"/>
     <include refid="baseFrom"/>
     <include refid="passWhere"/>
+    <include refid="baseSort"/>
     limit #{start}, #{pageSize}
   </select>
   <select id="queryFailCount" resultType="int">
@@ -85,17 +86,20 @@
     <include refid="baseList"/>
     <include refid="baseFrom"/>
     <include refid="failWhere"/>
+    <include refid="baseSort"/>
     limit #{start}, #{pageSize}
   </select>
   <select id="exportWithdrawMoneyPassData" resultMap="ListMap">
     <include refid="baseList"/>
     <include refid="baseFrom"/>
     <include refid="passWhere"/>
+    <include refid="baseSort"/>
   </select>
   <select id="exportWithdrawMoneyFailData" resultMap="ListMap">
     <include refid="baseList"/>
     <include refid="baseFrom"/>
     <include refid="failWhere"/>
+    <include refid="baseSort"/>
   </select>
   <sql id="baseFrom">
     from withdrawmoney w
@@ -105,6 +109,9 @@
     select
     w.UID, w.WID, w.tokenType, w.amount, w.createdTime, w.status, w.auditor, w.auditTime, w.remark,
     nickName, phoneNumber
+  </sql>
+  <sql id="baseSort">
+    order by w.auditTime desc
   </sql>
   <sql id="applyWhere">
     <where>

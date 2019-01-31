@@ -3,8 +3,7 @@
 <mapper namespace="com.jiazhuo.blockgamesquare.mapper.UserStatusMapper" >
   <resultMap id="BaseResultMap" type="com.jiazhuo.blockgamesquare.domain.UserStatus" >
     <id column="UID" property="UID" />
-    <result column="lastOpDevice" property="lastOpDevice" />
-    <result column="invitedTime" property="invitedTime"/>
+    <result column="updatedTime" property="updatedTime" />
     <result column="state" property="state"/>
   </resultMap>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
@@ -12,14 +11,13 @@
     where UID = #{UID}
   </delete>
   <insert id="insert" parameterType="com.jiazhuo.blockgamesquare.domain.UserStatus" >
-    insert into userstatus (UID, lastOpDevice, invitedTime, state)
-    values (#{UID}, #{lastOpDevice}, #{invitedTime}, #{state})
+    insert into userstatus (UID, updatedTime, state)
+    values (#{UID}, #{updatedTime}, #{state})
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.jiazhuo.blockgamesquare.domain.UserStatus" >
     update userstatus
     set
-      lastOpDevice = #{lastOpDevice},
-      invitedTime = #{invitedTime},
+      updatedTime = #{updatedTime},
       state = #{state}
     where UID = #{UID}
   </update>
@@ -28,15 +26,15 @@
     where UID = #{UID}
   </update>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
-    select UID, lastOpDevice, invitedTime, state
+    select UID, updatedTime, state
     from userstatus
     where UID = #{UID}
   </select>
   <select id="selectAll" resultMap="BaseResultMap" >
-    select UID, lastOpDevice, invitedTime, state
+    select UID, updatedTime, state
     from userstatus
   </select>
-  <select id="selectInviteTime" resultType="string">
-    select invitedTime from userstatus where UID = #{UID}
+  <select id="queryDailyActiveUser" resultType="int">
+    select count(1) from userstatus where TO_DAYS(updatedTime) = TO_DAYS(NOW())
   </select>
 </mapper>

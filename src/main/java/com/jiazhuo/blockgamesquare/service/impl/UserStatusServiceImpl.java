@@ -18,4 +18,10 @@ public class UserStatusServiceImpl implements IUserStatusService {
         userStatusMapper.changeStatus(UID, state);
         return true;
     }
+
+    @Override
+    public int queryDailyActiveUser() {
+        int dailyActiveUser = userStatusMapper.queryDailyActiveUser();
+        return dailyActiveUser;
+    }
 }

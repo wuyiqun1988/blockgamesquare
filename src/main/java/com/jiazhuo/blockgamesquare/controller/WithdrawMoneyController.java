@@ -7,6 +7,7 @@ import com.jiazhuo.blockgamesquare.service.IWithdrawMoneyService;
 import com.jiazhuo.blockgamesquare.util.DateUtil;
 import com.jiazhuo.blockgamesquare.util.HttpClientUtil;
 import com.jiazhuo.blockgamesquare.util.RequiredPermission;
+import com.jiazhuo.blockgamesquare.util.StringUtil;
 import com.jiazhuo.blockgamesquare.vo.JSONResultVo;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
@@ -50,7 +51,31 @@ public class WithdrawMoneyController {
     @RequestMapping(value = "/mgrsite/withdrawMoney/audit", method = RequestMethod.POST)
     @ResponseBody
     @RequiredPermission("提现审核")
-    public JSONResultVo withdrawMoneyAudit(String UID, String WID, int tokenType, double tokenAmount, double gasPrice, String auditor, String remark, int status){
+    public JSONResultVo withdrawMoneyAudit(String UID, String WID, Integer tokenType, Double tokenAmount, Double gasPrice, String auditor, String remark, Integer status){
+        if (StringUtil.isNull(UID)){
+            return JSONResultVo.error("UID不能为空");
+        }
+        if (StringUtil.isNull(WID)){
+            return JSONResultVo.error("WID不能为空");
+        }
+        if (StringUtil.isNull(tokenType)){
+            return JSONResultVo.error("tokenType不能为空");
+        }
+        if (StringUtil.isNull(tokenAmount)){
+            return JSONResultVo.error("tokenAmount不能为空");
+        }
+        if (StringUtil.isNull(gasPrice)){
+            return JSONResultVo.error("gasPrice不能为空");
+        }
+        if (StringUtil.isNull(auditor)){
+            return JSONResultVo.error("auditor不能为空");
+        }
+        if (StringUtil.isNull(remark)){
+            return JSONResultVo.error("remark不能为空");
+        }
+        if (StringUtil.isNull(status)){
+            return JSONResultVo.error("status不能为空");
+        }
         JSONResultVo vo = new JSONResultVo();
         //请求服务器提现审核接口
         String url = HttpClientUtil.HOST_POST + HttpClientUtil.WITHDRAW_AUDIT;

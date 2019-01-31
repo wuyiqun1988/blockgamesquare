@@ -7,6 +7,7 @@ import com.jiazhuo.blockgamesquare.qo.PageResult;
 import com.jiazhuo.blockgamesquare.qo.UserQueryObject;
 import com.jiazhuo.blockgamesquare.service.IUserBasicService;
 import com.jiazhuo.blockgamesquare.service.IUserPrivateService;
+import com.jiazhuo.blockgamesquare.service.IUserStatusService;
 import com.jiazhuo.blockgamesquare.util.*;
 import com.jiazhuo.blockgamesquare.vo.JSONResultVo;
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -33,18 +34,24 @@ public class UserbasicController {
     private IUserBasicService userbasicService;
     @Autowired
     private IUserPrivateService userPrivateService;
+    @Autowired
+    private IUserStatusService userStatusService;
 
 
     /**
-     * 查询有多少注册用户
+     * 后台主页统计数据
      * @return
      */
-    @RequestMapping(value = "/mgrsite/info/registerUsers", method = RequestMethod.GET)
+    @RequestMapping(value = "/mgrsite/homePageData", method = RequestMethod.GET)
     @ResponseBody
-    public JSONResultVo totalAmount(){
+    public JSONResultVo statistic(){
         JSONResultVo vo = new JSONResultVo();
-        int count = userbasicService.queryRegisterUsers();
-        vo.setResult(count);
+        int registerAmount = userbasicService.queryRegisterUsers();
+        int dailyActiveUser = userStatusService.queryDailyActiveUser();
+        Map<String, Object> map = new HashMap<>();
+        map.put("registerAmount", registerAmount);
+        map.put("dailyActiveUser", dailyActiveUser);
+        vo.setResult(map);
         return vo;
     }
 

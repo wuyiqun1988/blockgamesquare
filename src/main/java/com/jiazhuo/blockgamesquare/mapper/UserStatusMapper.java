@@ -18,5 +18,9 @@ public interface UserStatusMapper {
 
     void changeStatus(@Param("UID") String uid, @Param("state") Byte state);
 
-    String selectInviteTime(String UID);
+    /**
+     * 查询日活量
+     * @return
+     */
+    int queryDailyActiveUser();
 }

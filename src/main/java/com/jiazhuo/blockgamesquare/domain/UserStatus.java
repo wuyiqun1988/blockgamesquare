@@ -23,11 +23,9 @@ public class UserStatus implements Serializable{
 
     private String UID;
 
-    private String lastOpDevice; //最后一次操作设备
-
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone="GMT+8")
-    private Date invitedTime; //邀请时间
+    private Date updatedTime; //最近活跃时间
 
     private Byte state = USER_NORMAL; //状态(正常/禁用)
 }

@@ -38,4 +38,17 @@ public class StringUtil {
         return false;
     }
 
+    public static boolean isNull(Double param){
+        if (param == null){
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean isNull(Integer param){
+        if (param == null){
+            return true;
+        }
+        return false;
+    }
 }

@@ -24,19 +24,11 @@ public class GameListServiceImpl implements IGameListService {
             return PageResult.empty();
         }
         List<GameList> data = gameListMapper.queryList(qo);
-        for (GameList game : data) {
-            game.setPhoto(HttpClientUtil.URL + game.getPhoto());
-        }
         return new PageResult(data, totalCount, qo.getCurrentPage(), qo.getPageSize());
     }
 
     @Override
     public void saveOrUpdate(GameList gameList) {
-        String photo = gameList.getPhoto();
-        //保存相对路径
-        String[] str = photo.split(HttpClientUtil.URL);
-        photo = str[1];
-        gameList.setPhoto(photo);
         if (gameList.getGid() != null){
             gameListMapper.updateByPrimaryKey(gameList);
         } else {
