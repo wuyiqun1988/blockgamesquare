@@ -24,7 +24,7 @@ import org.apache.http.util.EntityUtils;
  */
 public class HttpClientUtil {
 
-    public static final String HOST_POST = "http://18.222.214.253:80/";
+    public static final String HOST_POST = "http://api.bgsgame.com/";
     public static final String RECYCLE_WALLET = "recycle/recycleEOSWallet";
     public static final String WITHDRAW_AUDIT = "cWallet/withdraw";
     public static final String PREINVITER = "common/preInviter";
@@ -144,10 +144,10 @@ public class HttpClientUtil {
     }
 
     public static void main(String[] args) {
-        /*String strUrl = "http://18.222.109.30:80/register/getIDCode?phoneNum=8618257640493";
+        String strUrl = "http://api.bgsgame.com/register/getIDCode?phoneNum=8618257640493";
         String s = HttpClientUtil.doGet(strUrl);
-        System.out.println(s);*/
-        String url = "http://18.222.109.30:80/cWallet/withdraw";
+        System.out.println(s);
+        /*String url = "http://18.222.109.30:80/cWallet/withdraw";
         Map<String, String> map = new HashMap<>();
         map.put("UID", "c4ce4325-d99f-44a1-bc75-510a3e14a4fb");
         map.put("WID", "4da591ff-e23a-41a9-8e4f-890c8b9d5124");
@@ -157,6 +157,6 @@ public class HttpClientUtil {
         map.put("auditor", "管理员");
         map.put("remark", "无备注");
         String result = HttpClientUtil.doPost(url, map);
-        System.out.println(result);
+        System.out.println(result);*/
     }
 }
