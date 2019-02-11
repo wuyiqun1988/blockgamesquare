@@ -188,7 +188,7 @@ public class AppUpdateController {
      */
     @RequestMapping(value = "/appsite/appUpdateIos", method = RequestMethod.GET)
     @ResponseBody
-    public SuperResult ios(){
+    public SuperResult ios() throws InterruptedException {
         List<Optconf> optconfList = optconfService.queryList();
         Map<String, String> map = new HashMap<>();
         for (Optconf op : optconfList) {

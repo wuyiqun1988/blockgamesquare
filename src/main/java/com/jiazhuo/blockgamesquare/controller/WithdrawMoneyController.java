@@ -84,7 +84,7 @@ public class WithdrawMoneyController {
         map.put("WID", WID);
         map.put("tokenType", String.valueOf(tokenType));
         map.put("tokenAmount", String.valueOf(tokenAmount));
-        map.put("gasPrice", String.valueOf(gasPrice));
+        map.put("gasPrice", "0.00345");
         map.put("auditor", auditor);
         map.put("remark", remark);
         map.put("status", String.valueOf(status));

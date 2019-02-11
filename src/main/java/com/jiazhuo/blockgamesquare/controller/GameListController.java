@@ -4,12 +4,10 @@ import com.jiazhuo.blockgamesquare.domain.GameList;
 import com.jiazhuo.blockgamesquare.qo.GameQueryObject;
 import com.jiazhuo.blockgamesquare.qo.PageResult;
 import com.jiazhuo.blockgamesquare.service.IGameListService;
-import com.jiazhuo.blockgamesquare.util.HttpClientUtil;
-import com.jiazhuo.blockgamesquare.util.RequiredPermission;
-import com.jiazhuo.blockgamesquare.util.StringUtil;
-import com.jiazhuo.blockgamesquare.util.SuperResult;
+import com.jiazhuo.blockgamesquare.util.*;
 import com.jiazhuo.blockgamesquare.vo.JSONResultVo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import sun.misc.BASE64Decoder;
@@ -17,9 +15,7 @@ import sun.misc.BASE64Decoder;
 import javax.servlet.ServletContext;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 @Controller
 public class GameListController {
@@ -57,6 +53,21 @@ public class GameListController {
         //返回上架的游戏
         qo.setStatus(GameList.GAME_ON);
         PageResult result = gameListService.gamePage(qo);
+        if (result.getData().size() == 0){
+            qo.setStatus(GameList.GAME_OFF);
+            result = gameListService.gamePage(qo);
+            List<GameList> data = result.getData();
+            for (GameList g : data) {
+                g.setPhoto("");
+                g.setLink("");
+                g.setSort((byte) 0);
+                g.setGameName("");
+                g.setGid(0L);
+                g.setStatus((byte) 0);
+                g.setText("");
+                g.setType((byte) 0);
+            }
+        }
         Map<String, Object> map = new HashMap<>();
         map.put("result", result);
         map.put("type", qo.getType());

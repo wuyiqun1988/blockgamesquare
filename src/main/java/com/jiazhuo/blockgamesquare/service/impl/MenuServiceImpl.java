@@ -144,6 +144,7 @@ public class MenuServiceImpl implements IMenuService {
                     for (Permission permission : permissions) {
                         if (permission.getResource().startsWith("BgUser") ||
                                 permission.getResource().startsWith("Conf") ||
+                                permission.getResource().startsWith("App") ||
                                 permission.getResource().startsWith("Menu") ||
                                 permission.getResource().startsWith("Permission")||
                                 permission.getResource().startsWith("Role") ||
